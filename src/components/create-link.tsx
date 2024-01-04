@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Modal } from "./ui/modal";
@@ -12,12 +13,12 @@ import {
 import { Input } from "./ui/input";
 import { Folder } from "./icons/folder";
 
-export const CreateFolder = () => {
+export const CreateLink = () => {
   const form = useForm();
   const modalTrigger = (
-    <Button variant="secondary" className="bg-black-50 flex gap-2 text-sm my-5">
-      <img src="/icons/folder.png" width={20}/>
-      NEW FOLDER
+    <Button variant="secondary" className="bg-black-50 flex gap-2 text-sm my-5 w-[180px]">
+      <img src="/icons/plus.png" width={20}/>
+      NEW LINK
     </Button>
   );
   const ModalContent = () => (
@@ -26,15 +27,15 @@ export const CreateFolder = () => {
             className="flex flex-col gap-3 mb-8">
           <FormField
             control={form.control}
-            name="foldername"
+            name="linkName"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <Input
-                    placeholder="Name for Folder"
+                    placeholder="Name for Link (optional)"
                     {...field}
                     icon={<Folder />}
-                    onClear={() => form.setValue("foldername", "")}
+                    onClear={() => form.setValue("linkName", "")}
                   />
                 </FormControl>
                 <FormMessage />
@@ -43,14 +44,14 @@ export const CreateFolder = () => {
           />
           <FormField
             control={form.control}
-            name="description"
+            name="link"
             render={({ field }) => (
               <FormItem>
                 <FormControl>
                   <Input
-                    placeholder="Description (optional)"
+                    placeholder="Link Address"
                     {...field}
-                    onClear={() => form.setValue("description", "")}
+                    onClear={() => form.setValue("link", "")}
                   />
                 </FormControl>
                 <FormMessage />
@@ -59,14 +60,14 @@ export const CreateFolder = () => {
           />
       <Button type="submit" className="mt-8">
         <img src="/icons/plus.png" width={18} />
-        Create New Folder
+        Create New Link
       </Button>
         </form>
       </Form>
   );
   return (
     <Modal
-      title="New Folder"
+      title="New Link"
       trigger={modalTrigger}
       content={<ModalContent />}
     />
