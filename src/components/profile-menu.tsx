@@ -1,5 +1,4 @@
 import React from "react";
-import { useBreakpoints } from "@/hooks/useBreakpoints";
 import { User } from "./icons/user";
 import { Moneybag } from "./icons/moneybag";
 import { ForwardArrow } from "./icons/forward-arrow";

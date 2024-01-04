@@ -33,7 +33,7 @@ export const Profile = () => {
     <div className="flex flex-col gap-5 p-10">
       <div className="flex w-full items-center gap-4">
         <Avatar className="w-16 h-16">
-          <AvatarImage src="./profile.png" />
+          <AvatarImage src="/profile.png" />
           <AvatarFallback />
         </Avatar>
         <div className="flex flex-col w-full justify-center">
