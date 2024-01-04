@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { ListItem } from './list-item';
+import { ListItem } from "./list-item";
 
 export const FolderList = () => {
   const folders = [
@@ -45,13 +45,15 @@ export const FolderList = () => {
   return (
     <div className="flex flex-col ">
       {folders.map((folder, i) => (
-        <ListItem key={`folder-${folder.id}-${folder.title}`}
-            title={folder.title}
-            subtitle={`${folder.numberOfLinks} links`}
-            icon="/icons/folder.png"
-            href={`/folder/${folder.id}`}
-            updated={folder.updated}
-            />
+        <ListItem
+          key={`folder-${folder.id}-${folder.title}`}
+          id={folder.id}
+          title={folder.title}
+          subtitle={`${folder.numberOfLinks} links`}
+          icon="/icons/folder.png"
+          href={`/folder/${folder.id}`}
+          updated={folder.updated}
+        />
       ))}
     </div>
   );
