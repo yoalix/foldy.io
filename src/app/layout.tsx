@@ -24,7 +24,9 @@ export default async function RootLayout({
     <html lang="en">
       <QueryProvider>
         <Header initalUser={currentUser} />
-        <body className={inter.className + " ml-40"}>{children}</body>
+        <body className={inter.className + " ml-40 max-w-[680px]"}>
+          {children}
+        </body>
       </QueryProvider>
     </html>
   );

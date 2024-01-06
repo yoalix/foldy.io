@@ -32,7 +32,7 @@ export const ListItem = ({
           height={24}
           className="h-[24px]"
         />
-        <div className="flex flex-col w-full justify-start">
+        <div className="flex flex-col w-full justify-start items-start">
           <h1 className="text-sm">{title}</h1>
           <p className="text-black-secondary text-sm">{subtitle}</p>
         </div>
