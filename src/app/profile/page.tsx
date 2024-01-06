@@ -1,3 +1,4 @@
+
 import { Profile } from "@/components/profile";
 import { Suspense } from "react";
 

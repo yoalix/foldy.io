@@ -2,6 +2,8 @@ import { initializeApp } from "firebase/app";
 import { getAuth, signInWithCustomToken } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+
+export type { User as FirebaseUser } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,9 +23,7 @@ export const auth = getAuth(firebaseApp);
 export const db = getFirestore(firebaseApp);
 export const storage = getStorage(firebaseApp);
 
-export async function getAuthenticatedAppForUser(
-  session: string | undefined | null = null
-) {
+export async function getAuthenticatedAppForUser(session?: string) {
   if (typeof window !== "undefined") {
     // client
     console.log("client: ", firebaseApp);
@@ -61,7 +61,7 @@ export async function getAuthenticatedAppForUser(
   const decodedIdToken = await adminAuth.verifySessionCookie(session);
 
   const app = initializeAuthenticatedApp(decodedIdToken.uid);
-  const auth = getAuth(app);
+  const authApp = getAuth(app);
 
   // handle revoked tokens
   const isRevoked = !(await adminAuth
@@ -70,7 +70,7 @@ export async function getAuthenticatedAppForUser(
   if (isRevoked) return noSessionReturn;
 
   // authenticate with custom token
-  if (auth.currentUser?.uid !== decodedIdToken.uid) {
+  if (authApp.currentUser?.uid !== decodedIdToken.uid) {
     // TODO(jamesdaniels) get custom claims
     const customToken = await adminAuth
       .createCustomToken(decodedIdToken.uid)
@@ -78,10 +78,10 @@ export async function getAuthenticatedAppForUser(
 
     if (!customToken) return noSessionReturn;
 
-    await signInWithCustomToken(auth, customToken);
+    await signInWithCustomToken(authApp, customToken);
   }
   console.log("server: ", app);
-  return { app, currentUser: auth.currentUser };
+  return { app, currentUser: authApp.currentUser };
 }
 async function getAppRouterSession() {
   // dynamically import to prevent import errors in pages router

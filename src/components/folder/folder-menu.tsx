@@ -1,10 +1,10 @@
 import React from "react";
-import { User } from "./icons/user";
-import { Moneybag } from "./icons/moneybag";
-import { ForwardArrow } from "./icons/forward-arrow";
+import { User } from "@/components/icons/user";
+import { Moneybag } from "@/components/icons/moneybag";
+import { ForwardArrow } from "@/components/icons/forward-arrow";
 import { MoreHorizontal } from "lucide-react";
-import { Button } from "./ui/button";
-import { Modal } from "./ui/modal";
+import { Button } from "@/components/ui/button";
+import { Modal } from "@/components/ui/modal";
 
 export const FolderMenu = () => {
   const menuOptions = [

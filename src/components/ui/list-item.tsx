@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { Button } from "./ui/button";
+import { Button } from "./button";
 
 type ListItemProps = {
   id: number;
