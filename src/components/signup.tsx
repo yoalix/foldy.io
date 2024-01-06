@@ -8,7 +8,7 @@ import { useUserSession } from "@/hooks/firebase/useUserSession";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 
-export const Signup = ({ initialUser }) => {
+export const Signup = () => {
     const router = useRouter();
     const handleSignup = async (method: string) => {
         try {
@@ -23,7 +23,6 @@ export const Signup = ({ initialUser }) => {
         { name: "Apple", onClick: () => handleSignup("apple"), icon: "/icons/apple.png" },
         { name: "Facebook", onClick: () => handleSignup("facebook"), icon: "/icons/facebook.png" },
     ];
-    const userSession = useUserSession(initialUser);
     const user = useGetCurrentUser();
     console.log("signup", user);
     return (

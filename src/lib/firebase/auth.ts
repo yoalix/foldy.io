@@ -5,12 +5,13 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword as _signInWithEmailAndPassword,
   sendEmailVerification,
+  NextOrObserver,
 } from "firebase/auth";
 
-import { auth } from "@/lib/firebase/firebase";
+import { FirebaseUser, auth } from "@/lib/firebase/firebase";
 import { createUser, verifyUsername } from "./firestore";
 
-export function onAuthStateChanged(cb) {
+export function onAuthStateChanged(cb: NextOrObserver<FirebaseUser>) {
   return _onAuthStateChanged(auth, cb);
 }
 
@@ -24,8 +25,9 @@ export async function signInWithGoogle() {
   }
 }
 export async function signInWithApple() {
-  const provider = new AppleAuthProvider();
+  //   const provider = new AppleAuthProvider();
 }
+export async function signInWithFacebook() {}
 export async function signInWithEmailAndPassword({
   email,
   password,

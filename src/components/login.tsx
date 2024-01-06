@@ -6,8 +6,8 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import {
   signInWithEmailAndPassword,
   signInWithGoogle,
-  signInWithApple,
-  signInWithFacebook,
+  //signInWithApple,
+  //signInWithFacebook,
 } from "@/lib/firebase/auth";
 import { useGetCurrentUser } from "@/hooks/firebase/useGetCurrentUser";
 import { useUserSession } from "@/hooks/firebase/useUserSession";
@@ -23,18 +23,18 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 
-export const Login = ({ initialUser }) => {
+export const Login = () => {
   const form = useForm();
   const router = useRouter();
   const handleSignIn = async (method: string) => {
     try {
-      if (method === "google") {
+   //   if (method === "google") {
         await signInWithGoogle();
-      } else if (method === "apple") {
+    /*  } else if (method === "apple") {
         await signInWithApple();
       } else if (method === "facebook") {
         await signInWithFacebook();
-      }
+      }*/
       router.push("/profile");
     } catch (error) {
       console.log(error);
@@ -126,8 +126,8 @@ export const Login = ({ initialUser }) => {
             />
             <Button key={`social-email}`} variant="secondary">
               <Link href="/signup/email">LOG IN</Link>
-            </Button>
-          </form>
+                          </Button>
+                              </form>
         </Form>
       </DialogContent>
     </Dialog>

@@ -6,6 +6,6 @@ export const useGetCurrentUser = () => {
   const userSession = useUserSession(null);
   return useQuery({
     queryKey: ["currentUser", userSession?.uid],
-    queryFn: () => getUser(userSession?.uid),
+    queryFn: () => userSession && getUser(userSession?.uid),
   });
 };

@@ -28,19 +28,24 @@ export const SignupSocial = ({ initialUser }: Props) => {
 
   const handleFinishSignup = async () => {
     try {
+      if (!userSession) return;
       await verifyUsername(username);
       const { uid, email, displayName, photoURL } = userSession;
       const user = await createUser.mutateAsync({
         id: uid,
-        email,
-        fullName: displayName,
-        imageUrl: photoURL,
+        email: email || "",
+        fullName: displayName || "",
+        imageUrl: photoURL || "",
         username,
       });
       console.log("created user", user);
     } catch (error) {
       console.error(error);
-      if (error.message && error.message.includes("exists")) {
+      if (
+        error instanceof Error &&
+        error.message &&
+        error.message.includes("exists")
+      ) {
         form.setError("username", { message: error.message });
       }
     }
