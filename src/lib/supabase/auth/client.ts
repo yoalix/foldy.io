@@ -1,7 +1,6 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "../client";
-import { createClient as createServerClient } from "../server";
-// import { cookies } from "next/headers";
+import { APP_URL } from "@/lib/consts";
 export const supabase = createClient();
 export const getAuthSession = (client: SupabaseClient) => {
   return client.auth.getUser();
@@ -14,7 +13,6 @@ export const signInWithEmailAndPassword = ({
   email: string;
   password: string;
 }) => {
-  console.log("supabassse");
   const supabase = createClient();
   return supabase.auth.signInWithPassword({ email, password });
 };
@@ -45,7 +43,7 @@ export const signUpWithEmailAndPassword = async ({
       password,
       options: {
         data: { username, fullName },
-        emailRedirectTo: `${location.origin}/auth/callback`,
+        emailRedirectTo: `${APP_URL}/auth/callback`,
       },
     });
     console.log("sign up res", res);
@@ -62,7 +60,7 @@ export const signInWithGoogle = async () => {
         access_type: "offline",
         prompt: "consent",
       },
-      redirectTo: `${location.origin}/auth/callback`,
+      redirectTo: `${APP_URL}/auth/callback`,
     },
   });
 };
