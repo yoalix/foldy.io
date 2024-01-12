@@ -2,24 +2,14 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import {
-  signInWithGoogle,
-  signOut,
-  onAuthStateChanged,
-} from "@/lib/firebase/auth";
-import { useRouter } from "next/navigation";
+import { signOut } from "@/lib/supabase/auth/client";
 import { Compass } from "@/components/icons/compass";
 import { CircleUser } from "@/components/icons/circle-user";
 import { Settings } from "@/components/icons/settings";
 import { Button } from "@/components/ui/button";
-import { useUserSession } from "@/hooks/firebase/useUserSession";
-import { FirebaseUser } from "@/lib/firebase/firebase";
+import { useUserSession } from "@/hooks/queries/useUserSession";
 import { useBreakpoints } from "@/hooks/useBreakpoints";
 import { Menu } from "@/components/icons/menu";
-
-type HeaderProps = {
-  initalUser?: FirebaseUser | null;
-};
 
 const NavMenuItems = [
   { name: "Explore", href: "/explore", icon: <Compass /> },
@@ -96,11 +86,13 @@ const MobileNav = () => {
   );
 };
 
-export function Header({ initalUser }: HeaderProps) {
-  const user = useUserSession(initalUser);
+export function Header() {
+  const { data } = useUserSession();
   const breakpoint = useBreakpoints();
   const isMobile = breakpoint === "sm" || breakpoint === "xs";
 
+  if (!data?.user) return null;
+  console.log("data", data);
   return isMobile ? (
     <MobileNav />
   ) : (
@@ -114,7 +106,7 @@ export function Header({ initalUser }: HeaderProps) {
         <h1 className="text-primary font-bold italic">FOLDY</h1>
       </Link>
 
-      {user ? (
+      {data.user ? (
         <div className="flex flex-1 flex-col items-start gap-8 mt-8">
           {NavMenuItems.map((item) => (
             <Button
@@ -139,10 +131,10 @@ export function Header({ initalUser }: HeaderProps) {
       ) : (
         <div className="flex flex-col flex-1 justify-end gap-5 m-5">
           <Button className="text-sm font-semibold mr-4" variant="secondary">
-            <Link href="/signup">Sign Up</Link>
+            <Link href="/auth/signup">Sign Up</Link>
           </Button>
           <Button className="text-sm font-semibold mr-4" variant="secondary">
-            <Link href="/login">Log In</Link>
+            <Link href="/auth/login">Log In</Link>
           </Button>
         </div>
       )}
