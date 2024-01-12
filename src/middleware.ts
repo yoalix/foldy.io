@@ -54,7 +54,7 @@ export async function middleware(request: NextRequest) {
       console.log("creating profile");
       await createUser(supabase, {
         id: user.id,
-        email: user.email,
+        email: user.email!,
         fullName: user.user_metadata.fullName,
         username: user.user_metadata.username,
         avatarUrl: user.user_metadata.avatar_url,

@@ -19,15 +19,15 @@ export default async function VerifyEmailPage({
     access_token?: string;
     type?: EmailOtpType;
   };
-
-  if (access_token && type) {
-    const supabase = createClient(cookies());
-    const {
-      data: { session },
-      error,
-    } = await supabase.auth.verifyOtp({ token: access_token, type });
-    console.log("session", session);
-  }
+  //TODO: verify email
+  //   if (access_token && type) {
+  //     const supabase = createClient(cookies());
+  //     const {
+  //       data: { session },
+  //       error,
+  //     } = await supabase.auth.verifyOtp({ token: access_token, type });
+  //     console.log("session", session);
+  //   }
 
   // subsequently redirect the user back to the client using the redirect_to param
   // ...
