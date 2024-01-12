@@ -17,11 +17,8 @@ type Props = {
   username?: string;
 };
 export const Profile = ({ username }: Props) => {
-  const { data, isError } = username
-    ? useGetUserByUsername(username)
-    : useGetCurrentUser();
+  const { data, isError } = useGetCurrentUser();
   const { toast } = useToast();
-  console.log("data", data?.data);
   const socials = [
     {
       name: "Twitter",
