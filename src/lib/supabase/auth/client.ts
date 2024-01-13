@@ -43,7 +43,7 @@ export const signUpWithEmailAndPassword = async ({
       password,
       options: {
         data: { username, fullName },
-        emailRedirectTo: `${APP_URL}/auth/callback`,
+        emailRedirectTo: `${location.origin}/auth/callback`,
       },
     });
     console.log("sign up res", res);
@@ -60,7 +60,7 @@ export const signInWithGoogle = async () => {
         access_type: "offline",
         prompt: "consent",
       },
-      redirectTo: `${APP_URL}/auth/callback`,
+      redirectTo: `${location.origin}/auth/callback`,
     },
   });
 };
