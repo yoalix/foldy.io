@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
     const isAuthRoute = AUTH_ROUTES.find(
       (route) =>
         request.nextUrl.pathname.includes(route) &&
-        !request.nextUrl.pathname.includes("password")
+        !request.nextUrl.pathname.includes("verify-password")
     );
     console.log(request.nextUrl.pathname, isAuthRoute);
     const profile = await getUserProfile(supabase, user?.id).catch(() => null);
