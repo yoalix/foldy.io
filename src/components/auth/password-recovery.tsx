@@ -20,9 +20,10 @@ export const PasswordRecovery = () => {
   const handlePasswordRecovery = async (email: string) => {
     try {
       const supabase = createClient();
-      await supabase.auth.resetPasswordForEmail(email, {
+      const res = await supabase.auth.resetPasswordForEmail(email, {
         redirectTo: `${location.origin}/auth/callback?next=/auth/update-password`,
       });
+      if (res.error) throw new Error(res.error.message);
       toast({
         title: "Password recovery email sent",
         description: "Check your email for the password recovery link",
