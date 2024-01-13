@@ -1,19 +1,9 @@
 "use client";
-import { Checkbox } from "@radix-ui/react-checkbox";
-import { Link } from "lucide-react";
-import { Input } from "@/components/ui/input";
+
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormControl,
-  FormMessage,
-  FormLabel,
-  FormInputField,
-} from "@/components/ui/form";
+import { Form, FormInputField } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createClient } from "@/lib/supabase/client";
@@ -74,6 +64,7 @@ export const UpdatePassword = () => {
             name="password"
             onClear={() => form.setValue("password", "")}
             placeholder="Password"
+            type="password"
           />
 
           <FormInputField
@@ -81,6 +72,7 @@ export const UpdatePassword = () => {
             name="confirmPassword"
             onClear={() => form.setValue("confirmPassword", "")}
             placeholder="Confirm Password"
+            type="password"
           />
           <Button
             variant="secondary"
