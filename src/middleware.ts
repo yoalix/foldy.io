@@ -24,8 +24,8 @@ export async function middleware(request: NextRequest) {
     console.log(request.nextUrl.pathname, isAuthRoute);
     const profile = await getUserProfile(supabase, user?.id).catch(() => null);
     if ((!session || !user) && !isAuthRoute) {
-      console.log("redirecting to login");
-      return NextResponse.redirect(new URL("/auth/login", request.url));
+      console.log("redirecting to auth");
+      return NextResponse.redirect(new URL("/auth", request.url));
     } else if (
       user &&
       !user.user_metadata.username &&

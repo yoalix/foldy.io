@@ -11,7 +11,7 @@ export const Settings = () => {
     try {
       await signOut();
       console.log("signed out");
-      router.push("/auth/login");
+      router.push("/auth");
     } catch (error) {
       console.log(error);
     }
