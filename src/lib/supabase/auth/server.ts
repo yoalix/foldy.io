@@ -1,5 +1,4 @@
 "use server";
-import { APP_URL } from "@/lib/consts";
 import { createClient as createServerClient } from "../server";
 import { cookies, headers } from "next/headers";
 export const signInWithGoogle = async () => {
@@ -13,7 +12,7 @@ export const signInWithGoogle = async () => {
         prompt: "consent",
       },
 
-      redirectTo: `${APP_URL}/auth/callback`,
+      redirectTo: `${location.origin}/auth/callback`,
     },
   });
 };

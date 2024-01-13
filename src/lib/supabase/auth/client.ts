@@ -1,6 +1,5 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "../client";
-import { APP_URL } from "@/lib/consts";
 export const supabase = createClient();
 export const getAuthSession = (client: SupabaseClient) => {
   return client.auth.getUser();

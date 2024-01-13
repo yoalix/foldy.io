@@ -13,7 +13,6 @@ import {
 import { BackButton } from "@/components/ui/back-button";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "../ui/use-toast";
-import { APP_URL } from "@/lib/consts";
 
 export const PasswordRecovery = () => {
   const form = useForm();
@@ -22,7 +21,7 @@ export const PasswordRecovery = () => {
     try {
       const supabase = createClient();
       await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${APP_URL}/auth/callback?next=/auth/update-password`,
+        redirectTo: `${location.origin}/auth/callback?next=/auth/update-password`,
       });
       toast({
         title: "Password recovery email sent",
