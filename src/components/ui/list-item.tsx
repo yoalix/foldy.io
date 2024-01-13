@@ -33,12 +33,10 @@ export const ListItem = ({
           className="h-[24px]"
         />
         <div className="flex flex-col w-full justify-start items-start">
-          <h1 className="text-sm">{title}</h1>
-          <p className="text-black-secondary text-sm">{subtitle}</p>
+          <h1 className="font-normal">{title}</h1>
+          <p className="text-black-secondary ">{subtitle}</p>
         </div>
-        <p className="text-black-secondary text-sm w-fit justify-self-end">
-          {updated}
-        </p>
+        <p className="text-black-secondary w-fit justify-self-end">{updated}</p>
       </Link>
     </Button>
   );

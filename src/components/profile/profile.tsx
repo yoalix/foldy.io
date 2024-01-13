@@ -13,11 +13,14 @@ import { useGetCurrentUser } from "@/hooks/queries/useGetCurrentUser";
 import { useGetUserById } from "@/hooks/queries/useGetUserById";
 import { useGetUserByUsername } from "@/hooks/queries/useGetUserByUsername";
 import { useToast } from "@/components/ui/use-toast";
+import Link from "next/link";
+import { useGetProfile } from "@/hooks/queries/useGetProfile";
+import Image from "next/image";
 type Props = {
   username?: string;
 };
 export const Profile = ({ username }: Props) => {
-  const { data, isError } = useGetCurrentUser();
+  const { data, isError } = useGetProfile(username);
   const { toast } = useToast();
   const socials = [
     {
@@ -42,26 +45,34 @@ export const Profile = ({ username }: Props) => {
       description: "Could not find user",
     });
   }
+  console.log("data current user", data);
   return (
     <div className="flex flex-col gap-5 p-10">
       <div className="flex w-full items-center gap-4">
-        <Avatar className="w-16 h-16">
-          <AvatarImage src={data?.avatar_url || ""} />
-          <AvatarFallback />
-        </Avatar>
+        <Link href="/profile/edit">
+          <Avatar className="w-16 h-16">
+            <AvatarImage src={data?.avatar_url || ""} asChild>
+              <Image
+                src={data?.avatar_url || ""}
+                alt="avatar"
+                width={64}
+                height={64}
+              />
+            </AvatarImage>
+            <AvatarFallback />
+          </Avatar>
+        </Link>
         <div className="flex flex-col w-full justify-center">
-          <h1 className="text-sm">{data?.full_name}</h1>
-          <p className="text-sm text-black-secondary">@{data?.username}</p>
+          <h1 className="font-normal">{data?.full_name}</h1>
+          <p className="text-black-secondary">@{data?.username}</p>
         </div>
         <ProfileMenu />
       </div>
       <div>
-        <h1 className="flex text-sm">
+        <h1 className="flex font-normal">
           162 Followers <Dot /> 21 Following
         </h1>
-        <p className="text-black-secondary text-sm">
-          {data?.bio || "No bio yet"}
-        </p>
+        <p className="text-black-secondary ">{data?.bio || "No bio yet"}</p>
         <div className="flex gap-3 items-center">
           {socials.map((social) => (
             <Button

@@ -50,21 +50,62 @@ export const getUserByUsername = (
 export type CreateUser = {
   id: string;
   email: string;
-  fullName: string;
+  full_name: string;
   username: string;
-  avatarUrl?: string;
+  avatar_url?: string;
 };
 
 export const createUser = async (
   supabase: SupabaseClient<Database>,
-  { fullName: full_name, avatarUrl: avatar_url, ...user }: CreateUser
+  user: CreateUser
 ) => {
-  console.log("createUser", user);
   return supabase
     .from("profile")
-    .insert({ ...user, full_name, avatar_url })
+    .insert({ ...user })
     .then(({ data, error }) => {
       if (error) throw error;
       return data;
     });
+};
+
+export type UpdateUser = Partial<CreateUser> & { bio?: string; id: string };
+
+export const updateUser = async (
+  supabase: SupabaseClient<Database>,
+  { id, ...user }: UpdateUser
+) => {
+  if (!id) throw new Error("No id provided");
+  const allFieldsUndefined = Object.values(user).every(
+    (value) => value === undefined
+  );
+  if (allFieldsUndefined) return;
+  return supabase
+    .from("profile")
+    .update({ ...user })
+    .eq("id", id)
+    .then(({ data, error }) => {
+      if (error) throw error;
+      return data;
+    });
+};
+
+export const uploadAvatar = async (
+  supabase: SupabaseClient<Database>,
+  file: Blob | File,
+  uid: string
+) => {
+  const { data, error } = await supabase.storage
+    .from("avatars")
+    .upload(`avatars/${uid}`, file, { upsert: true });
+  if (error) throw error;
+  return data;
+};
+
+export const getAvatarUrl = async (
+  supabase: SupabaseClient<Database>,
+  path: string
+) => {
+  const { data } = supabase.storage.from("avatars").getPublicUrl(path);
+  if (!data) throw new Error("No data");
+  return data;
 };

@@ -17,7 +17,7 @@ export const CreateLink = () => {
   const modalTrigger = (
     <Button
       variant="secondary"
-      className="bg-black-50 flex gap-2 text-sm my-5 w-[180px]"
+      className="bg-black-50 flex gap-2 my-5 w-[180px]"
     >
       <img src="/icons/plus.png" width={20} />
       NEW LINK

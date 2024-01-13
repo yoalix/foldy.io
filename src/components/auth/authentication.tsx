@@ -11,9 +11,11 @@ export const Authentication = () => {
           src="/icons/logo.png"
           alt="FoldyIcon"
         />
-        <h1 className="text-primary font-bold italic">FOLDY</h1>
+        <h1 className="text-primary italic">FOLDY</h1>
       </div>
-      <h1 className="text-6xl">Organized Links for You and Your Followers.</h1>
+      <h1 className="text-6xl font-normal">
+        Organized Links for You and Your Followers.
+      </h1>
       <div className="flex justify-center gap-2">
         <div>
           <Link href="/auth/signup">
@@ -21,7 +23,7 @@ export const Authentication = () => {
               Sign Up
             </Button>
           </Link>
-          <p className="text-sm text-primary text-center mr-4">new account</p>
+          <p className="text-primary text-center mr-4">new account</p>
         </div>
         <div>
           <Link href="/auth/login">
@@ -34,10 +36,10 @@ export const Authentication = () => {
               Log In
             </Button>
           </Link>
-          <p className="text-sm text-center mr-4">existing account</p>
+          <p className="text-center mr-4">existing account</p>
         </div>
       </div>
-      <div className="text-sm mt-24">
+      <div className="mt-24">
         <h1>Foldy, LLC</h1>
         <div className="text-black-secondary italic">Idea by Zander Huff</div>
       </div>

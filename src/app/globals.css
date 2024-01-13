@@ -56,8 +56,13 @@
     min-width: 0;
   }
 
-  body {
-    @apply bg-background text-foreground;
+  body,
+  button {
+    @apply bg-background text-foreground text-sm;
+  }
+
+  h1 {
+    @apply font-bold;
   }
 }
 

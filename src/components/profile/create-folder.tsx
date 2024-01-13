@@ -15,7 +15,7 @@ import { Folder } from "@/components/icons/folder";
 export const CreateFolder = () => {
   const form = useForm();
   const modalTrigger = (
-    <Button variant="secondary" className="bg-black-50 flex gap-2 text-sm my-5">
+    <Button variant="secondary" className="bg-black-50 flex gap-2 my-5">
       <img src="/icons/folder.png" width={20} />
       NEW FOLDER
     </Button>

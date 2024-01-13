@@ -4,13 +4,28 @@ import { Button } from "@/components/ui/button";
 import { BackButton } from "@/components/ui/back-button";
 import { useUserSession } from "@/hooks/queries/useUserSession";
 import { useCreateUser } from "@/hooks/queries/useCreateUser";
-import { Form, FormInputField } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormInputField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { checkUsername, getUserByUsername } from "@/lib/supabase/db";
+import {
+  checkUsername,
+  getAvatarUrl,
+  getUserByUsername,
+  uploadAvatar,
+} from "@/lib/supabase/db";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { fetchFile } from "@/lib/utils";
+import { Checkbox } from "@/components/ui/checkbox";
+import Link from "next/link";
 
 const SignupSchema = z.object({
   username: z
@@ -24,6 +39,9 @@ const SignupSchema = z.object({
       },
       { message: "Username is already taken", params: {} }
     ),
+  termsAgreements: z.boolean().refine((value) => value === true, {
+    message: "You must agree to the terms and conditions",
+  }),
 });
 type FormValues = z.infer<typeof SignupSchema>;
 
@@ -46,11 +64,17 @@ export const SignupSocial = () => {
         return;
       }
       const { email, full_name, avatar_url } = data.user.user_metadata;
+      let avatarUrl = avatar_url;
+      if (avatarUrl) {
+        const blob = await fetchFile(avatarUrl);
+        const res = await uploadAvatar(supabase, blob, data.user.id);
+        avatarUrl = (await getAvatarUrl(supabase, res.path)).publicUrl;
+      }
       const user = await createUser.mutateAsync({
         id: data.user.id,
         email: email || "",
         fullName: full_name || "",
-        avatarUrl: avatar_url || "",
+        avatarUrl,
         username: values.username,
       });
       console.log("created user", user);
@@ -65,17 +89,43 @@ export const SignupSocial = () => {
   return (
     <div className="p-10">
       <BackButton />
-      <h1 className="bold text-sm">USERNAME</h1>
-      <p className="text-sm text-black-secondary">Finishing Sign up</p>
+      <h1>USERNAME</h1>
+      <p className="text-black-secondary mb-5">Finishing Sign up</p>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleFinishSignup)}>
+        <form
+          className="flex flex-col gap-5"
+          onSubmit={form.handleSubmit(handleFinishSignup)}
+        >
           <FormInputField
             name="username"
             control={form.control}
             placeholder="@username"
             className="placeholder-black"
           />
-          <Button type="submit" variant="secondary">
+
+          <FormField
+            control={form.control}
+            name="termsAgreements"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <Checkbox
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+                {/* <div className="space-y-1 leading-none"> */}
+                <FormLabel className="ml-2 text-black-secondary font-normal">
+                  Fill in the box acknowledging you’ve read and agree to the{" "}
+                  <Link href="/terms-and-agreements" className="underline ">
+                    Terms and Agreement
+                  </Link>
+                </FormLabel>
+                {/* </div> */}
+              </FormItem>
+            )}
+          />
+          <Button className="w-[180px]" type="submit" variant="secondary">
             FINISH SIGN UP
           </Button>
         </form>

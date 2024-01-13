@@ -69,8 +69,8 @@ const isInRange =
 
 const SignupSchema = z
   .object({
-    firstName: z.string().min(1),
-    lastName: z.string().min(1),
+    firstName: z.string().min(1).max(256),
+    lastName: z.string().min(1).max(256),
     birthMonth: z.string().transform(isNumber).transform(isInRange(1, 12)),
     birthDay: z.string().transform(isNumber).transform(isInRange(1, 31)),
     birthYear: z.string().transform(isNumber),
@@ -89,6 +89,7 @@ const SignupSchema = z
     password: z
       .string()
       .min(8, { message: "Password must be at least 8 characters long" })
+      .max(256)
       .refine((value) => /[a-z]/.test(value), {
         message: "Password must include a lowercase letter",
       })
@@ -101,7 +102,7 @@ const SignupSchema = z
       .refine((value) => /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(value), {
         message: "Password must include a special character",
       }),
-    confirmPassword: z.string().min(8),
+    confirmPassword: z.string().min(8).max(256),
     termsAgreements: z.boolean().refine((value) => value === true, {
       message: "You must agree to the terms and conditions",
     }),
@@ -165,7 +166,7 @@ export const SignupEmail = () => {
   return (
     <div className="p-10">
       <BackButton />
-      <h1 className="text-sm font-bold py-8">SIGN UP</h1>
+      <h1 className="py-8">SIGN UP</h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSignup)}
@@ -258,7 +259,7 @@ export const SignupEmail = () => {
               )}
             />
           </div>
-          <p className="text-sm text-black-secondary">
+          <p className="text-black-secondary">
             You must be 13 years or older to use this platform.
           </p>
           <FormInputField
@@ -300,7 +301,7 @@ export const SignupEmail = () => {
                   />
                 </FormControl>
                 {/* <div className="space-y-1 leading-none"> */}
-                <FormLabel className="ml-2 text-black-secondary text-sm font-normal">
+                <FormLabel className="ml-2 text-black-secondary font-normal">
                   Fill in the box acknowledging you’ve read and agree to the{" "}
                   <Link href="/terms-and-agreements" className="underline ">
                     Terms and Agreement
@@ -312,7 +313,7 @@ export const SignupEmail = () => {
           />
           <Button
             variant="secondary"
-            className="bg-black-50 flex gap-2 text-sm my-5 w-[180px]"
+            className="bg-black-50 flex gap-2 my-5 w-[180px]"
           >
             SIGN UP
           </Button>

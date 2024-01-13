@@ -103,7 +103,7 @@ export const Login = () => {
           </Button>
         ))}
       </div>
-      <p className="text-sm italic">OR</p>
+      <p className="italic">OR</p>
 
       <Form {...form}>
         <form
@@ -123,7 +123,7 @@ export const Login = () => {
           />
           <Link
             href="/auth/password-recovery"
-            className="text-sm text-black-secondary self-end pt-0 mt-[-10px]"
+            className="text-black-secondary self-end pt-0 mt-[-10px]"
           >
             forgot password?
           </Link>
@@ -131,7 +131,7 @@ export const Login = () => {
             <Checkbox id="terms" className="bg-black-50" />
             <label
               htmlFor="terms"
-              className="text-sm text-black-secondary leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              className="text-black-secondary leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
               remember me when logging in next time
             </label>
@@ -142,8 +142,8 @@ export const Login = () => {
         </form>
       </Form>
       <div>
-        <p className="text-sm text-black-secondary">Don’t have an account?</p>
-        <Link className="text-sm text-primary" href="/auth/signup">
+        <p className="text-black-secondary">Don’t have an account?</p>
+        <Link className="text-primary" href="/auth/signup">
           Get started today!
         </Link>
       </div>

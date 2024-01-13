@@ -13,7 +13,7 @@ import { Menu } from "@/components/icons/menu";
 
 const NavMenuItems = [
   { name: "Explore", href: "/explore", icon: <Compass /> },
-  { name: "Profile", href: "/profile", icon: <CircleUser /> },
+  { name: "Profile", href: encodeURI("/profile/@me"), icon: <CircleUser /> },
   { name: "Settings", href: "/settings", icon: <Settings /> },
 ];
 
@@ -50,7 +50,7 @@ const MobileNav = () => {
             src="/icons/logo.png"
             alt="FoldyIcon"
           />
-          <h1 className="text-primary font-bold italic">FOLDY</h1>
+          <h1 className="text-primary italic">FOLDY</h1>
         </Link>
         <Link href="/settings">
           <Button variant="ghost" size="icon">
@@ -72,7 +72,7 @@ const MobileNav = () => {
             Explore
           </Button>
         </Link>
-        <Link href="/profile">
+        <Link href={encodeURI("/profile/@me")}>
           <Button
             className="border-l-0 rounded-l-none rounded-r-3xl"
             variant="outline"
@@ -109,11 +109,7 @@ export function Header() {
       {data.user ? (
         <div className="flex flex-1 flex-col items-start gap-8 mt-8">
           {NavMenuItems.map((item) => (
-            <Button
-              key={`nav-${item.name}`}
-              className={"text-sm mr-4"}
-              variant="ghost"
-            >
+            <Button key={`nav-${item.name}`} className={"mr-4"} variant="ghost">
               <Link href={item.href} className="flex items-center gap-2">
                 {item.icon}
                 {item.name}
@@ -121,7 +117,7 @@ export function Header() {
             </Button>
           ))}
           <Button
-            className="text-sm font-semibold self-center"
+            className="font-semibold self-center"
             variant="secondary"
             onClick={signOut}
           >
@@ -130,10 +126,10 @@ export function Header() {
         </div>
       ) : (
         <div className="flex flex-col flex-1 justify-end gap-5 m-5">
-          <Button className="text-sm font-semibold mr-4" variant="secondary">
+          <Button className="font-semibold mr-4" variant="secondary">
             <Link href="/auth/signup">Sign Up</Link>
           </Button>
-          <Button className="text-sm font-semibold mr-4" variant="secondary">
+          <Button className="font-semibold mr-4" variant="secondary">
             <Link href="/auth/login">Log In</Link>
           </Button>
         </div>

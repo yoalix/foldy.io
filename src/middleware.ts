@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/middleware";
 import { AUTH_ROUTES } from "@/lib/consts";
-import { createUser, getUserProfile } from "./lib/supabase/db";
+import { createUser, getUserProfile, uploadAvatar } from "./lib/supabase/db";
+import { fetchFile } from "./lib/utils";
 
 export async function middleware(request: NextRequest) {
   try {
@@ -53,12 +54,19 @@ export async function middleware(request: NextRequest) {
       !profile
     ) {
       console.log("creating profile");
+
+      let avatarUrl: string | undefined = user.user_metadata.avatar_url;
+      if (avatarUrl) {
+        const blob = await fetchFile(avatarUrl);
+        const res = await uploadAvatar(supabase, blob, user.id);
+        avatarUrl = res.path;
+      }
       await createUser(supabase, {
         id: user.id,
         email: user.email!,
         fullName: user.user_metadata.fullName,
         username: user.user_metadata.username,
-        avatarUrl: user.user_metadata.avatar_url,
+        avatarUrl,
       });
       return NextResponse.redirect(new URL("/", request.url));
     }

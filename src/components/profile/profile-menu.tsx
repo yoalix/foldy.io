@@ -5,6 +5,7 @@ import { ForwardArrow } from "@/components/icons/forward-arrow";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
+import Link from "next/link";
 
 export const ProfileMenu = () => {
   const menuOptions = [
@@ -34,14 +35,23 @@ export const ProfileMenu = () => {
 
   const ModalContent = () => (
     <div className="flex flex-col gap-4 p-4">
-      {menuOptions.map((option, i) => (
-        <div key={`${i}-menu-icon-${option.name}`} className="flex gap-2">
-          {option.icon}
-          <p className={`${option.disabled ? "text-black-secondary" : ""}`}>
-            {option.name}
-          </p>
-        </div>
-      ))}
+      {menuOptions.map((option, i) => {
+        const Content = () => (
+          <div key={`${i}-menu-icon-${option.name}`} className="flex gap-2">
+            {option.icon}
+            <p className={`${option.disabled ? "text-black-secondary" : ""}`}>
+              {option.name}
+            </p>
+          </div>
+        );
+        return option.disabled ? (
+          <Content />
+        ) : (
+          <Link href={option.link}>
+            <Content />
+          </Link>
+        );
+      })}
     </div>
   );
 

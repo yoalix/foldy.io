@@ -14,6 +14,7 @@ const UpdatePasswordSchema = z.object({
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters long" })
+    .max(256)
     .refine((value) => /[a-z]/.test(value), {
       message: "Password must include a lowercase letter",
     })
@@ -26,7 +27,7 @@ const UpdatePasswordSchema = z.object({
     .refine((value) => /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/.test(value), {
       message: "Password must include a special character",
     }),
-  confirmPassword: z.string().min(8),
+  confirmPassword: z.string().min(8).max(256),
 });
 
 type FormValues = z.infer<typeof UpdatePasswordSchema>;
@@ -56,7 +57,7 @@ export const UpdatePassword = () => {
 
   return (
     <div className="flex flex-col gap-5 justify-center items-center">
-      <h1 className="text-2xl font-semibold">Update Password</h1>
+      <h1 className="text-2xl">Update Password</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleUpdatePassword)}>
           <FormInputField
@@ -76,7 +77,7 @@ export const UpdatePassword = () => {
           />
           <Button
             variant="secondary"
-            className="bg-black-50 flex gap-2 text-sm my-5 w-[180px]"
+            className="bg-black-50 flex gap-2 my-5 w-[180px]"
           >
             SIGN UP
           </Button>
