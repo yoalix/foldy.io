@@ -10,14 +10,9 @@ import { Button } from "@/components/ui/button";
 import { useUserSession } from "@/hooks/queries/useUserSession";
 import { useBreakpoints } from "@/hooks/useBreakpoints";
 import { Menu } from "@/components/icons/menu";
+import { useGetCurrentUser } from "@/hooks/queries/useGetCurrentUser";
 
-const NavMenuItems = [
-  { name: "Explore", href: "/explore", icon: <Compass /> },
-  { name: "Profile", href: encodeURI("/profile/@me"), icon: <CircleUser /> },
-  { name: "Settings", href: "/settings", icon: <Settings /> },
-];
-
-const MobileNav = () => {
+const MobileNav = ({ username }: { username?: string }) => {
   const [lastScrollTop, setLastScrollTop] = useState(0);
   const [isVisible, setIsVisible] = useState(true);
 
@@ -72,7 +67,7 @@ const MobileNav = () => {
             Explore
           </Button>
         </Link>
-        <Link href={encodeURI("/profile/@me")}>
+        <Link href={`/profile/${username}`}>
           <Button
             className="border-l-0 rounded-l-none rounded-r-3xl"
             variant="outline"
@@ -88,13 +83,21 @@ const MobileNav = () => {
 
 export function Header() {
   const { data } = useUserSession();
+  const { data: user } = useGetCurrentUser();
   const breakpoint = useBreakpoints();
   const isMobile = breakpoint === "sm" || breakpoint === "xs";
-
+  const NavMenuItems = [
+    { name: "Explore", href: "/explore", icon: <Compass /> },
+    {
+      name: "Profile",
+      href: `/profile/${user?.username}`,
+      icon: <CircleUser />,
+    },
+    { name: "Settings", href: "/settings", icon: <Settings /> },
+  ];
   if (!data?.user) return null;
-  console.log("data", data);
   return isMobile ? (
-    <MobileNav />
+    <MobileNav username={user?.username} />
   ) : (
     <header className="fixed top-0 left-0 bottom-0 flex flex-col justify-around items-center  border-r border-black-50 ">
       <Link href="/" className="flex w-full items-center p-10 border-b">

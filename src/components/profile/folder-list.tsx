@@ -3,7 +3,7 @@ import React from "react";
 import { ListItem } from "@/components/ui/list-item";
 import { useRouter } from "next/router";
 
-export const FolderList = ({ username }: { username: string }) => {
+export const FolderList = ({ username }: { username?: string }) => {
   const folders = [
     {
       id: 1,

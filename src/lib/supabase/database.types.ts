@@ -39,6 +39,35 @@ export interface Database {
         }
         Relationships: []
       }
+      user_social_media: {
+        Row: {
+          id: number
+          link: string
+          provider: string
+          user_id: string
+        }
+        Insert: {
+          id?: never
+          link: string
+          provider: string
+          user_id: string
+        }
+        Update: {
+          id?: never
+          link?: string
+          provider?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_social_media_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profile"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
     }
     Views: {
       [_ in never]: never

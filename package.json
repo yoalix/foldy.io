@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "gen:db-types": "supabase gen types typescript --project-id 'zglcjoxblestgaflcibi' --schema public > src/lib/supabase/database.types.ts"
   },
   "dependencies": {
     "@google-cloud/firestore": "^7.1.0",

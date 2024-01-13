@@ -1,6 +1,5 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { Database } from "./database.types";
-import { supabase } from "./auth/client";
 
 export const getUserProfile = async (
   supabase: SupabaseClient<Database>,
@@ -33,7 +32,7 @@ export async function checkUsername(
   }
 }
 
-export const getUserByUsername = (
+export const getUserByUsername = async (
   supabase: SupabaseClient<Database>,
   username: string
 ) => {
@@ -107,5 +106,51 @@ export const getAvatarUrl = async (
 ) => {
   const { data } = supabase.storage.from("avatars").getPublicUrl(path);
   if (!data) throw new Error("No data");
+  return data;
+};
+
+export const getUserSocials = async (
+  supabase: SupabaseClient<Database>,
+  uid?: string
+) => {
+  if (!uid) return;
+  return supabase
+    .from("user_social_media")
+    .select("*")
+    .eq("user_id", uid)
+    .then(({ data, error }) => {
+      if (error) throw error;
+      return data;
+    });
+};
+
+export const createOrUpdateUserSocialMedia = async (
+  supabase: SupabaseClient<Database>,
+  { uid, provider, link }: { uid: string; provider: string; link: string }
+) => {
+  let socialId: number | undefined;
+  const foundSocial = await supabase
+    .from("user_social_media")
+    .select("*")
+    .eq("user_id", uid)
+    .eq("provider", provider)
+    .maybeSingle();
+  if (foundSocial.data) {
+    socialId = foundSocial.data.id;
+  }
+
+  if (!socialId) {
+    const { data, error } = await supabase
+      .from("user_social_media")
+      .insert({ user_id: uid, provider, link });
+    if (error) throw error;
+    return data;
+  }
+
+  const { data, error } = await supabase
+    .from("user_social_media")
+    .upsert({ provider, link, user_id: uid }, { onConflict: "provider" })
+    .eq("id", socialId);
+  if (error) throw error;
   return data;
 };

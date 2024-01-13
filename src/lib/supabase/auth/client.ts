@@ -45,7 +45,6 @@ export const signUpWithEmailAndPassword = async ({
         emailRedirectTo: `${location.origin}/auth/callback`,
       },
     });
-    console.log("sign up res", res);
   } catch (error) {
     throw error;
   }

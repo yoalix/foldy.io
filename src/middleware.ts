@@ -64,9 +64,9 @@ export async function middleware(request: NextRequest) {
       await createUser(supabase, {
         id: user.id,
         email: user.email!,
-        fullName: user.user_metadata.fullName,
+        full_name: user.user_metadata.fullName,
         username: user.user_metadata.username,
-        avatarUrl,
+        avatar_url: avatarUrl,
       });
       return NextResponse.redirect(new URL("/", request.url));
     }

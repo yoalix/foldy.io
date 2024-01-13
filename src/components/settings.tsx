@@ -58,7 +58,7 @@ export const Settings = () => {
       <h1 className="pl-4">Settings</h1>
       {settings.map((setting) =>
         setting.href ? (
-          <Link href={setting.href}>
+          <Link key={`setting-${setting.text}`} href={setting.href}>
             <Button
               key={`setting-${setting.text}`}
               variant="ghost"
@@ -69,7 +69,7 @@ export const Settings = () => {
             </Button>
           </Link>
         ) : (
-          <div>
+          <div key={`setting-${setting.text}`}>
             <Button
               key={`setting-${setting.text}`}
               className="text-black-secondary"

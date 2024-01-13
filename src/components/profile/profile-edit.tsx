@@ -20,6 +20,7 @@ import { createClient } from "@/lib/supabase/client";
 import {
   UpdateUser,
   checkUsername,
+  createOrUpdateUserSocialMedia,
   getAvatarUrl,
   updateUser,
   uploadAvatar,
@@ -48,9 +49,9 @@ const ProfileSchema = z.object({
     .string()
     .max(160, { message: "Bio must be less than 160 characters" })
     .optional(),
-  instagram: z.string().url().optional(),
-  twitter: z.string().url().optional(),
-  tiktok: z.string().url().optional(),
+  instagram: z.string().url().optional().or(z.literal("")),
+  twitter: z.string().url().optional().or(z.literal("")),
+  tiktok: z.string().url().optional().or(z.literal("")),
 });
 type FormValues = z.infer<typeof ProfileSchema>;
 
@@ -60,10 +61,13 @@ export const ProfileEdit = () => {
   const form = useForm<FormValues>({
     resolver: zodResolver(ProfileSchema),
     defaultValues: {
-      firstName: data?.full_name.split(" ")[0],
-      lastName: data?.full_name.split(" ")[1],
-      username: data?.username,
-      bio: data?.bio || "",
+      firstName: "",
+      lastName: "",
+      username: "",
+      bio: "",
+      instagram: "",
+      twitter: "",
+      tiktok: "",
     },
   });
   const [avatarFile, setAvatarFile] = React.useState<File | null>(null);
@@ -84,11 +88,13 @@ export const ProfileEdit = () => {
       //   setAvatarUrl(avatarUrl.publicUrl);
     } catch (error) {
       console.error(error);
-      toast({
-        title: "Error",
-        variant: "destructive",
-        description: error.message || "Could not upload avatar",
-      });
+      if (error instanceof Error && error.message) {
+        toast({
+          title: "Error",
+          variant: "destructive",
+          description: error.message || "Could not upload avatar",
+        });
+      }
     }
   };
 
@@ -97,9 +103,13 @@ export const ProfileEdit = () => {
     lastName,
     username,
     bio,
+    instagram,
+    twitter,
+    tiktok,
   }: FormValues) => {
     try {
       const updatedUser: UpdateUser = { id: data?.id || "" };
+      const supabase = createClient();
       let [userFirstName, userLastName] = data?.full_name.split(" ") || [];
       if (firstName) {
         userFirstName = firstName;
@@ -117,7 +127,6 @@ export const ProfileEdit = () => {
       }
       console.log("avatar file", avatarFile);
       if (avatarFile) {
-        const supabase = createClient();
         const avatarStorage = await uploadAvatar(
           supabase,
           avatarFile,
@@ -126,9 +135,28 @@ export const ProfileEdit = () => {
         const avatarUrl = await getAvatarUrl(supabase, avatarStorage.path);
         updatedUser.avatar_url = avatarUrl.publicUrl;
       }
-      const supabase = createClient();
+      if (instagram) {
+        const res = await createOrUpdateUserSocialMedia(supabase, {
+          uid: data?.id || "",
+          provider: "instagram",
+          link: instagram,
+        });
+      }
+      if (twitter) {
+        const res = await createOrUpdateUserSocialMedia(supabase, {
+          uid: data?.id || "",
+          provider: "twitter",
+          link: twitter,
+        });
+      }
+      if (tiktok) {
+        const res = await createOrUpdateUserSocialMedia(supabase, {
+          uid: data?.id || "",
+          provider: "tiktok",
+          link: tiktok,
+        });
+      }
       const res = await updateUser(supabase, updatedUser);
-      console.log("update", res);
       toast({
         title: "Success",
         description: "Successfully updated profile",

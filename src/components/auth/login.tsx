@@ -64,7 +64,7 @@ export const Login = () => {
           message: res.error.message,
         });
       }
-      router.push("/profile");
+      router.push("/");
     } catch {
       console.log("am i here");
     }

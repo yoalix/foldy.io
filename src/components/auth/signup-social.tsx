@@ -58,7 +58,6 @@ export const SignupSocial = () => {
       if (!data?.user) return;
       const supabase = createClient();
       const foundUser = await getUserByUsername(supabase, values.username);
-      console.log("found user", foundUser);
       if (foundUser) {
         form.setError("username", { message: "Username already exists" });
         return;
@@ -73,8 +72,8 @@ export const SignupSocial = () => {
       const user = await createUser.mutateAsync({
         id: data.user.id,
         email: email || "",
-        fullName: full_name || "",
-        avatarUrl,
+        full_name: full_name || "",
+        avatar_url,
         username: values.username,
       });
       console.log("created user", user);

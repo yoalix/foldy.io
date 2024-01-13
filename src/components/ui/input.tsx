@@ -30,13 +30,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         {icon && (
-          <div className="absolute inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
+          <div className="absolute border-b inset-y-0 left-0 flex items-center pl-2 pointer-events-none">
             {icon}
           </div>
         )}
         {type === "password" && (
           <Button
-            className="absolute right-9 top-1/2 transform -translate-y-1/2"
+            className="absolute border-b right-9 top-1/2 transform -translate-y-1/2"
             variant="ghost"
             size="icon"
             onClick={() => setShowPassword(!showPassword)}
