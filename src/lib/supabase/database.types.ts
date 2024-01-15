@@ -9,7 +9,74 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      profile: {
+      folders: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "folders_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      links: {
+        Row: {
+          created_at: string
+          folder_id: string
+          id: string
+          name: string | null
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          created_at?: string
+          folder_id: string
+          id?: string
+          name?: string | null
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          created_at?: string
+          folder_id?: string
+          id?: string
+          name?: string | null
+          updated_at?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "links_folder_id_fkey"
+            columns: ["folder_id"]
+            isOneToOne: false
+            referencedRelation: "folders"
+            referencedColumns: ["id"]
+          }
+        ]
+      }
+      profiles: {
         Row: {
           avatar_url: string | null
           bio: string | null
@@ -63,7 +130,7 @@ export interface Database {
             foreignKeyName: "user_social_media_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "profile"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           }
         ]

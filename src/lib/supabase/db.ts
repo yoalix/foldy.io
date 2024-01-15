@@ -1,13 +1,17 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { Database } from "./database.types";
+import { supabase } from "./auth/client";
+
+//-----------USER------------------
+export type User = Database["public"]["Tables"]["profiles"]["Row"];
 
 export const getUserProfile = async (
   supabase: SupabaseClient<Database>,
   uid?: string
 ) => {
-  if (!uid) throw new Error("No uid provided");
+  if (!uid) return null;
   return supabase
-    .from("profile")
+    .from("profiles")
     .select("*")
     .eq("id", uid)
     .single()
@@ -36,9 +40,11 @@ export const getUserByUsername = async (
   supabase: SupabaseClient<Database>,
   username: string
 ) => {
+  if (!username) return null;
   return supabase
-    .from("profile")
-    .select("*")
+    .from("profiles")
+
+    .select("*, user_social_media(*)")
     .eq("username", username)
     .maybeSingle()
     .then(({ data, error }) => {
@@ -59,7 +65,7 @@ export const createUser = async (
   user: CreateUser
 ) => {
   return supabase
-    .from("profile")
+    .from("profiles")
     .insert({ ...user })
     .then(({ data, error }) => {
       if (error) throw error;
@@ -77,9 +83,9 @@ export const updateUser = async (
   const allFieldsUndefined = Object.values(user).every(
     (value) => value === undefined
   );
-  if (allFieldsUndefined) return;
+  if (allFieldsUndefined) return null;
   return supabase
-    .from("profile")
+    .from("profiles")
     .update({ ...user })
     .eq("id", id)
     .then(({ data, error }) => {
@@ -109,11 +115,12 @@ export const getAvatarUrl = async (
   return data;
 };
 
+// -----------User Social Media------------------
 export const getUserSocials = async (
   supabase: SupabaseClient<Database>,
   uid?: string
 ) => {
-  if (!uid) return;
+  if (!uid) return null;
   return supabase
     .from("user_social_media")
     .select("*")
@@ -151,6 +158,92 @@ export const createOrUpdateUserSocialMedia = async (
     .from("user_social_media")
     .upsert({ provider, link, user_id: uid }, { onConflict: "provider" })
     .eq("id", socialId);
+  if (error) throw error;
+  return data;
+};
+
+// -----------Folder------------------
+export type Folder = Database["public"]["Tables"]["folders"]["Row"];
+
+export const getFolders = async (
+  supabase: SupabaseClient<Database>,
+  uid?: string
+) => {
+  if (!uid) return null;
+  return supabase
+    .from("folders")
+    .select("*, links(*)")
+    .eq("user_id", uid)
+    .then(({ data, error }) => {
+      if (error) throw error;
+      return data;
+    });
+};
+
+export const getFolder = async (
+  supabase: SupabaseClient<Database>,
+  folderId?: string
+) => {
+  if (!folderId) return null;
+  return supabase
+    .from("folders")
+    .select("*, links(*)")
+    .eq("id", folderId)
+    .single()
+    .then(({ data, error }) => {
+      if (error) throw error;
+      return data;
+    });
+};
+
+export type CreateFolder = {
+  userId: string;
+  name: string;
+  description?: string;
+};
+
+export const createFolder = async (
+  supabase: SupabaseClient<Database>,
+  { userId, name, description }: CreateFolder
+) => {
+  const { data, error } = await supabase
+    .from("folders")
+    .insert({ user_id: userId, name, description });
+  if (error) throw error;
+  return data;
+};
+// -----------Links------------------
+
+export type Link = Database["public"]["Tables"]["links"]["Row"];
+
+export const getLinks = async (
+  supabase: SupabaseClient<Database>,
+  folderId?: string
+) => {
+  if (!folderId) return null;
+  return supabase
+    .from("links")
+    .select("*")
+    .eq("folder_id", folderId)
+    .then(({ data, error }) => {
+      if (error) throw error;
+      return data;
+    });
+};
+
+export type CreateLink = {
+  folderId: string;
+  name?: string;
+  url: string;
+};
+
+export const createLink = async (
+  supabase: SupabaseClient<Database>,
+  { folderId, name, url }: CreateLink
+) => {
+  const { data, error } = await supabase
+    .from("links")
+    .insert({ folder_id: folderId, name, url });
   if (error) throw error;
   return data;
 };

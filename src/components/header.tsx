@@ -7,10 +7,9 @@ import { Compass } from "@/components/icons/compass";
 import { CircleUser } from "@/components/icons/circle-user";
 import { Settings } from "@/components/icons/settings";
 import { Button } from "@/components/ui/button";
-import { useUserSession } from "@/hooks/queries/useUserSession";
 import { useBreakpoints } from "@/hooks/useBreakpoints";
 import { Menu } from "@/components/icons/menu";
-import { useGetCurrentUser } from "@/hooks/queries/useGetCurrentUser";
+import { User } from "@/lib/supabase/db";
 
 const MobileNav = ({ username }: { username?: string }) => {
   const [lastScrollTop, setLastScrollTop] = useState(0);
@@ -81,9 +80,7 @@ const MobileNav = ({ username }: { username?: string }) => {
   );
 };
 
-export function Header() {
-  const { data } = useUserSession();
-  const { data: user } = useGetCurrentUser();
+export function Header({ user }: { user?: User | null }) {
   const breakpoint = useBreakpoints();
   const isMobile = breakpoint === "sm" || breakpoint === "xs";
   const NavMenuItems = [
@@ -95,7 +92,7 @@ export function Header() {
     },
     { name: "Settings", href: "/settings", icon: <Settings /> },
   ];
-  if (!data?.user) return null;
+  if (!user) return null;
   return isMobile ? (
     <MobileNav username={user?.username} />
   ) : (
@@ -109,34 +106,23 @@ export function Header() {
         <h1 className="text-primary font-bold italic">FOLDY</h1>
       </Link>
 
-      {data.user ? (
-        <div className="flex flex-1 flex-col items-start gap-8 mt-8">
-          {NavMenuItems.map((item) => (
-            <Button key={`nav-${item.name}`} className={"mr-4"} variant="ghost">
-              <Link href={item.href} className="flex items-center gap-2">
-                {item.icon}
-                {item.name}
-              </Link>
-            </Button>
-          ))}
-          <Button
-            className="font-semibold self-center"
-            variant="secondary"
-            onClick={signOut}
-          >
-            Sign Out
+      <div className="flex flex-1 flex-col items-start gap-8 mt-8">
+        {NavMenuItems.map((item) => (
+          <Button key={`nav-${item.name}`} className={"mr-4"} variant="ghost">
+            <Link href={item.href} className="flex items-center gap-2">
+              {item.icon}
+              {item.name}
+            </Link>
           </Button>
-        </div>
-      ) : (
-        <div className="flex flex-col flex-1 justify-end gap-5 m-5">
-          <Button className="font-semibold mr-4" variant="secondary">
-            <Link href="/auth/signup">Sign Up</Link>
-          </Button>
-          <Button className="font-semibold mr-4" variant="secondary">
-            <Link href="/auth/login">Log In</Link>
-          </Button>
-        </div>
-      )}
+        ))}
+        <Button
+          className="font-semibold self-center"
+          variant="secondary"
+          onClick={signOut}
+        >
+          Sign Out
+        </Button>
+      </div>
     </header>
   );
 }

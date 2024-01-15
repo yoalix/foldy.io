@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Button } from "./button";
 
 type ListItemProps = {
-  id: number;
+  id: string;
   title: string;
   subtitle: string;
   updated: string;

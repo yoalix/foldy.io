@@ -27,32 +27,19 @@ const SocialIcons = {
 };
 
 export const Profile = ({ username }: Props) => {
+  const { data: currentUser } = useGetCurrentUser();
   const { data: user, isError } = useGetProfile(username);
   const { data: userSocials } = useGetUserSocials(user?.id || "");
   const { toast } = useToast();
-  const socials = [
-    {
-      name: "Twitter",
-      link: "https://twitter.com/joeyj",
-      icon: <TwitterX />,
-    },
-    {
-      name: "Instagram",
-      link: "https://instagram.com/joeyj",
-      icon: <Instagram />,
-    },
-    {
-      name: "TikTok",
-      link: "https://facebook.com/joeyj",
-      icon: <TikTok />,
-    },
-  ];
+  const isCurrentUser = currentUser?.id === user?.id;
+
   if (isError) {
     toast({
       title: "Error",
       description: "Could not find user",
     });
   }
+  if (!user) return <div>profile not found</div>;
   return (
     <div className="flex flex-col gap-5 p-10">
       <div className="flex w-full items-center gap-4">
@@ -99,13 +86,13 @@ export const Profile = ({ username }: Props) => {
             foldy.io/{user?.username}
           </Button>
         </div>
-        {!username ? (
-          <CreateFolder />
+        {isCurrentUser ? (
+          <CreateFolder userId={user.id} />
         ) : (
           <Button className="my-3 w-[180px]">Follow</Button>
         )}
       </div>
-      <FolderList username={user?.username} />
+      <FolderList username={user?.username} userId={user?.id} />
     </div>
   );
 };

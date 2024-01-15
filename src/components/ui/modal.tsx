@@ -22,29 +22,36 @@ type ModalProps = {
   title?: string | React.ReactNode;
   description?: string | React.ReactNode;
   content: React.ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 };
-export const Modal = ({ trigger, title, description, content }: ModalProps) => {
+export const Modal = ({
+  trigger,
+  title,
+  description,
+  content,
+  open,
+  onOpenChange,
+}: ModalProps) => {
   const breakpoint = useBreakpoints();
 
   return breakpoint === "sm" ? (
-    <Drawer>
+    <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerTrigger asChild>{trigger}</DrawerTrigger>
       <DrawerContent className="px-3">
-          {title && (
-            <DrawerHeader>
-              {title && <DrawerTitle>{title}</DrawerTitle>}
-              {description && (
-                <DrawerDescription>{description}</DrawerDescription>
-              )}
-            </DrawerHeader>
-          )}
-        <div className="flex flex-col px-3 ">
-          {content}
-        </div>
+        {title && (
+          <DrawerHeader>
+            {title && <DrawerTitle>{title}</DrawerTitle>}
+            {description && (
+              <DrawerDescription>{description}</DrawerDescription>
+            )}
+          </DrawerHeader>
+        )}
+        <div className="flex flex-col px-3 ">{content}</div>
       </DrawerContent>
     </Drawer>
   ) : (
-    <Dialog>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <div className="flex flex-col px-3 gap-3">

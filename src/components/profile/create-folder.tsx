@@ -1,63 +1,73 @@
-import React from "react";
-import { useForm } from "react-hook-form";
+import React, { useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
+import { Form, FormInputField } from "@/components/ui/form";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormMessage,
-  FormItem,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Folder } from "@/components/icons/folder";
+  CreateFolder as CreateFolderDb,
+  createFolder,
+} from "@/lib/supabase/db";
+import { createClient } from "@/lib/supabase/client";
+import { useToast } from "../ui/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
-export const CreateFolder = () => {
-  const form = useForm();
+export const CreateFolder = ({ userId }: { userId: string }) => {
+  const queryClient = useQueryClient();
+  const form = useForm<CreateFolderDb>({
+    defaultValues: {
+      name: "",
+      description: "",
+      userId,
+    },
+  });
+  const [open, setOpen] = useState(false);
+  const { toast } = useToast();
   const modalTrigger = (
-    <Button variant="secondary" className="bg-black-50 flex gap-2 my-5">
+    <Button
+      variant="secondary"
+      className="bg-black-50 flex gap-2 my-5"
+      onClick={() => setOpen(true)}
+    >
       <img src="/icons/folder.png" width={20} />
       NEW FOLDER
     </Button>
   );
+  const handleSubmit: SubmitHandler<CreateFolderDb> = async (data) => {
+    try {
+      const supabase = createClient();
+      await createFolder(supabase, data);
+      toast({
+        title: "Folder created",
+        description: `Folder ${data.name} created successfully`,
+      });
+
+      queryClient.invalidateQueries({ queryKey: ["getFolders", userId] });
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error && error.message) {
+        form.setError("description", { message: error.message });
+        toast({ title: error.message, variant: "destructive" });
+      }
+    }
+    setOpen(false);
+  };
   const ModalContent = () => (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit((data) => console.log(data))}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="flex flex-col gap-3 mb-8"
       >
-        <FormField
+        <FormInputField
           control={form.control}
-          name="foldername"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  placeholder="Name for Folder"
-                  {...field}
-                  icon={<Folder />}
-                  onClear={() => form.setValue("foldername", "")}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          name="name"
+          placeholder="Name for Folder"
+          onClear={() => form.setValue("name", "")}
         />
-        <FormField
+        <FormInputField
           control={form.control}
           name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  placeholder="Description (optional)"
-                  {...field}
-                  onClear={() => form.setValue("description", "")}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          placeholder="Description (optional)"
+          onClear={() => form.setValue("description", "")}
         />
         <Button type="submit" className="mt-8">
           <img src="/icons/plus.png" width={18} />
@@ -71,6 +81,8 @@ export const CreateFolder = () => {
       title="New Folder"
       trigger={modalTrigger}
       content={<ModalContent />}
+      open={open}
+      onOpenChange={(isOpen) => setOpen(isOpen)}
     />
   );
 };

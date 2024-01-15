@@ -1,5 +1,5 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import {
@@ -8,59 +8,74 @@ import {
   FormField,
   FormMessage,
   FormItem,
+  FormInputField,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Folder } from "@/components/icons/folder";
+import { CreateLink as CreateLinkDb, createLink } from "@/lib/supabase/db";
+import { createClient } from "@/lib/supabase/client";
+import { revalidatePath } from "next/cache";
+import { toast } from "../ui/use-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
-export const CreateLink = () => {
-  const form = useForm();
+export const CreateLink = ({ folderId }: { folderId: string }) => {
+  const queryClient = useQueryClient();
+  const form = useForm<CreateLinkDb>({
+    defaultValues: {
+      name: "",
+      url: "",
+      folderId,
+    },
+  });
+
+  const [open, setOpen] = React.useState(false);
   const modalTrigger = (
     <Button
       variant="secondary"
       className="bg-black-50 flex gap-2 my-5 w-[180px]"
+      onClick={() => setOpen(true)}
     >
       <img src="/icons/plus.png" width={20} />
       NEW LINK
     </Button>
   );
+  const handleSubmit: SubmitHandler<CreateLinkDb> = async (data) => {
+    try {
+      const supabase = createClient();
+      await createLink(supabase, data);
+      toast({
+        title: "Link created",
+        description: `Link ${data.url} created successfully`,
+      });
+      queryClient.invalidateQueries({ queryKey: ["getFolder", folderId] });
+    } catch (error) {
+      console.log(error);
+      if (error instanceof Error && error.message) {
+        form.setError("url", { message: error.message });
+        toast({ title: error.message, variant: "destructive" });
+      }
+    }
+    setOpen(false);
+  };
+
   const ModalContent = () => (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit((data) => console.log(data))}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="flex flex-col gap-3 mb-8"
       >
-        <FormField
+        <FormInputField
           control={form.control}
-          name="linkName"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  placeholder="Name for Link (optional)"
-                  {...field}
-                  icon={<Folder />}
-                  onClear={() => form.setValue("linkName", "")}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          name="url"
+          placeholder="Link Address"
+          onClear={() => form.setValue("url", "")}
         />
-        <FormField
+        <FormInputField
           control={form.control}
-          name="link"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input
-                  placeholder="Link Address"
-                  {...field}
-                  onClear={() => form.setValue("link", "")}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
+          name="name"
+          placeholder="Name for Link (optional)"
+          onClear={() => form.setValue("name", "")}
+          icon={<Folder />}
         />
         <Button type="submit" className="mt-8">
           <img src="/icons/plus.png" width={18} />
@@ -70,6 +85,12 @@ export const CreateLink = () => {
     </Form>
   );
   return (
-    <Modal title="New Link" trigger={modalTrigger} content={<ModalContent />} />
+    <Modal
+      open={open}
+      onOpenChange={(isOpen) => setOpen(isOpen)}
+      title="New Link"
+      trigger={modalTrigger}
+      content={<ModalContent />}
+    />
   );
 };

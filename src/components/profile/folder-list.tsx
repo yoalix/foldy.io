@@ -1,61 +1,37 @@
 "use client";
 import React from "react";
 import { ListItem } from "@/components/ui/list-item";
-import { useRouter } from "next/router";
+import { useGetFolders } from "@/hooks/queries/useGetFolders";
+import { timeSince } from "@/lib/strings";
 
-export const FolderList = ({ username }: { username?: string }) => {
-  const folders = [
-    {
-      id: 1,
-      title: "My Folder",
-      numberOfLinks: 4,
-      updated: "1 min",
-    },
-    {
-      id: 2,
-      title: "My Folder",
-      numberOfLinks: 4,
-      updated: "12 min",
-    },
-    {
-      id: 3,
-      title: "My Folder",
-      numberOfLinks: 4,
-      updated: "2 days",
-    },
-    {
-      id: 4,
-      title: "My Folder",
-      numberOfLinks: 4,
-      updated: "1 week",
-    },
-    {
-      id: 5,
-      title: "My Folder",
-      numberOfLinks: 4,
-      updated: "1 week",
-    },
-    {
-      id: 6,
-      title: "My Folder",
-      numberOfLinks: 4,
-      updated: "1 month",
-    },
-  ];
-
+export const FolderList = ({
+  username,
+  userId,
+}: {
+  username?: string;
+  userId: string;
+}) => {
+  const { data: folders } = useGetFolders(userId);
   return (
     <div className="flex flex-col ">
-      {folders.map((folder, i) => (
-        <ListItem
-          key={`folder-${folder.id}-${folder.title}`}
-          id={folder.id}
-          title={folder.title}
-          subtitle={`${folder.numberOfLinks} links`}
-          icon="/icons/folder.png"
-          href={`/profile/${username || "@me"}/folder/${folder.id}`}
-          updated={folder.updated}
-        />
-      ))}
+      {folders?.map((folder, i) => {
+        const numberOfLinks = folder?.links?.length || 0;
+        const updated = Math.max(
+          new Date(folder.created_at).getTime(),
+          ...folder.links.map((l) => new Date(l.updated_at).getTime())
+        );
+        return (
+          <ListItem
+            key={`folder-${folder.id}-${folder.name}`}
+            id={folder.id}
+            title={folder.name}
+            subtitle={`${numberOfLinks} links`}
+            icon="/icons/folder.png"
+            href={`/profile/${username || "@me"}/folder/${folder.id}`}
+            updated={timeSince(updated) || "1 day ago"}
+          />
+        );
+      })}
     </div>
   );
 };

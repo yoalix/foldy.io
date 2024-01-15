@@ -4,6 +4,9 @@ import "./globals.css";
 import { QueryProvider } from "@/components/query-provider";
 import { Body } from "@/components/body";
 import { Toaster } from "@/components/ui/toaster";
+import { createClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
+import { getUserProfile } from "@/lib/supabase/db";
 
 export const dynamic = "force-dynamic";
 
@@ -18,11 +21,14 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const supabase = createClient(cookies());
+  const session = await supabase.auth.getSession();
+  const user = await getUserProfile(supabase, session?.data?.session?.user.id);
   return (
     <html lang="en">
       <QueryProvider>
         <Body>
-          <Header />
+          <Header user={user} />
           {children}
           <Toaster />
         </Body>
