@@ -63,7 +63,6 @@ export const UpdatePassword = () => {
           <FormInputField
             control={form.control}
             name="password"
-            onClear={() => form.setValue("password", "")}
             placeholder="Password"
             type="password"
           />
@@ -71,7 +70,6 @@ export const UpdatePassword = () => {
           <FormInputField
             control={form.control}
             name="confirmPassword"
-            onClear={() => form.setValue("confirmPassword", "")}
             placeholder="Confirm Password"
             type="password"
           />

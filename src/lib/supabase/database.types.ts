@@ -47,31 +47,37 @@ export interface Database {
           folder_id: string
           id: string
           name: string | null
+          order: number
           updated_at: string
           url: string
+          user_id: string
         }
         Insert: {
           created_at?: string
           folder_id: string
           id?: string
           name?: string | null
+          order?: number
           updated_at?: string
           url: string
+          user_id?: string
         }
         Update: {
           created_at?: string
           folder_id?: string
           id?: string
           name?: string | null
+          order?: number
           updated_at?: string
           url?: string
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "links_folder_id_fkey"
-            columns: ["folder_id"]
+            foreignKeyName: "links_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "folders"
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           }
         ]

@@ -24,7 +24,7 @@ export const CreateLink = ({ folderId }: { folderId: string }) => {
     defaultValues: {
       name: "",
       url: "",
-      folderId,
+      folder_id: folderId,
     },
   });
 
@@ -58,7 +58,7 @@ export const CreateLink = ({ folderId }: { folderId: string }) => {
     setOpen(false);
   };
 
-  const ModalContent = () => (
+  const modalContent = (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(handleSubmit)}
@@ -90,7 +90,7 @@ export const CreateLink = ({ folderId }: { folderId: string }) => {
       onOpenChange={(isOpen) => setOpen(isOpen)}
       title="New Link"
       trigger={modalTrigger}
-      content={<ModalContent />}
+      content={modalContent}
     />
   );
 };

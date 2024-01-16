@@ -14,10 +14,11 @@ export const Folder = ({
   username,
 }: {
   folderId: string;
-  username?: string;
+  username: string;
 }) => {
-  const { data: user } = useGetProfile(username);
-  const { data: folder } = useGetFolder(folderId);
+  const { data: user, isPending: isUserPending } = useGetProfile(username);
+  const { data: folder, isPending: isFolderPending } = useGetFolder(folderId);
+  if (isUserPending || isFolderPending) return <div>loading...</div>;
   if (!folder) return <div>folder not found</div>;
   return (
     <div className="flex flex-col gap-3 p-8">
@@ -41,7 +42,7 @@ export const Folder = ({
           <h1 className="font-normal">{folder?.name}</h1>
           <p className="text-black-secondary">{folder?.links.length}</p>
         </div>
-        <FolderMenu />
+        <FolderMenu username={username} folderId={folderId} />
       </div>
       <p className="text-money ml-4">$0/mo. for followers of this folder</p>
       <p className="text-black-secondary ">

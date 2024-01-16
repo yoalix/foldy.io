@@ -33,7 +33,7 @@ export const ProfileMenu = () => {
     </Button>
   );
 
-  const ModalContent = () => (
+  const modalContent = (
     <div className="flex flex-col gap-4 p-4">
       {menuOptions.map((option, i) => {
         const Content = () => (
@@ -56,10 +56,6 @@ export const ProfileMenu = () => {
   );
 
   return (
-    <Modal
-      title="Profile Menu"
-      trigger={modalTrigger}
-      content={<ModalContent />}
-    />
+    <Modal title="Profile Menu" trigger={modalTrigger} content={modalContent} />
   );
 };

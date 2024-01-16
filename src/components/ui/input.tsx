@@ -36,7 +36,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
         {type === "password" && (
           <Button
-            className="absolute border-b right-9 top-1/2 transform -translate-y-1/2"
+            className="absolute border-b top-1/2 transform -translate-y-1/2 inset-y-0 right-0"
             variant="ghost"
             size="icon"
             onClick={() => setShowPassword(!showPassword)}

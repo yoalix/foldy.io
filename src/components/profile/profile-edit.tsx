@@ -79,13 +79,6 @@ export const ProfileEdit = () => {
       if (!file) return;
       setAvatarFile(file);
       setAvatarUrl(URL.createObjectURL(file));
-      //   const supabase = createClient();
-      //   console.log("uploading avatar");
-      //   const avatarStorage = await uploadAvatar(supabase, file, data?.id || "");
-      //   console.log("avatar storage", avatarStorage);
-      //   const avatarUrl = await getAvatarUrl(supabase, avatarStorage.path);
-      //   console.log("avatar url", avatarUrl);
-      //   setAvatarUrl(avatarUrl.publicUrl);
     } catch (error) {
       console.error(error);
       if (error instanceof Error && error.message) {
@@ -125,7 +118,6 @@ export const ProfileEdit = () => {
       if (bio) {
         updatedUser.bio = bio;
       }
-      console.log("avatar file", avatarFile);
       if (avatarFile) {
         const avatarStorage = await uploadAvatar(
           supabase,
@@ -136,27 +128,27 @@ export const ProfileEdit = () => {
         updatedUser.avatar_url = avatarUrl.publicUrl;
       }
       if (instagram) {
-        const res = await createOrUpdateUserSocialMedia(supabase, {
+        await createOrUpdateUserSocialMedia(supabase, {
           uid: data?.id || "",
           provider: "instagram",
           link: instagram,
         });
       }
       if (twitter) {
-        const res = await createOrUpdateUserSocialMedia(supabase, {
+        await createOrUpdateUserSocialMedia(supabase, {
           uid: data?.id || "",
           provider: "twitter",
           link: twitter,
         });
       }
       if (tiktok) {
-        const res = await createOrUpdateUserSocialMedia(supabase, {
+        await createOrUpdateUserSocialMedia(supabase, {
           uid: data?.id || "",
           provider: "tiktok",
           link: tiktok,
         });
       }
-      const res = await updateUser(supabase, updatedUser);
+      await updateUser(supabase, updatedUser);
       toast({
         title: "Success",
         description: "Successfully updated profile",

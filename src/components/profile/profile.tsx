@@ -42,7 +42,7 @@ export const Profile = ({ username }: Props) => {
   if (!user) return <div>profile not found</div>;
   return (
     <div className="flex flex-col gap-5 p-10">
-      <div className="flex w-full items-center gap-4">
+      <div className="flex w-full items-center">
         <Link href="/profile/edit">
           <Avatar className="w-16 h-16">
             <AvatarImage src={user?.avatar_url || ""} asChild>
@@ -56,7 +56,7 @@ export const Profile = ({ username }: Props) => {
             <AvatarFallback />
           </Avatar>
         </Link>
-        <div className="flex flex-col w-full justify-center">
+        <div className={"flex flex-col w-full justify-center ml-8"}>
           <h1 className="font-normal">{user?.full_name}</h1>
           <p className="text-black-secondary">@{user?.username}</p>
         </div>

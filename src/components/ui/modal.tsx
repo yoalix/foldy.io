@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/dialog";
 
 type ModalProps = {
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
   title?: string | React.ReactNode;
   description?: string | React.ReactNode;
   content: React.ReactNode;
@@ -37,7 +37,7 @@ export const Modal = ({
 
   return breakpoint === "sm" ? (
     <Drawer open={open} onOpenChange={onOpenChange}>
-      <DrawerTrigger asChild>{trigger}</DrawerTrigger>
+      {trigger && <DrawerTrigger asChild>{trigger}</DrawerTrigger>}
       <DrawerContent className="px-3">
         {title && (
           <DrawerHeader>

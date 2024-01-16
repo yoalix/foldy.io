@@ -280,14 +280,12 @@ export const SignupEmail = () => {
             name="password"
             placeholder="Password"
             type="password"
-            onClear={() => form.setValue("password", "")}
           />
           <FormInputField
             control={form.control}
             name="confirmPassword"
             placeholder="Confirm Password"
             type="password"
-            onClear={() => form.setValue("confirmPassword", "")}
           />
           <FormField
             control={form.control}

@@ -1,7 +1,5 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { Database } from "./database.types";
-import { supabase } from "./auth/client";
-
 //-----------USER------------------
 export type User = Database["public"]["Tables"]["profiles"]["Row"];
 
@@ -52,13 +50,7 @@ export const getUserByUsername = async (
       return data;
     });
 };
-export type CreateUser = {
-  id: string;
-  email: string;
-  full_name: string;
-  username: string;
-  avatar_url?: string;
-};
+export type CreateUser = Database["public"]["Tables"]["profiles"]["Insert"];
 
 export const createUser = async (
   supabase: SupabaseClient<Database>,
@@ -73,7 +65,9 @@ export const createUser = async (
     });
 };
 
-export type UpdateUser = Partial<CreateUser> & { bio?: string; id: string };
+export type UpdateUser = Database["public"]["Tables"]["profiles"]["Update"] & {
+  id: string;
+};
 
 export const updateUser = async (
   supabase: SupabaseClient<Database>,
@@ -196,21 +190,42 @@ export const getFolder = async (
     });
 };
 
-export type CreateFolder = {
-  userId: string;
-  name: string;
-  description?: string;
-};
+export type CreateFolder = Database["public"]["Tables"]["folders"]["Insert"];
 
 export const createFolder = async (
   supabase: SupabaseClient<Database>,
-  { userId, name, description }: CreateFolder
+  { user_id, name, description }: CreateFolder
 ) => {
   const { data, error } = await supabase
     .from("folders")
-    .insert({ user_id: userId, name, description });
+    .insert({ user_id, name, description });
   if (error) throw error;
   return data;
+};
+
+export type UpdateFolder = Database["public"]["Tables"]["folders"]["Update"] & {
+  id: string;
+  user_id: string;
+};
+
+export const updateFolder = async (
+  supabase: SupabaseClient<Database>,
+  { id, user_id, ...folder }: UpdateFolder
+) => {
+  if (!id) throw new Error("No id provided");
+  const allFieldsUndefined = Object.values(folder).every(
+    (value) => value === undefined
+  );
+  if (allFieldsUndefined) return null;
+  return supabase
+    .from("folders")
+    .update({ ...folder })
+    .eq("id", id)
+    .eq("user_id", user_id)
+    .then(({ data, error }) => {
+      if (error) throw error;
+      return data;
+    });
 };
 // -----------Links------------------
 
@@ -231,19 +246,50 @@ export const getLinks = async (
     });
 };
 
-export type CreateLink = {
-  folderId: string;
-  name?: string;
-  url: string;
-};
+export type CreateLink = Database["public"]["Tables"]["links"]["Insert"];
 
 export const createLink = async (
   supabase: SupabaseClient<Database>,
-  { folderId, name, url }: CreateLink
+  { folder_id, name, url }: CreateLink
 ) => {
+  const res = await getLinks(supabase, folder_id);
+  const order = res?.length || 0;
   const { data, error } = await supabase
     .from("links")
-    .insert({ folder_id: folderId, name, url });
+    .insert({ folder_id, name, url, order });
   if (error) throw error;
   return data;
+};
+
+export type UpdateLink = Database["public"]["Tables"]["links"]["Update"] & {
+  id: string;
+  folder_id: string;
+  url: string;
+};
+
+export const upsertLinks = async (
+  supabase: SupabaseClient<Database>,
+  links: UpdateLink[]
+) => {
+  return supabase
+    .from("links")
+    .upsert(links)
+    .then(({ data, error }) => {
+      if (error) throw error;
+      return data;
+    });
+};
+
+export const deleteLink = async (
+  supabase: SupabaseClient<Database>,
+  id: string
+) => {
+  return supabase
+    .from("links")
+    .delete()
+    .eq("id", id)
+    .then(({ data, error }) => {
+      if (error) throw error;
+      return data;
+    });
 };

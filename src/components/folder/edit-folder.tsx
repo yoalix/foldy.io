@@ -1,54 +1,77 @@
-import React, { useState } from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
-import { Form, FormInputField } from "@/components/ui/form";
 import {
-  CreateFolder as CreateFolderDb,
-  createFolder,
-} from "@/lib/supabase/db";
+  Form,
+  FormControl,
+  FormField,
+  FormInputField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { UpdateFolder, updateFolder } from "@/lib/supabase/db";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "../ui/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { useGetUserByUsername } from "@/hooks/queries/useGetUserByUsername";
+import { useGetFolder } from "@/hooks/queries/useGetFolder";
 import { z } from "zod";
+import { Input } from "@/components/ui/input";
 
-const CreateFolderSchema = z.object({
+const EditFolderSchema = z.object({
   name: z.string().min(1, "Name is required."),
   description: z.string().optional(),
 });
 
-type FormValues = z.infer<typeof CreateFolderSchema>;
+type Props = {
+  username: string;
+  folderId: string;
+};
 
-export const CreateFolder = ({ userId }: { userId: string }) => {
+type FormValues = z.infer<typeof EditFolderSchema>;
+
+export const EditFolder = ({ username, folderId }: Props) => {
   const queryClient = useQueryClient();
+  const router = useRouter();
+  const { data: user } = useGetUserByUsername(username);
+  const { data: folder } = useGetFolder(folderId);
+
   const form = useForm<FormValues>({
     defaultValues: {
-      name: "",
-      description: "",
+      name: folder?.name,
+      description: folder?.description || "",
     },
   });
   const [open, setOpen] = useState(false);
   const { toast } = useToast();
-  const modalTrigger = (
-    <Button
-      variant="secondary"
-      className="bg-black-50 flex gap-2 my-5"
-      onClick={() => setOpen(true)}
-    >
-      <img src="/icons/folder.png" width={20} />
-      NEW FOLDER
-    </Button>
-  );
+
+  useEffect(() => {
+    setOpen(true);
+  }, []);
+
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       const supabase = createClient();
-      await createFolder(supabase, { ...data, user_id: userId });
+      const updateData: UpdateFolder = {
+        id: folderId,
+        user_id: user!.id,
+      };
+      if (data.name !== folder?.name) {
+        updateData.name = data.name;
+      }
+      if (data.description !== folder?.description) {
+        updateData.description = data.description;
+      }
+      await updateFolder(supabase, updateData);
       toast({
-        title: "Folder created",
-        description: `Folder ${data.name} created successfully`,
+        title: "Folder updated",
+        description: `Folder ${data.name} updated successfully`,
       });
 
-      queryClient.invalidateQueries({ queryKey: ["getFolders", userId] });
+      queryClient.invalidateQueries({ queryKey: ["getFolder", folderId] });
     } catch (error) {
       console.log(error);
       if (error instanceof Error && error.message) {
@@ -57,7 +80,16 @@ export const CreateFolder = ({ userId }: { userId: string }) => {
       }
     }
     setOpen(false);
+    router.back();
   };
+
+  const handleOpenChange = (isOpen: boolean) => {
+    setOpen(isOpen);
+    if (isOpen === false) {
+      router.back();
+    }
+  };
+
   const modalContent = (
     <Form {...form}>
       <form
@@ -68,6 +100,7 @@ export const CreateFolder = ({ userId }: { userId: string }) => {
           control={form.control}
           name="name"
           placeholder="Name for Folder"
+          value={form.watch("name")}
           onClear={() => form.setValue("name", "")}
         />
         <FormInputField
@@ -78,18 +111,17 @@ export const CreateFolder = ({ userId }: { userId: string }) => {
         />
         <Button type="submit" className="mt-8">
           <img src="/icons/plus.png" width={18} />
-          Create New Folder
+          Save Folder
         </Button>
       </form>
     </Form>
   );
   return (
     <Modal
-      title="New Folder"
-      trigger={modalTrigger}
+      title="Edit Folder"
       content={modalContent}
       open={open}
-      onOpenChange={(isOpen) => setOpen(isOpen)}
+      onOpenChange={handleOpenChange}
     />
   );
 };
