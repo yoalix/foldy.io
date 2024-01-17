@@ -36,19 +36,28 @@ export const ProfileMenu = () => {
   const modalContent = (
     <div className="flex flex-col gap-4 p-4">
       {menuOptions.map((option, i) => {
-        const Content = () => (
-          <div key={`${i}-menu-icon-${option.name}`} className="flex gap-2">
+        const button = (
+          <Button
+            key={`${i}-menu-icon-${option.name}`}
+            className="flex gap-2 justify-start w-full"
+            variant="ghost"
+            disabled={option.disabled}
+          >
             {option.icon}
-            <p className={`${option.disabled ? "text-black-secondary" : ""}`}>
+            <p className={`${option.disabled ? " text-black-secondary" : ""}`}>
               {option.name}
             </p>
-          </div>
+          </Button>
         );
         return option.disabled ? (
-          <Content />
+          button
         ) : (
-          <Link href={option.link}>
-            <Content />
+          <Link
+            href={option.link}
+            key={`${i}-menu-icon-${option.name}`}
+            className="flex gap-2"
+          >
+            {button}
           </Link>
         );
       })}

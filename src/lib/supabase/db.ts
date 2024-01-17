@@ -280,14 +280,14 @@ export const upsertLinks = async (
     });
 };
 
-export const deleteLink = async (
+export const deleteLinks = async (
   supabase: SupabaseClient<Database>,
-  id: string
+  ids: string[]
 ) => {
   return supabase
     .from("links")
     .delete()
-    .eq("id", id)
+    .in("id", ids)
     .then(({ data, error }) => {
       if (error) throw error;
       return data;

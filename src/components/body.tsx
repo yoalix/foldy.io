@@ -16,14 +16,20 @@ export const Body = ({ children }: { children: React.ReactNode }) => {
   const isAuthRoute = AUTH_ROUTES.find((route) => pathName.includes(route));
 
   return (
-    <body
-      className={
-        inter.className +
-        " h-full w-full " +
-        (isMobile ? " mt-20" : " ml-40 max-w-[680px]")
-      }
-    >
-      {user || isAuthRoute ? children : <Authentication />}
+    <body>
+      {user || isAuthRoute ? (
+        <div
+          className={
+            inter.className +
+            " h-full w-full " +
+            (isMobile ? " mt-20" : " ml-40 max-w-[680px]")
+          }
+        >
+          {children}
+        </div>
+      ) : (
+        <Authentication />
+      )}
     </body>
   );
 };

@@ -1,25 +1,18 @@
+"use client";
 import React from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormMessage,
-  FormItem,
-  FormInputField,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Folder } from "@/components/icons/folder";
+import { Form, FormInputField } from "@/components/ui/form";
 import { CreateLink as CreateLinkDb, createLink } from "@/lib/supabase/db";
-import { createClient } from "@/lib/supabase/client";
-import { revalidatePath } from "next/cache";
 import { toast } from "../ui/use-toast";
-import { useQueryClient } from "@tanstack/react-query";
+import { Link } from "lucide-react";
+import { User } from "../icons/user";
+import { useRouter } from "next/navigation";
+import { createLinkAction } from "@/actions/createLink";
 
 export const CreateLink = ({ folderId }: { folderId: string }) => {
-  const queryClient = useQueryClient();
+  const router = useRouter();
   const form = useForm<CreateLinkDb>({
     defaultValues: {
       name: "",
@@ -41,13 +34,12 @@ export const CreateLink = ({ folderId }: { folderId: string }) => {
   );
   const handleSubmit: SubmitHandler<CreateLinkDb> = async (data) => {
     try {
-      const supabase = createClient();
-      await createLink(supabase, data);
+      await createLinkAction(data);
       toast({
         title: "Link created",
         description: `Link ${data.url} created successfully`,
       });
-      queryClient.invalidateQueries({ queryKey: ["getFolder", folderId] });
+      router.refresh();
     } catch (error) {
       console.log(error);
       if (error instanceof Error && error.message) {
@@ -68,6 +60,7 @@ export const CreateLink = ({ folderId }: { folderId: string }) => {
           control={form.control}
           name="url"
           placeholder="Link Address"
+          icon={<Link />}
           onClear={() => form.setValue("url", "")}
         />
         <FormInputField
@@ -75,7 +68,7 @@ export const CreateLink = ({ folderId }: { folderId: string }) => {
           name="name"
           placeholder="Name for Link (optional)"
           onClear={() => form.setValue("name", "")}
-          icon={<Folder />}
+          icon={<User />}
         />
         <Button type="submit" className="mt-8">
           <img src="/icons/plus.png" width={18} />

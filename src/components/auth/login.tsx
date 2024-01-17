@@ -65,8 +65,8 @@ export const Login = () => {
         });
       }
       router.push("/");
-    } catch {
-      console.log("am i here");
+    } catch (error) {
+      console.log(error);
     }
   };
   const socialButtons = [

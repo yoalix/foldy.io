@@ -13,7 +13,7 @@ export default function FolderPage({ params }: Params) {
   }
   return (
     <main>
-      <Folder folderId={params.folderId} username={username} />
+      <Folder folderId={params.folderId} />
     </main>
   );
 }

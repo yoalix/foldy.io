@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { User } from "@/components/icons/user";
 import { Moneybag } from "@/components/icons/moneybag";
@@ -11,9 +12,11 @@ import { Create } from "../icons/create";
 export const FolderMenu = ({
   username,
   folderId,
+  linksLength = 0,
 }: {
   username: string;
   folderId: string;
+  linksLength?: number;
 }) => {
   const [open, setOpen] = useState(false);
   const menuOptions = [
@@ -30,9 +33,9 @@ export const FolderMenu = ({
     },
     {
       name: "Edit Links",
-      // icon: null,
       icon: <Create />,
-      link: "/share",
+      disabled: linksLength === 0,
+      link: `/profile/${username}/folder/${folderId}/edit/links`,
     },
     {
       name: "Share Profile (coming soon)",
