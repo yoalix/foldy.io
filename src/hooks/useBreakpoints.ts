@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 
-// Define your breakpoints
+// Defined breakpoints by tailwindcss
 // Only use if absolutely necessary
 // Use tailwindcss for most of your responsive needs
 const breakpoints = {
-  sm: 480,
+  sm: 640,
   md: 768,
   lg: 1024,
   xl: 1280,
+  "2xl": 1536,
 };
 
 export const useBreakpoints = () => {
