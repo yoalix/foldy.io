@@ -59,6 +59,8 @@ export const createUser = async (
   return supabase
     .from("profiles")
     .insert({ ...user })
+    .select()
+    .single()
     .then(({ data, error }) => {
       if (error) throw error;
       return data;

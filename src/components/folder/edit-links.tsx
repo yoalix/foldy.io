@@ -94,7 +94,7 @@ export const EditLinks = ({
   username,
   folderId,
 }: {
-  links?: Link[] | null;
+  links: Link[] | null;
   username: string;
   folderId: string;
 }) => {

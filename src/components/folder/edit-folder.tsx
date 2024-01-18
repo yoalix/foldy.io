@@ -3,14 +3,7 @@ import React, { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormInputField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormInputField } from "@/components/ui/form";
 import { UpdateFolder, updateFolder } from "@/lib/supabase/db";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "../ui/use-toast";
@@ -19,7 +12,6 @@ import { useRouter } from "next/navigation";
 import { useGetUserByUsername } from "@/hooks/queries/useGetUserByUsername";
 import { useGetFolder } from "@/hooks/queries/useGetFolder";
 import { z } from "zod";
-import { Input } from "@/components/ui/input";
 
 const EditFolderSchema = z.object({
   name: z.string().min(1, "Name is required."),

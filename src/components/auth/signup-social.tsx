@@ -46,7 +46,7 @@ const SignupSchema = z.object({
 type FormValues = z.infer<typeof SignupSchema>;
 
 export const SignupSocial = () => {
-  const { data } = useUserSession();
+  const { data: user } = useUserSession();
   const createUser = useCreateUser();
   const form = useForm<FormValues>({
     resolver: zodResolver(SignupSchema),
@@ -55,29 +55,29 @@ export const SignupSocial = () => {
 
   const handleFinishSignup: SubmitHandler<FormValues> = async (values) => {
     try {
-      if (!data?.user) return;
+      if (!user) return;
       const supabase = createClient();
       const foundUser = await getUserByUsername(supabase, values.username);
       if (foundUser) {
         form.setError("username", { message: "Username already exists" });
         return;
       }
-      const { email, full_name, avatar_url } = data.user.user_metadata;
+      const { email, full_name, avatar_url } = user.user_metadata;
       let avatarUrl = avatar_url;
       if (avatarUrl) {
         const blob = await fetchFile(avatarUrl);
-        const res = await uploadAvatar(supabase, blob, data.user.id);
+        const res = await uploadAvatar(supabase, blob, user.id);
         avatarUrl = (await getAvatarUrl(supabase, res.path)).publicUrl;
       }
-      const user = await createUser.mutateAsync({
-        id: data.user.id,
+      const userRes = await createUser.mutateAsync({
+        id: user.id,
         email: email || "",
         full_name: full_name || "",
         avatar_url,
         username: values.username,
       });
-      console.log("created user", user);
-      router.push("/profile");
+      console.log("created user", userRes);
+      router.push(`/profile/${userRes.username}`);
     } catch (error) {
       console.error(error);
       if (error instanceof Error && error.message) {

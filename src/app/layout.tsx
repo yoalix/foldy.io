@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Header } from "@/components/header";
+import { Header } from "@/components/navigation/header";
 import "./globals.css";
 import { QueryProvider } from "@/components/query-provider";
 import { Body } from "@/components/body";
@@ -21,18 +21,15 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createClient(cookies());
-  const userSession = await supabase.auth.getUser();
-  const user = await getUserProfile(supabase, userSession.data.user?.id || "");
   return (
-    <html lang="en">
-      <QueryProvider>
-        <Body>
-          <Header user={user} />
-          {children}
-          <Toaster />
-        </Body>
-      </QueryProvider>
-    </html>
+    // <html lang="en">
+    <QueryProvider>
+      <Body>
+        <Header />
+        {children}
+        <Toaster />
+      </Body>
+    </QueryProvider>
+    // </html>
   );
 }

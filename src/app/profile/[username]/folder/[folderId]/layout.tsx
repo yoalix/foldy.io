@@ -7,7 +7,7 @@ import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import Image from "next/image";
 
-export default async function RootLayout(props: {
+export default async function FolderLayout(props: {
   children: React.ReactNode;
   modal: React.ReactNode;
   params: {
@@ -18,6 +18,7 @@ export default async function RootLayout(props: {
   const supabase = createClient(cookies());
   const user = await getUserByUsername(supabase, props.params.username);
   const folder = await getFolder(supabase, props.params.folderId);
+
   return (
     <div className="flex flex-col gap-3 p-8">
       <BackButton />

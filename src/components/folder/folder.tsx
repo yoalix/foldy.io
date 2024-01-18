@@ -1,5 +1,4 @@
 import React from "react";
-import { CreateLink } from "./create-link";
 import { LinksList } from "./links-list";
 import { getFolder } from "@/lib/supabase/db";
 import { createClient } from "@/lib/supabase/server";
