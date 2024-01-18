@@ -1,8 +1,10 @@
 "use client";
 
-import { Link, Menu } from "lucide-react";
+import { Menu } from "@/components/icons/menu";
 import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
+import Image from "next/image";
+import Link from "next/link";
 
 export const MobileNav = ({ username }: { username?: string }) => {
   const [lastScrollTop, setLastScrollTop] = useState(0);
@@ -32,10 +34,12 @@ export const MobileNav = ({ username }: { username?: string }) => {
         }`}
       >
         <Link href="/" className="flex w-full items-center">
-          <img
+          <Image
             className="text-2xl font-bold h-4 w-4"
             src="/icons/logo.png"
             alt="FoldyIcon"
+            width={16}
+            height={16}
           />
           <h1 className="text-primary italic">FOLDY</h1>
         </Link>

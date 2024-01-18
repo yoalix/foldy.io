@@ -3,7 +3,6 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "./button";
 import { LeftArrow } from "@/components/icons/left-arrow";
-import { cn } from "@/lib/utils";
 
 export const BackButton = ({ className }: { className?: string }) => {
   const router = useRouter();

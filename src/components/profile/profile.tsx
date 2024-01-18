@@ -42,6 +42,7 @@ export const Profile = async ({ username }: Props) => {
                 alt="avatar"
                 width={64}
                 height={64}
+                priority
               />
             </AvatarImage>
             <AvatarFallback />

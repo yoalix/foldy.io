@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { Button } from "./button";
+import Image from "next/image";
 
 type ListItemProps = {
   id: string;
@@ -25,7 +26,7 @@ export const ListItem = ({
         href={href}
         target={href.includes("http") ? "_blank" : ""}
       >
-        <img src={icon} alt="folder" width={24} height={24} />
+        <Image src={icon} alt="folder" width={24} height={24} />
         <div className="flex flex-col w-full justify-start items-start">
           <h1 className="font-normal">{title}</h1>
           <p className="text-black-secondary ">{subtitle}</p>

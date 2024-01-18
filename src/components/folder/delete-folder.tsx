@@ -7,6 +7,7 @@ import { useGetCurrentUser } from "@/hooks/queries/useGetCurrentUser";
 import { useGetFolder } from "@/hooks/queries/useGetFolder";
 import { deleteFolderAction } from "@/actions/deleteFolder";
 import { useToast } from "../ui/use-toast";
+import Image from "next/image";
 
 type Props = {
   username: string;
@@ -42,7 +43,7 @@ export const DeleteFolder = ({ username, folderId }: Props) => {
         className="mt-8 border-urgent hover:bg-urgent-200"
         variant="outline"
       >
-        <img src="/icons/trashred.png" alt="delete" width={24} />
+        <Image src="/icons/trashred.png" alt="delete" width={24} height={24} />
         Delete Folder
       </Button>
     </form>

@@ -10,6 +10,7 @@ import { Link } from "lucide-react";
 import { User } from "../icons/user";
 import { useRouter } from "next/navigation";
 import { createLinkAction } from "@/actions/createLink";
+import Image from "next/image";
 
 export const CreateLink = ({ folderId }: { folderId: string }) => {
   const router = useRouter();
@@ -28,7 +29,7 @@ export const CreateLink = ({ folderId }: { folderId: string }) => {
       className="bg-black-50 flex gap-2 my-5 w-[180px]"
       onClick={() => setOpen(true)}
     >
-      <img src="/icons/plus.png" width={20} />
+      <Image src="/icons/plus.png" width={20} height={20} alt="plus icon" />
       NEW LINK
     </Button>
   );
@@ -75,7 +76,7 @@ export const CreateLink = ({ folderId }: { folderId: string }) => {
           className="mt-8"
           disabled={form.formState.isSubmitting}
         >
-          <img src="/icons/plus.png" width={18} />
+          <Image src="/icons/plus.png" width={18} height={18} alt="plus icon" />
           Create New Link
         </Button>
       </form>

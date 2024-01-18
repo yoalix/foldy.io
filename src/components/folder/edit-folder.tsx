@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { useGetUserByUsername } from "@/hooks/queries/useGetUserByUsername";
 import { useGetFolder } from "@/hooks/queries/useGetFolder";
 import { z } from "zod";
+import Image from "next/image";
 
 const EditFolderSchema = z.object({
   name: z.string().min(1, "Name is required."),
@@ -102,7 +103,7 @@ export const EditFolder = ({ username, folderId }: Props) => {
           onClear={() => form.setValue("description", "")}
         />
         <Button type="submit" className="mt-8">
-          <img src="/icons/plus.png" width={18} />
+          <Image src="/icons/plus.png" alt="plus icon" width={18} height={18} />
           Save Folder
         </Button>
       </form>

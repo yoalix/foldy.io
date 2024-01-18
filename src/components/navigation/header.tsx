@@ -8,6 +8,7 @@ import { getUserProfile } from "@/lib/supabase/db";
 import { MobileNav } from "./mobile-nav";
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
+import Image from "next/image";
 
 export async function Header() {
   const supabase = createClient(cookies());
@@ -27,10 +28,12 @@ export async function Header() {
     <header>
       <div className="hidden fixed top-0 left-0 bottom-0 md:flex flex-col justify-around items-center border-r border-black-50 ">
         <Link href="/" className="flex w-full items-center p-10 border-b">
-          <img
+          <Image
             className="text-2xl font-bold h-4 w-4"
             src="/icons/logo.png"
             alt="FoldyIcon"
+            width={16}
+            height={16}
           />
           <h1 className="text-primary font-bold italic">FOLDY</h1>
         </Link>

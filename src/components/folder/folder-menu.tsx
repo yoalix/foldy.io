@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
 import Link from "next/link";
 import { Create } from "../icons/create";
+import Image from "next/image";
 
 export const FolderMenu = ({
   username,
@@ -45,7 +46,9 @@ export const FolderMenu = ({
     },
     {
       name: "Delete Folder",
-      icon: <img src="/icons/trashred.png" alt="delete" width={24} />,
+      icon: (
+        <Image src="/icons/trashred.png" alt="delete" width={24} height={24} />
+      ),
       link: `/profile/${username}/folder/${folderId}/delete`,
     },
   ];

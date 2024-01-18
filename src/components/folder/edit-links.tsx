@@ -25,6 +25,7 @@ import { deleteLinksAction } from "@/actions/deleteLinks";
 import { updateLinksAction } from "@/actions/updateLinks";
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 type ItemProps = {
   title?: string | null;
@@ -65,7 +66,7 @@ const Item = ({ id, title, subtitle, onDeleteClick }: ItemProps) => {
         <DragReorder />
       </Button>
       <div className="flex w-full justify-start items-center gap-2">
-        <img src="/icons/link.png" alt="folder" width={24} height={24} />
+        <Image src="/icons/link.png" alt="folder" width={24} height={24} />
         <div>
           <h1 className="font-normal">{title}</h1>
           <p className="text-black-secondary ">{subtitle}</p>
@@ -79,7 +80,7 @@ const Item = ({ id, title, subtitle, onDeleteClick }: ItemProps) => {
           onDeleteClick(id);
         }}
       >
-        <img src="/icons/trashred.png" />
+        <Image src="/icons/trashred.png" alt="trash icon" />
       </Button>
     </div>
   );

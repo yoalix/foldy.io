@@ -27,7 +27,6 @@ import {
 } from "@/lib/supabase/db";
 import { Textarea } from "../ui/textarea";
 import { useGetCurrentUser } from "@/hooks/queries/useGetCurrentUser";
-import { Input } from "../ui/input";
 import { useToast } from "../ui/use-toast";
 import Image from "next/image";
 import { useRouter } from "next/navigation";

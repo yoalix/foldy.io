@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { BackButton } from "../ui/back-button";
+import Image from "next/image";
 
 export const Signup = () => {
   const router = useRouter();
@@ -48,9 +49,11 @@ export const Signup = () => {
         >
           {" "}
           SIGN UP WITH {social.name.toUpperCase()}
-          <img
+          <Image
             src={social.icon}
             width={36}
+            height={36}
+            alt={`${social.name} icon`}
             className="absolute right-[-36px] bg-white border border-black-50 rounded-r-[10px]"
           />
         </Button>

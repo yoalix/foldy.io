@@ -12,6 +12,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useToast } from "../ui/use-toast";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const CreateFolderSchema = z.object({
   name: z.string().min(1, "Name is required."),
@@ -36,7 +37,7 @@ export const CreateFolder = ({ userId }: { userId: string }) => {
       className="bg-black-50 flex gap-2 my-5"
       onClick={() => setOpen(true)}
     >
-      <img src="/icons/folder.png" width={20} />
+      <Image src="/icons/folder.png" alt="folder icon" width={20} height={20} />
       NEW FOLDER
     </Button>
   );
@@ -82,7 +83,7 @@ export const CreateFolder = ({ userId }: { userId: string }) => {
           className="mt-8"
           disabled={form.formState.isSubmitting}
         >
-          <img src="/icons/plus.png" width={18} />
+          <Image src="/icons/plus.png" alt="plus icon" width={18} height={18} />
           Create New Folder
         </Button>
       </form>

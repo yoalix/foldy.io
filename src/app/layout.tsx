@@ -22,14 +22,14 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    // <html lang="en">
-    <QueryProvider>
-      <Body>
-        <Header />
-        {children}
-        <Toaster />
-      </Body>
-    </QueryProvider>
-    // </html>
+    <html lang="en">
+      <QueryProvider>
+        <Body>
+          <Header />
+          {children}
+          <Toaster />
+        </Body>
+      </QueryProvider>
+    </html>
   );
 }
