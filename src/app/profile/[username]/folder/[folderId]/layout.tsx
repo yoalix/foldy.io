@@ -23,19 +23,25 @@ export default async function RootLayout(props: {
       <BackButton />
       <div className="flex gap-3">
         <Avatar className="w-6 h-6">
-          <AvatarImage src="/profile.png" asChild />
-          <Image
-            src={user?.avatar_url || ""}
-            alt="avatar"
-            width={24}
-            height={24}
-          />
+          <AvatarImage src="/profile.png" asChild>
+            <Image
+              src={user?.avatar_url || ""}
+              alt="avatar"
+              width={24}
+              height={24}
+            />
+          </AvatarImage>
           <AvatarFallback />
         </Avatar>
         <p className="text-black-secondary">@{user?.username}</p>
       </div>
       <div className="flex items-center gap-3 w-full">
-        <img src="/icons/folder.png" width={40} />
+        <Image
+          src="/icons/folder.png"
+          alt="folder-image"
+          width={40}
+          height={40}
+        />
         <div className="w-full">
           <h1 className="font-normal">{folder?.name}</h1>
           <p className="text-black-secondary">
