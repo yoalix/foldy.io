@@ -17,6 +17,7 @@ import {
   DialogDescription,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 type ModalProps = {
   trigger?: React.ReactNode;
@@ -35,7 +36,7 @@ export const Modal = ({
   onOpenChange,
 }: ModalProps) => {
   const [isOpen, setOpen] = React.useState(open);
-  const breakpoint = useBreakpoints();
+  const isMobile = useIsMobile();
 
   React.useEffect(() => {
     setOpen(open);
@@ -48,7 +49,7 @@ export const Modal = ({
     }
   };
 
-  return breakpoint === "sm" ? (
+  return isMobile ? (
     <Drawer open={isOpen} onOpenChange={handleOpenChange}>
       {trigger && <DrawerTrigger asChild>{trigger}</DrawerTrigger>}
       <DrawerContent className="px-3">
