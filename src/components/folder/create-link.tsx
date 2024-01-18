@@ -70,7 +70,11 @@ export const CreateLink = ({ folderId }: { folderId: string }) => {
           onClear={() => form.setValue("name", "")}
           icon={<User />}
         />
-        <Button type="submit" className="mt-8">
+        <Button
+          type="submit"
+          className="mt-8"
+          disabled={form.formState.isSubmitting}
+        >
           <img src="/icons/plus.png" width={18} />
           Create New Link
         </Button>

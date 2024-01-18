@@ -22,8 +22,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const supabase = createClient(cookies());
-  const session = await supabase.auth.getSession();
-  const user = await getUserProfile(supabase, session?.data?.session?.user.id);
+  const userSession = await supabase.auth.getUser();
+  const user = await getUserProfile(supabase, userSession.data.user?.id || "");
   return (
     <html lang="en">
       <QueryProvider>

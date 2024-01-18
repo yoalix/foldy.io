@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { use } from "react";
 import { BackButton } from "../ui/back-button";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -29,6 +29,8 @@ import { Textarea } from "../ui/textarea";
 import { useGetCurrentUser } from "@/hooks/queries/useGetCurrentUser";
 import { Input } from "../ui/input";
 import { useToast } from "../ui/use-toast";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const ProfileSchema = z.object({
   firstName: z.string().max(256).optional(),
@@ -58,6 +60,7 @@ type FormValues = z.infer<typeof ProfileSchema>;
 export const ProfileEdit = () => {
   const { data } = useGetCurrentUser();
   const { toast } = useToast();
+  const router = useRouter();
   const form = useForm<FormValues>({
     resolver: zodResolver(ProfileSchema),
     defaultValues: {
@@ -153,6 +156,7 @@ export const ProfileEdit = () => {
         title: "Success",
         description: "Successfully updated profile",
       });
+      router.push(`/profile/${username}`);
     } catch (error) {
       console.error(error);
     }
@@ -180,7 +184,14 @@ export const ProfileEdit = () => {
           </div>
           <div className="relative group w-20 h-20">
             <Avatar className="w-20 h-20 transition-all duration-200 group-hover:blur-sm">
-              <AvatarImage src={avatarUrl || data?.avatar_url || ""} />
+              <AvatarImage src={avatarUrl || ""}>
+                <Image
+                  src={avatarUrl || data?.avatar_url || ""}
+                  alt="avatar upload"
+                  width={80}
+                  height={80}
+                />
+              </AvatarImage>
               <AvatarFallback />
             </Avatar>
             <div className="text-white absolute flex justify-center items-center inset-0 left-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200">

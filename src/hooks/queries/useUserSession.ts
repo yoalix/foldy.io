@@ -10,7 +10,7 @@ export function useUserSession() {
         if (res.error) {
           throw res.error;
         }
-        return res.data;
+        return res.data.user;
       }),
   });
 }

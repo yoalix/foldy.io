@@ -21,3 +21,9 @@ export const signOut = async () => {
   const supabase = createServerClient(cookies());
   return supabase.auth.signOut();
 };
+
+export const getCurrentUser = async () => {
+  const supabase = createServerClient(cookies());
+  const user = await supabase.auth.getUser();
+  return user;
+};

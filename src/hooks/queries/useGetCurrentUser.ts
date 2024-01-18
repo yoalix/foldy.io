@@ -4,10 +4,10 @@ import { useQuery } from "@tanstack/react-query";
 import { createClient } from "@/lib/supabase/client";
 
 export const useGetCurrentUser = () => {
-  const { data } = useUserSession();
+  const { data: user } = useUserSession();
   const supabase = createClient();
   return useQuery({
-    queryKey: ["currentUser", data?.user?.id],
-    queryFn: () => getUserProfile(supabase, data?.user?.id),
+    queryKey: ["currentUser", user?.id],
+    queryFn: () => getUserProfile(supabase, user?.id),
   });
 };

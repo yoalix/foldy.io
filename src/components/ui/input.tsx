@@ -36,29 +36,20 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         )}
         {type === "password" && (
           <Button
-            className="absolute border-b top-1/2 transform -translate-y-1/2 inset-y-0 right-0"
+            className="absolute border-b top-1/2 transform  inset-y-0 right-0"
             variant="ghost"
             size="icon"
             onClick={() => setShowPassword(!showPassword)}
           >
             {showPassword ? <EyeClosedIcon /> : <EyeOpenIcon />}
           </Button>
-          // <img
-          //   src={
-          //     showPassword ? "/path/to/hide-icon.png" : "/icons/eye-open.png"
-          //   }
-          //   alt="toggle visibility"
-          //   className="absolute right-9 top-1/2 transform -translate-y-1/2 cursor-pointer"
-          //   width={18}
-          //   onClick={() => setShowPassword(!showPassword)}
-          // />
         )}
         {onClear && (
           <Button
             variant="ghost"
             size="icon"
             onClick={onClear}
-            className="absolute inset-y-0 right-0"
+            className="absolute border-b inset-y-0 right-0"
           >
             <CircleX fill="#E7E7E7" />
           </Button>

@@ -227,6 +227,24 @@ export const updateFolder = async (
       return data;
     });
 };
+
+export const deleteFolder = async (
+  supabase: SupabaseClient<Database>,
+  id: string,
+  user_id: string
+) => {
+  if (!id) throw new Error("No id provided");
+  return supabase
+    .from("folders")
+    .delete()
+    .eq("id", id)
+    .eq("user_id", user_id)
+    .then(({ data, error }) => {
+      if (error) throw error;
+      return data;
+    });
+};
+
 // -----------Links------------------
 
 export type Link = Database["public"]["Tables"]["links"]["Row"];

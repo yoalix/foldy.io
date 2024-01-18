@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import {
@@ -9,23 +9,13 @@ import {
   //signInWithApple,
   //signInWithFacebook,
 } from "@/lib/supabase/auth/client";
-import { signInWithGoogle as signInWithGoogleServer } from "@/lib/supabase/auth/server";
-import { useGetCurrentUser } from "@/hooks/queries/useGetCurrentUser";
-import { useUserSession } from "@/hooks/queries/useUserSession";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormControl,
-  FormMessage,
-  FormInputField,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form, FormInputField } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import { Checkbox } from "../ui/checkbox";
+import Image from "next/image";
 
 type LoginForm = {
   email: string;
@@ -63,6 +53,7 @@ export const Login = () => {
           type: "validate",
           message: res.error.message,
         });
+        return;
       }
       router.push("/");
     } catch (error) {
@@ -87,7 +78,7 @@ export const Login = () => {
     },
   ];
 
-  const Content = () => (
+  const content = (
     <>
       <div className="flex flex-row gap-3">
         {socialButtons.map((social) => (
@@ -99,7 +90,13 @@ export const Login = () => {
             asChild
             onClick={social.onClick}
           >
-            <img src={social.icon} alt={social.name} width={24} />
+            <Image
+              src={social.icon}
+              alt={social.name}
+              width={24}
+              height={24}
+              priority
+            />
           </Button>
         ))}
       </div>
@@ -136,7 +133,12 @@ export const Login = () => {
               remember me when logging in next time
             </label>
           </div>
-          <Button variant="secondary" className="w-[180px]" type="submit">
+          <Button
+            variant="secondary"
+            className="w-[180px]"
+            type="submit"
+            disabled={form.formState.isSubmitting}
+          >
             LOG IN
           </Button>
         </form>
@@ -150,15 +152,15 @@ export const Login = () => {
     </>
   );
   return isMobile ? (
-    <div className="p-10 flex flex-col gap-5">
+    <div className="md:hidden p-10 flex flex-col gap-5">
       <h1>LOG IN</h1>
-      <Content />
+      {content}
     </div>
   ) : (
     <Dialog defaultOpen open>
       <DialogContent closeIcon={false}>
         <DialogTitle>LOG IN</DialogTitle>
-        <Content />
+        {content}
       </DialogContent>
     </Dialog>
   );

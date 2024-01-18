@@ -23,6 +23,8 @@ export async function middleware(request: NextRequest) {
         !request.nextUrl.pathname.includes("verify-password") &&
         !request.nextUrl.pathname.includes("update-password")
     );
+    console.log("session", session);
+    console.log("user", user);
     console.log(request.nextUrl.pathname, isAuthRoute);
     const profile = await getUserProfile(supabase, user?.id).catch(() => null);
     if ((!session || !user) && !isAuthRoute) {

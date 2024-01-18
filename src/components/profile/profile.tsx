@@ -1,4 +1,3 @@
-"use client";
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -17,6 +16,10 @@ import Link from "next/link";
 import { useGetProfile } from "@/hooks/queries/useGetProfile";
 import Image from "next/image";
 import { useGetUserSocials } from "@/hooks/queries/useGetUserSocials";
+import { getUserByUsername, getUserSocials } from "@/lib/supabase/db";
+import { createClient } from "@/lib/supabase/server";
+import { cookies } from "next/headers";
+import { getCurrentUser } from "@/lib/supabase/auth/server";
 type Props = {
   username?: string;
 };
@@ -26,26 +29,20 @@ const SocialIcons = {
   tiktok: <TikTok />,
 };
 
-export const Profile = ({ username }: Props) => {
-  const { data: currentUser } = useGetCurrentUser();
-  const { data: user, isError } = useGetProfile(username);
-  const { data: userSocials } = useGetUserSocials(user?.id || "");
-  const { toast } = useToast();
-  const isCurrentUser = currentUser?.id === user?.id;
-
-  if (isError) {
-    toast({
-      title: "Error",
-      description: "Could not find user",
-    });
-  }
+export const Profile = async ({ username }: Props) => {
+  const supabase = createClient(cookies());
+  const { data: currentUser } = await getCurrentUser();
+  const user = await getUserByUsername(supabase, username || "");
+  const userSocials = await getUserSocials(supabase, user?.id || "");
   if (!user) return <div>profile not found</div>;
+  const isCurrentUser = currentUser?.user?.id === user?.id;
+
   return (
     <div className="flex flex-col gap-5 p-10">
       <div className="flex w-full items-center">
         <Link href="/profile/edit">
           <Avatar className="w-16 h-16">
-            <AvatarImage src={user?.avatar_url || ""} asChild>
+            <AvatarImage src="/profile.png" asChild>
               <Image
                 src={user?.avatar_url || ""}
                 alt="avatar"

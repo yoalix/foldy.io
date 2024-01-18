@@ -1,15 +1,18 @@
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export const Authentication = () => {
   return (
     <div className="flex flex-col items-center justify-center h-full w-full p-10 gap-10">
       <div className="flex justify-start items-center self-start">
-        <img
+        <Image
           className="text-2xl font-bold h-4 w-4"
           src="/icons/logo.png"
           alt="FoldyIcon"
+          width={16}
+          height={16}
         />
         <h1 className="text-primary italic">FOLDY</h1>
       </div>

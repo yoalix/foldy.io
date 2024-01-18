@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { useBreakpoints } from "@/hooks/useBreakpoints";
 import {
@@ -33,10 +34,22 @@ export const Modal = ({
   open,
   onOpenChange,
 }: ModalProps) => {
+  const [isOpen, setOpen] = React.useState(open);
   const breakpoint = useBreakpoints();
 
+  React.useEffect(() => {
+    setOpen(open);
+  }, [open]);
+
+  const handleOpenChange = (isOpen: boolean) => {
+    setOpen(isOpen);
+    if (onOpenChange) {
+      onOpenChange(isOpen);
+    }
+  };
+
   return breakpoint === "sm" ? (
-    <Drawer open={open} onOpenChange={onOpenChange}>
+    <Drawer open={isOpen} onOpenChange={handleOpenChange}>
       {trigger && <DrawerTrigger asChild>{trigger}</DrawerTrigger>}
       <DrawerContent className="px-3">
         {title && (
@@ -51,7 +64,7 @@ export const Modal = ({
       </DrawerContent>
     </Drawer>
   ) : (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
       <DialogContent>
         <div className="flex flex-col px-3 gap-3">

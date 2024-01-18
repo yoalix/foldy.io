@@ -46,15 +46,14 @@ export const FolderMenu = ({
     {
       name: "Delete Folder",
       icon: <img src="/icons/trashred.png" alt="delete" width={24} />,
-      link: "/folder/delete",
-      disabled: true,
+      link: `/profile/${username}/folder/${folderId}/delete`,
     },
   ];
   const modalTrigger = (
     <Button
       variant="ghost"
       size="icon"
-      className="opacity-50"
+      className="opacity-50 rounded-full flex-none"
       onClick={() => setOpen(true)}
     >
       <MoreHorizontal />

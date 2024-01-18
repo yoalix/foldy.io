@@ -30,7 +30,7 @@ const MobileNav = ({ username }: { username?: string }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollTop]);
   return (
-    <header>
+    <header className="md:hidden z-10">
       <div
         className={`fixed top-0 left-0 right-0 flex justify-between p-9 bg-[#FFF] transition-all duration-500 ${
           isVisible
@@ -81,8 +81,8 @@ const MobileNav = ({ username }: { username?: string }) => {
 };
 
 export function Header({ user }: { user?: User | null }) {
-  const breakpoint = useBreakpoints();
-  const isMobile = breakpoint === "sm" || breakpoint === "xs";
+  // const breakpoint = useBreakpoints();
+  // const isMobile = breakpoint === "sm" || breakpoint === "xs";
   const NavMenuItems = [
     { name: "Explore", href: "/explore", icon: <Compass /> },
     {
@@ -93,36 +93,37 @@ export function Header({ user }: { user?: User | null }) {
     { name: "Settings", href: "/settings", icon: <Settings /> },
   ];
   if (!user) return null;
-  return isMobile ? (
-    <MobileNav username={user?.username} />
-  ) : (
-    <header className="fixed top-0 left-0 bottom-0 flex flex-col justify-around items-center  border-r border-black-50 ">
-      <Link href="/" className="flex w-full items-center p-10 border-b">
-        <img
-          className="text-2xl font-bold h-4 w-4"
-          src="/icons/logo.png"
-          alt="FoldyIcon"
-        />
-        <h1 className="text-primary font-bold italic">FOLDY</h1>
-      </Link>
+  return (
+    <>
+      <header className="hidden fixed top-0 left-0 bottom-0 md:flex flex-col justify-around items-center border-r border-black-50 ">
+        <Link href="/" className="flex w-full items-center p-10 border-b">
+          <img
+            className="text-2xl font-bold h-4 w-4"
+            src="/icons/logo.png"
+            alt="FoldyIcon"
+          />
+          <h1 className="text-primary font-bold italic">FOLDY</h1>
+        </Link>
 
-      <div className="flex flex-1 flex-col items-start gap-8 mt-8">
-        {NavMenuItems.map((item) => (
-          <Button key={`nav-${item.name}`} className={"mr-4"} variant="ghost">
-            <Link href={item.href} className="flex items-center gap-2">
-              {item.icon}
-              {item.name}
-            </Link>
+        <div className="flex flex-1 flex-col items-start gap-8 mt-8">
+          {NavMenuItems.map((item) => (
+            <Button key={`nav-${item.name}`} className={"mr-4"} variant="ghost">
+              <Link href={item.href} className="flex items-center gap-2">
+                {item.icon}
+                {item.name}
+              </Link>
+            </Button>
+          ))}
+          <Button
+            className="font-semibold self-center"
+            variant="secondary"
+            onClick={signOut}
+          >
+            Sign Out
           </Button>
-        ))}
-        <Button
-          className="font-semibold self-center"
-          variant="secondary"
-          onClick={signOut}
-        >
-          Sign Out
-        </Button>
-      </div>
-    </header>
+        </div>
+      </header>
+      <MobileNav username={user?.username} />
+    </>
   );
 }

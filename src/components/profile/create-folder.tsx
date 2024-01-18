@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Modal } from "@/components/ui/modal";
@@ -9,8 +10,8 @@ import {
 } from "@/lib/supabase/db";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "../ui/use-toast";
-import { useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
+import { useRouter } from "next/navigation";
 
 const CreateFolderSchema = z.object({
   name: z.string().min(1, "Name is required."),
@@ -20,7 +21,7 @@ const CreateFolderSchema = z.object({
 type FormValues = z.infer<typeof CreateFolderSchema>;
 
 export const CreateFolder = ({ userId }: { userId: string }) => {
-  const queryClient = useQueryClient();
+  const router = useRouter();
   const form = useForm<FormValues>({
     defaultValues: {
       name: "",
@@ -48,7 +49,7 @@ export const CreateFolder = ({ userId }: { userId: string }) => {
         description: `Folder ${data.name} created successfully`,
       });
 
-      queryClient.invalidateQueries({ queryKey: ["getFolders", userId] });
+      router.refresh();
     } catch (error) {
       console.log(error);
       if (error instanceof Error && error.message) {
@@ -76,7 +77,11 @@ export const CreateFolder = ({ userId }: { userId: string }) => {
           placeholder="Description (optional)"
           onClear={() => form.setValue("description", "")}
         />
-        <Button type="submit" className="mt-8">
+        <Button
+          type="submit"
+          className="mt-8"
+          disabled={form.formState.isSubmitting}
+        >
           <img src="/icons/plus.png" width={18} />
           Create New Folder
         </Button>

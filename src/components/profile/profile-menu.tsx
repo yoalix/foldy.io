@@ -28,7 +28,11 @@ export const ProfileMenu = () => {
     },
   ];
   const modalTrigger = (
-    <Button variant="ghost" size="icon" className="opacity-50">
+    <Button
+      variant="ghost"
+      size="icon"
+      className="opacity-50 rounded-full flex-none"
+    >
       <MoreHorizontal />
     </Button>
   );

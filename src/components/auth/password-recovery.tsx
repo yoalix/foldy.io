@@ -1,15 +1,8 @@
 "use client";
-import { Input } from "@/components/ui/input";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormInputField } from "@/components/ui/form";
 import { BackButton } from "@/components/ui/back-button";
 import { createClient } from "@/lib/supabase/client";
 import { useToast } from "../ui/use-toast";
@@ -45,23 +38,18 @@ export const PasswordRecovery = () => {
           )}
           className="flex flex-col gap-3 mb-8"
         >
-          <FormField
+          <FormInputField
             control={form.control}
             name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    placeholder="email"
-                    {...field}
-                    onClear={() => form.setValue("email", "")}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            placeholder="email"
+            onClear={() => form.setValue("email", "")}
           />
-          <Button variant="secondary" className="w-[180px]" type="submit">
+          <Button
+            variant="secondary"
+            className="w-[180px]"
+            type="submit"
+            disabled={form.formState.isSubmitting}
+          >
             SEND VERIFICATION LINK
           </Button>
         </form>
