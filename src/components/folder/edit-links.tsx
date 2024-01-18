@@ -56,7 +56,7 @@ const Item = ({ id, title, subtitle, onDeleteClick }: ItemProps) => {
     <div
       ref={setNodeRef}
       style={style}
-      className={`flex items-center gap-2 my-3 hover:scale-105 active:scale-105 ${
+      className={`flex items-center gap-2 my-3 hover:scale-105 active:scale-105 touch-none ${
         isDragging ? " active:scale-105 " : ""
       }`}
       {...attributes}
@@ -80,7 +80,12 @@ const Item = ({ id, title, subtitle, onDeleteClick }: ItemProps) => {
           onDeleteClick(id);
         }}
       >
-        <Image src="/icons/trashred.png" alt="trash icon" />
+        <Image
+          src="/icons/trashred.png"
+          alt="trash icon"
+          width={24}
+          height={24}
+        />
       </Button>
     </div>
   );
