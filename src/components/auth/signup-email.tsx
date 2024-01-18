@@ -301,7 +301,7 @@ export const SignupEmail = () => {
                 {/* <div className="space-y-1 leading-none"> */}
                 <FormLabel className="ml-2 text-black-secondary font-normal">
                   Fill in the box acknowledging you’ve read and agree to the{" "}
-                  <Link href="/terms-and-agreements" className="underline ">
+                  <Link href="/terms" className="underline ">
                     Terms and Agreement
                   </Link>
                 </FormLabel>
@@ -312,6 +312,7 @@ export const SignupEmail = () => {
           <Button
             variant="secondary"
             className="bg-black-50 flex gap-2 my-5 w-[180px]"
+            disabled={form.formState.isSubmitting}
           >
             SIGN UP
           </Button>

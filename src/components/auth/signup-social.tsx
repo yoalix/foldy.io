@@ -116,7 +116,7 @@ export const SignupSocial = () => {
                 {/* <div className="space-y-1 leading-none"> */}
                 <FormLabel className="ml-2 text-black-secondary font-normal">
                   Fill in the box acknowledging you’ve read and agree to the{" "}
-                  <Link href="/terms-and-agreements" className="underline ">
+                  <Link href="/terms" className="underline ">
                     Terms and Agreement
                   </Link>
                 </FormLabel>
@@ -124,7 +124,12 @@ export const SignupSocial = () => {
               </FormItem>
             )}
           />
-          <Button className="w-[180px]" type="submit" variant="secondary">
+          <Button
+            className="w-[180px]"
+            type="submit"
+            variant="secondary"
+            disabled={form.formState.isSubmitting}
+          >
             FINISH SIGN UP
           </Button>
         </form>
