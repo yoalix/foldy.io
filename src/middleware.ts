@@ -23,11 +23,12 @@ export async function middleware(request: NextRequest) {
         !request.nextUrl.pathname.includes("verify-password") &&
         !request.nextUrl.pathname.includes("update-password")
     );
+    const isTermsRoute = request.nextUrl.pathname.includes("terms");
     console.log("session", session);
     console.log("user", user);
     console.log(request.nextUrl.pathname, isAuthRoute);
     const profile = await getUserProfile(supabase, user?.id).catch(() => null);
-    if ((!session || !user) && !isAuthRoute) {
+    if ((!session || !user) && !isAuthRoute && !isTermsRoute) {
       console.log("redirecting to auth");
       return NextResponse.redirect(new URL("/auth", request.url));
     } else if (

@@ -1,7 +1,1 @@
-export const AUTH_ROUTES = [
-  "/login",
-  "/signup",
-  "/password-recovery",
-  "/auth",
-  "/terms",
-];
+export const AUTH_ROUTES = ["/login", "/signup", "/password-recovery", "/auth"];
