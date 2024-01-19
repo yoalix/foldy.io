@@ -31,7 +31,7 @@ export const FolderList = async ({
             subtitle={`${numberOfLinks} links`}
             icon="/icons/folder.png"
             href={`/profile/${username || "@me"}/folder/${folder.id}`}
-            updated={timeSince(updated) || "1 day ago"}
+            rightText={timeSince(updated) || "1 day ago"}
           />
         );
       })}

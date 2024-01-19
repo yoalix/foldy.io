@@ -157,7 +157,7 @@ export const SignupEmail = () => {
         fullName: data.firstName + " " + data.lastName,
         username: data.username,
       });
-      router.push("/");
+      router.push("/auth/verify-email");
     } catch (error) {
       console.log(error);
     }

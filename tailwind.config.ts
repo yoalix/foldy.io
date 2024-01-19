@@ -10,38 +10,35 @@ const config = {
   ],
   prefix: "",
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
-    colors: {
-      black: {
-        50: "#e7e7e7",
-        100: "#b4b6b4",
-        secondary: "#8f928f",
-        200: "#8f928f",
-        300: "#5C605C",
-        400: "#3D413D",
-        primary: "#0C120C",
-        DEFAULT: "#0C120C",
-        500: "#0C120C",
-        600: "#0B100B",
-        700: "#090D09",
-        800: "#070A07",
-        900: "#050805",
-      },
-    },
-
     extend: {
+      container: {
+        center: true,
+        padding: "2rem",
+        screens: {
+          "2xl": "1400px",
+        },
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        black: {
+          50: "#e7e7e7",
+          100: "#b4b6b4",
+          secondary: "#8f928f",
+          200: "#8f928f",
+          300: "#5C605C",
+          400: "#3D413D",
+          primary: "#0C120C",
+          DEFAULT: "#0C120C",
+          500: "#0C120C",
+          600: "#0B100B",
+          700: "#090D09",
+          800: "#070A07",
+          900: "#050805",
+        },
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

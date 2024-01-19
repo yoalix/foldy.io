@@ -1,5 +1,5 @@
 import { supabase } from "@/lib/supabase/auth/client";
-import { getUserProfile, getUserSocials } from "@/lib/supabase/db";
+import { getUserSocials } from "@/lib/supabase/db";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetUserSocials = (userId?: string) => {

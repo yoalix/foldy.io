@@ -1,24 +1,29 @@
-"use client";
-
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { signOut } from "@/lib/supabase/auth/client";
-import { useRouter } from "next/navigation";
+import { getCurrentUser, signOut } from "@/lib/supabase/auth/server";
+import { redirect, useRouter } from "next/navigation";
 import Link from "next/link";
 import { RightArrow } from "@/components/icons/right-arrow";
 import { BackButton } from "./ui/back-button";
+import { revalidatePath } from "next/cache";
+import { getUserProfile } from "@/lib/supabase/db";
+import { cookies } from "next/headers";
+import { createClient } from "@/lib/supabase/server";
 
-export const Settings = () => {
-  const router = useRouter();
+export const Settings = async () => {
+  const supabase = createClient(cookies());
+  const { data } = await getCurrentUser();
+  const user = await getUserProfile(supabase, data?.user?.id);
   const handleSignOut = async () => {
+    "use server";
     try {
       await signOut();
       console.log("signed out");
-      router.push("/auth");
-      router.refresh();
+      revalidatePath("/");
     } catch (error) {
       console.log(error);
     }
+    redirect("/");
   };
   const settings = [
     {
@@ -28,11 +33,11 @@ export const Settings = () => {
 
     {
       text: "Following",
-      href: "/following",
+      href: `/profile/${user?.username}/following`,
     },
     {
       text: "Followers",
-      href: "/followers",
+      href: `/profile/${user?.username}/followers`,
     },
     {
       text: "Terms and Agreements",
@@ -82,13 +87,14 @@ export const Settings = () => {
           </div>
         )
       )}
-      <Button
-        className="text-left text-urgent hover:text-urgent justify-start w-full"
-        variant="ghost"
-        onClick={handleSignOut}
-      >
-        Sign Out
-      </Button>
+      <form action={handleSignOut}>
+        <Button
+          className="text-left text-urgent hover:text-urgent justify-start w-full"
+          variant="ghost"
+        >
+          Sign Out
+        </Button>
+      </form>
     </div>
   );
 };

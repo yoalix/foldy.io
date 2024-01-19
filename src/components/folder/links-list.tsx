@@ -15,7 +15,7 @@ export const LinksList = ({ links }: { links?: Link[] }) => {
           title={link.name || ""}
           subtitle={link.url}
           href={link.url}
-          updated={timeSince(new Date(link.updated_at).getTime())}
+          rightText={timeSince(new Date(link.updated_at).getTime())}
           icon={"/icons/link.png"}
         />
       ))}

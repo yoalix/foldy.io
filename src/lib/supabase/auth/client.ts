@@ -36,7 +36,7 @@ export const signUpWithEmailAndPassword = async ({
       .eq("email", email)
       .maybeSingle();
     // TODO: link emails or sign user in if email is already taken
-    if (user) throw new Error("email already taken");
+    if (user.data) throw new Error("email already taken");
     const res = await supabase.auth.signUp({
       email,
       password,

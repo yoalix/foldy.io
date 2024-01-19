@@ -1,7 +1,7 @@
 import { CreateLink } from "@/components/folder/create-link";
 import { FolderMenu } from "@/components/folder/folder-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { BackButton } from "@/components/ui/back-button";
+import { UserAvatar } from "@/components/ui/user-avatar";
 import { getFolder, getUserByUsername } from "@/lib/supabase/db";
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
@@ -23,17 +23,13 @@ export default async function FolderLayout(props: {
     <div className="flex flex-col gap-3 p-8">
       <BackButton />
       <div className="flex gap-3">
-        <Avatar className="w-6 h-6">
-          <AvatarImage src="/profile.png" asChild>
-            <Image
-              src={user?.avatar_url || ""}
-              alt="avatar"
-              width={24}
-              height={24}
-            />
-          </AvatarImage>
-          <AvatarFallback />
-        </Avatar>
+        <UserAvatar
+          className="w-6 h-6"
+          avatarUrl={user?.avatar_url}
+          fullName={user?.full_name}
+          width={24}
+          height={24}
+        />
         <p className="text-black-secondary">@{user?.username}</p>
       </div>
       <div className="flex items-center gap-3 w-full">

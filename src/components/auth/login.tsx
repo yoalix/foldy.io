@@ -23,7 +23,12 @@ type LoginForm = {
 };
 
 export const Login = () => {
-  const form = useForm<LoginForm>();
+  const form = useForm<LoginForm>({
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
   const router = useRouter();
   const isMobile = useIsMobile();
   const handleSignIn = async (method: string) => {

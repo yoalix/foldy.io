@@ -19,6 +19,14 @@ export const getUserProfile = async (
     });
 };
 
+export const getCurrentUserProfile = async (
+  supabase: SupabaseClient<Database>
+) => {
+  const { data, error } = await supabase.auth.getUser();
+  if (error) throw error;
+  return getUserProfile(supabase, data?.user?.id);
+};
+
 export async function checkUsername(
   supabase: SupabaseClient<Database>,
   username: string
@@ -39,16 +47,22 @@ export const getUserByUsername = async (
   username: string
 ) => {
   if (!username) return null;
-  return supabase
-    .from("profiles")
+  return (
+    supabase
+      .from("profiles")
 
-    .select("*, user_social_media(*)")
-    .eq("username", username)
-    .maybeSingle()
-    .then(({ data, error }) => {
-      if (error) throw error;
-      return data;
-    });
+      // followers are users who are following the user
+      // following are users who the user is follows
+      .select(
+        "*, userSocialMedia:user_social_media(*), followers:user_followers!user_followers_following_id_fkey(*), following:user_followers!user_followers_follower_id_fkey(*)"
+      )
+      .eq("username", username)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (error) throw error;
+        return data;
+      })
+  );
 };
 export type CreateUser = Database["public"]["Tables"]["profiles"]["Insert"];
 
@@ -154,6 +168,66 @@ export const createOrUpdateUserSocialMedia = async (
     .from("user_social_media")
     .upsert({ provider, link, user_id: uid }, { onConflict: "provider" })
     .eq("id", socialId);
+  if (error) throw error;
+  return data;
+};
+
+// -----------User Followers------------------
+export const getUserFollowsByUsername = async (
+  supabase: SupabaseClient<Database>,
+  username?: string
+) => {
+  if (!username) return null;
+  return supabase
+    .from("profiles")
+    .select(
+      "followers:user_followers!user_followers_following_id_fkey(profiles!user_followers_follower_id_fkey(id, avatar_url, full_name, username)), following:user_followers!user_followers_follower_id_fkey(profiles!user_followers_following_id_fkey(id, avatar_url, full_name, username))"
+    )
+    .eq("username", username)
+    .single()
+    .then(({ data, error }) => {
+      if (error) throw error;
+      return data;
+    });
+};
+
+export const getUserFollowing = async (
+  supabase: SupabaseClient<Database>,
+  uid?: string
+) => {
+  if (!uid) return null;
+  return supabase
+    .from("user_followers")
+    .select("*")
+    .eq("follower_id", uid)
+    .then(({ data, error }) => {
+      if (error) throw error;
+      return data;
+    });
+};
+
+export type UserFollow = { follower_id: string; following_id: string };
+
+export const followUser = async (
+  supabase: SupabaseClient<Database>,
+  { follower_id, following_id }: UserFollow
+) => {
+  const { data, error } = await supabase
+    .from("user_followers")
+    .insert({ follower_id, following_id });
+  if (error) throw error;
+  return data;
+};
+
+export const unfollowUser = async (
+  supabase: SupabaseClient<Database>,
+  { follower_id, following_id }: UserFollow
+) => {
+  const { data, error } = await supabase
+    .from("user_followers")
+    .delete()
+    .eq("follower_id", follower_id)
+    .eq("following_id", following_id);
   if (error) throw error;
   return data;
 };
