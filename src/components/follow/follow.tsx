@@ -32,7 +32,7 @@ export const Follow = async ({ username, active }: Props) => {
   return (
     <div className="p-10">
       <BackButton />
-      <Tabs defaultValue={active} className="w-[400px]">
+      <Tabs defaultValue={active}>
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="following">Following</TabsTrigger>
           <TabsTrigger value="followers">Followers</TabsTrigger>
