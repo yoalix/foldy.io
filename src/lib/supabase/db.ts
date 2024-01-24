@@ -11,7 +11,7 @@ export const getUserProfile = async (
   return supabase
     .from("profiles")
     .select(
-      "*, followers:user_followers!user_followers_following_id_fkey(*), following:user_followers!user_followers_follower_id_fkey(*)"
+      "*, userSocialMedia:user_social_media(*),followers:user_followers!user_followers_following_id_fkey(*), following:user_followers!user_followers_follower_id_fkey(*)"
     )
     .eq("id", uid)
     .maybeSingle()
