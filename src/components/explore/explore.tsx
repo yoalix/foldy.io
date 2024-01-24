@@ -1,4 +1,4 @@
-import { getExploreUsers } from "@/lib/prisma/db";
+import { ExploreUsers, getExploreUsers } from "@/lib/prisma/db";
 import React from "react";
 import { SearchBar } from "./search-bar";
 import { getCurrentUser } from "@/lib/supabase/auth/server";
@@ -9,7 +9,7 @@ import { cookies } from "next/headers";
 export const Explore = async () => {
   const currentUser = await getCurrentUser();
   const supabase = createClient(cookies());
-  const users = await getExploreUsers(supabase);
+  const users: ExploreUsers = await getExploreUsers(supabase);
   return (
     <div className="flex flex-col gap-5">
       <SearchBar />

@@ -20,7 +20,7 @@ if (process.env.NODE_ENV !== "production") globalThis.prisma = prisma;
 export const getExploreUsers = async (supabase: SupabaseClient<Database>) => {
   const currentUser = await getCurrentUserProfile(supabase);
 
-  return await prisma.profiles.findMany({
+  return prisma.profiles.findMany({
     where: {
       id: {
         not: currentUser?.id,
