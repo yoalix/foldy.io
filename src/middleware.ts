@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/middleware";
 import { AUTH_ROUTES } from "@/lib/utils/consts";
 import { createUser, getUserProfile, uploadAvatar } from "./lib/supabase/db";
-import { fetchFile } from "./lib/utils/utils";
+import { fetchFile } from "@/lib/utils/utils";
 
 export async function middleware(request: NextRequest) {
   try {
@@ -16,7 +16,9 @@ export async function middleware(request: NextRequest) {
       data: { session },
     } = await supabase.auth.getSession();
 
-    const user = session?.user;
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
     const isAuthRoute = AUTH_ROUTES.find(
       (route) =>
         request.nextUrl.pathname.includes(route) &&
@@ -28,9 +30,12 @@ export async function middleware(request: NextRequest) {
     console.log("user", user);
     console.log(request.nextUrl.pathname, isAuthRoute);
     const profile = await getUserProfile(supabase, user?.id).catch(() => null);
+    console.log("profile", profile);
     if ((!session || !user) && !isAuthRoute && !isTermsRoute) {
       console.log("redirecting to auth");
       return NextResponse.redirect(new URL("/auth", request.url));
+    } else if (request.nextUrl.pathname.includes("/signup/social")) {
+      return response;
     } else if (
       user &&
       !user.user_metadata.username &&

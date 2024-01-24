@@ -14,7 +14,7 @@ export const getUserProfile = async (
       "*, followers:user_followers!user_followers_following_id_fkey(*), following:user_followers!user_followers_follower_id_fkey(*)"
     )
     .eq("id", uid)
-    .single()
+    .maybeSingle()
     .then(({ data, error }) => {
       if (error) throw error;
       return data;

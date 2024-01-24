@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use } from "react";
+import React from "react";
 import { BackButton } from "../ui/back-button";
 import { Button } from "../ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -155,7 +155,8 @@ export const ProfileEdit = () => {
         title: "Success",
         description: "Successfully updated profile",
       });
-      router.push(`/profile/${username}`);
+      router.push(`/profile/${data?.username}`);
+      router.refresh();
     } catch (error) {
       console.error(error);
     }

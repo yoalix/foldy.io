@@ -50,6 +50,9 @@ export const SignupSocial = () => {
   const createUser = useCreateUser();
   const form = useForm<FormValues>({
     resolver: zodResolver(SignupSchema),
+    defaultValues: {
+      username: "",
+    },
   });
   const router = useRouter();
 
@@ -73,7 +76,7 @@ export const SignupSocial = () => {
         id: user.id,
         email: email || "",
         full_name: full_name || "",
-        avatar_url,
+        avatar_url: avatarUrl || "",
         username: values.username,
       });
       console.log("created user", userRes);
