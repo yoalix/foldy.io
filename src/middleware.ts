@@ -1,8 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/middleware";
-import { AUTH_ROUTES } from "@/lib/consts";
+import { AUTH_ROUTES } from "@/lib/utils/consts";
 import { createUser, getUserProfile, uploadAvatar } from "./lib/supabase/db";
-import { fetchFile } from "./lib/utils";
+import { fetchFile } from "./lib/utils/utils";
 
 export async function middleware(request: NextRequest) {
   try {

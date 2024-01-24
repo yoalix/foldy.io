@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import { usePathname } from "next/navigation";
 import { Authentication } from "@/components/auth/authentication";
 import { useUserSession } from "@/hooks/queries/useUserSession";
-import { AUTH_ROUTES } from "@/lib/consts";
+import { AUTH_ROUTES } from "@/lib/utils/consts";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,7 +17,7 @@ export const Body = ({ children }: { children: React.ReactNode }) => {
     <body>
       {user || isAuthRoute ? (
         <div
-          className={`${inter.className} h-full w-full mt-20 md:mt-0 md:ml-40 md:max-w-[680px]`}
+          className={`${inter.className} p-10 h-full w-full mt-20 md:mt-0 md:ml-40 md:max-w-[680px]`}
         >
           {children}
         </div>

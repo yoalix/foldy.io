@@ -42,10 +42,11 @@ export async function Header() {
           {NavMenuItems.map((item) => (
             <Button
               key={`nav-${item.name}`}
-              className="p-10 w-full justify-start"
+              className="p-10 w-full justify-start flex gap-2"
               variant="ghost"
+              asChild
             >
-              <Link href={item.href} className="flex gap-2">
+              <Link href={item.href}>
                 {item.icon}
                 {item.name}
               </Link>

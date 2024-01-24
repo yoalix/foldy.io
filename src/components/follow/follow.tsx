@@ -9,16 +9,12 @@ import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import { BackButton } from "../ui/back-button";
 import { FollowItem } from "./followItem";
+import { isFollowing } from "@/lib/utils/isFollowing";
 
 type Props = {
   username: string;
   active: "following" | "followers";
 };
-
-function isFollowing(userId: string, following: UserFollow[] | null) {
-  if (!following) return false;
-  return following.some((user) => user.following_id === userId);
-}
 
 export const Follow = async ({ username, active }: Props) => {
   const supabase = createClient(cookies());
@@ -30,7 +26,7 @@ export const Follow = async ({ username, active }: Props) => {
   );
 
   return (
-    <div className="p-10">
+    <div>
       <BackButton />
       <Tabs defaultValue={active}>
         <TabsList className="grid w-full grid-cols-2">

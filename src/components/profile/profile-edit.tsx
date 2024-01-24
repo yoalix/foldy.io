@@ -161,7 +161,7 @@ export const ProfileEdit = () => {
     }
   };
   return (
-    <div className="p-10">
+    <div>
       <BackButton />
       <Form {...form}>
         <form

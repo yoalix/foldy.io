@@ -23,7 +23,7 @@ import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { fetchFile } from "@/lib/utils";
+import { fetchFile } from "@/lib/utils/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
 

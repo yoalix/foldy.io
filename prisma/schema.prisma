@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model folders {
+  id          String   @id(map: "folder_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at  DateTime @default(now()) @db.Timestamptz(6)
+  name        String
+  description String?
+  user_id     String   @db.Uuid
+  user    profiles @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  links       links[]
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model links {
+  id         String   @id(map: "link_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+  url        String
+  name       String?
+  folder_id  String   @db.Uuid
+  user_id    String   @default(dbgenerated("auth.uid()")) @db.Uuid
+  order      Int      @default(0) @db.SmallInt
+  folders    folders  @relation(fields: [folder_id], references: [id], onDelete: Cascade)
+  user   profiles @relation(fields: [user_id], references: [id], onDelete: Cascade)
+}
+
+/// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
+model profiles {
+  id                                                   String              @id(map: "Profile_pkey") @db.Uuid
+  created_at                                           DateTime            @default(now()) @db.Timestamptz(6)
+  full_name                                            String              @db.VarChar
+  username                                             String              @unique(map: "Profile_username_key") @db.VarChar
+  email                                                String?             @db.VarChar
+  bio                                                  String?
+  avatar_url                                           String?
+  folders                                              folders[]
+  links                                                links[]
+  following  user_followers[]    @relation("user_followers_follower_idToprofiles")
+  followers user_followers[]    @relation("user_followers_following_idToprofiles")
+  user_social_media                                    user_social_media[]
+}
+
+model user_followers {
+  id                                             String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at                                     DateTime @default(now()) @db.Timestamptz(6)
+  follower_id                                    String   @db.Uuid
+  following_id                                   String   @db.Uuid
+  follower  profiles @relation("user_followers_follower_idToprofiles", fields: [follower_id], references: [id], onDelete: Cascade)
+  following profiles @relation("user_followers_following_idToprofiles", fields: [following_id], references: [id], onDelete: Cascade)
+}
+
+model user_social_media {
+  id       BigInt   @id @default(autoincrement())
+  user_id  String   @db.Uuid
+  provider String
+  link     String
+  profile profiles @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}

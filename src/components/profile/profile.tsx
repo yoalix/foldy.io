@@ -27,7 +27,7 @@ const SocialIcons = {
 
 export const Profile = async ({ username }: Props) => {
   const supabase = createClient(cookies());
-  const { data: currentUser } = await getCurrentUser();
+  const currentUser = await getCurrentUser();
   const user = await getUserByUsername(supabase, username || "");
   if (!user) return <div>profile not found</div>;
   const isCurrentUser = currentUser?.user?.id === user?.id;
@@ -53,9 +53,8 @@ export const Profile = async ({ username }: Props) => {
   const isFollowing = user.followers.some(
     (follower) => follower.follower_id === currentUser?.user?.id
   );
-  console.log("isFollowing", isFollowing);
   return (
-    <div className="flex flex-col gap-5 p-10">
+    <div className="flex flex-col gap-5">
       <div className="flex w-full items-center">
         <Link href="/profile/edit">
           <UserAvatar
@@ -113,9 +112,9 @@ export const Profile = async ({ username }: Props) => {
         ) : (
           <form action={isFollowing ? handleUnfollow : handleFollow}>
             <Button
-              className={`my-3 w-[180px]${
-                isFollowing ? " bg-primary-700" : ""
-              }`}
+              className={`my-3 w-[180px]`}
+              variant={isFollowing ? "outline" : "default"}
+              accent={isFollowing ? "primary" : undefined}
             >
               {isFollowing ? "Following" : "Follow"}
             </Button>

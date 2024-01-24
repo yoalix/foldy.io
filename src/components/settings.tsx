@@ -12,8 +12,8 @@ import { createClient } from "@/lib/supabase/server";
 
 export const Settings = async () => {
   const supabase = createClient(cookies());
-  const { data } = await getCurrentUser();
-  const user = await getUserProfile(supabase, data?.user?.id);
+  const { user: curentUser } = await getCurrentUser();
+  const user = await getUserProfile(supabase, curentUser?.id);
   const handleSignOut = async () => {
     "use server";
     try {
@@ -59,7 +59,7 @@ export const Settings = async () => {
     },
   ];
   return (
-    <div className="flex flex-col gap-3 h-full w-full p-10">
+    <div className="flex flex-col gap-3 h-full w-full">
       <BackButton className="ml-4" />
       <h1 className="pl-4">Settings</h1>
       {settings.map((setting) =>

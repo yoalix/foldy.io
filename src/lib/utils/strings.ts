@@ -29,13 +29,13 @@ export function timeSince(timestamp: number) {
     return `${day} day${day > 1 ? "s" : ""}`;
   }
   if (secondsPast <= 18144000) {
-    const week = Math.floor(secondsPast / 604800);
-    return `${week} week${week > 1 ? "s" : ""}}`;
+    const week = Math.ceil(secondsPast / 604800);
+    return `${week} week${week > 1 ? "s" : ""}`;
   }
   if (secondsPast <= 29030400) {
-    const month = Math.floor(secondsPast / 2592000);
-    return `${month}} month${month > 1 ? "s" : ""}}}`;
+    const month = Math.ceil(secondsPast / 2592000);
+    return `${month}} month${month > 1 ? "s" : ""}`;
   }
-  const year = Math.floor(secondsPast / 31536000);
-  return `${year} year${year > 1 ? "s" : ""}}}`;
+  const year = Math.ceil(secondsPast / 31536000);
+  return `${year} year${year > 1 ? "s" : ""}`;
 }

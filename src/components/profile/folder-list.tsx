@@ -1,7 +1,7 @@
 import React from "react";
 import { ListItem } from "@/components/ui/list-item";
 import { useGetFolders } from "@/hooks/queries/useGetFolders";
-import { timeSince } from "@/lib/strings";
+import { timeSince } from "@/lib/utils/strings";
 import { getFolders } from "@/lib/supabase/db";
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";

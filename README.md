@@ -34,3 +34,9 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Using DB packages
+
+For the most part you are able to use supabase to make queries to our database from the client or through server components. For server componenets, use the supabse/server client. For client components use the supabase/client client.
+
+When queries tend to be more complex, use prisma. prisma can only be used on the server, this means for server components, you can call queries directly through prisma on the server component. For client components, you have to create a route to fetch the data on the server through prisma. Try to use this method sparingly as it adds complexity. For client components be sure to use react-query to add error handling and loading states for data being fetched.

@@ -42,7 +42,6 @@ const Item = ({ id, title, subtitle, onDeleteClick }: ItemProps) => {
     transform,
     transition,
     isDragging,
-    isOver,
     isSorting,
   } = useSortable({ id });
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { ListItem } from "@/components/ui/list-item";
-import { timeSince } from "@/lib/strings";
+import { timeSince } from "@/lib/utils/strings";
 import { Database } from "@/lib/supabase/database.types";
 
 type Link = Database["public"]["Tables"]["links"]["Row"];

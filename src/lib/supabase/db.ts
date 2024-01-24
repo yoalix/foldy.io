@@ -10,7 +10,9 @@ export const getUserProfile = async (
   if (!uid) return null;
   return supabase
     .from("profiles")
-    .select("*")
+    .select(
+      "*, followers:user_followers!user_followers_following_id_fkey(*), following:user_followers!user_followers_follower_id_fkey(*)"
+    )
     .eq("id", uid)
     .single()
     .then(({ data, error }) => {
@@ -54,7 +56,7 @@ export const getUserByUsername = async (
       // followers are users who are following the user
       // following are users who the user is follows
       .select(
-        "*, userSocialMedia:user_social_media(*), followers:user_followers!user_followers_following_id_fkey(*), following:user_followers!user_followers_follower_id_fkey(*)"
+        "*, userSocialMedia:user_social_media(*), followers:user_followers!user_followers_following_id_fkey(follower_id), following:user_followers!user_followers_follower_id_fkey(following_id)"
       )
       .eq("username", username)
       .maybeSingle()
@@ -64,6 +66,7 @@ export const getUserByUsername = async (
       })
   );
 };
+
 export type CreateUser = Database["public"]["Tables"]["profiles"]["Insert"];
 
 export const createUser = async (
