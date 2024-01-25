@@ -15,7 +15,7 @@ export const Signup = () => {
   const handleSignup = async (method: string) => {
     try {
       await signInWithGoogle();
-      router.push("/auth/signup/social");
+      // router.push("/auth/signup/social");
     } catch (error) {
       console.log(error);
     }

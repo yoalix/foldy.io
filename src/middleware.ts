@@ -34,13 +34,12 @@ export async function middleware(request: NextRequest) {
     if ((!session || !user) && !isAuthRoute && !isTermsRoute) {
       console.log("redirecting to auth");
       return NextResponse.redirect(new URL("/auth", request.url));
-    } else if (request.nextUrl.pathname.includes("/signup/social")) {
-      return response;
     } else if (
       user &&
       !user.user_metadata.username &&
       !profile &&
-      !isAuthRoute
+      (!request.nextUrl.pathname.includes("/signup/social") ||
+        !request.nextUrl.pathname.includes("/auth/callback"))
     ) {
       console.log("redirecting to create username");
       return NextResponse.redirect(new URL("/auth/signup/social", request.url));

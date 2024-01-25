@@ -58,7 +58,7 @@ export const signInWithGoogle = async () => {
         access_type: "offline",
         prompt: "consent",
       },
-      redirectTo: `${location.origin}/auth/callback`,
+      redirectTo: `${location.origin}/auth/callback?next=/auth/signup/social`,
     },
   });
 };

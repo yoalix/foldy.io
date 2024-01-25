@@ -12,7 +12,7 @@ export const signInWithGoogle = async () => {
         prompt: "consent",
       },
 
-      redirectTo: `${location.origin}/auth/callback`,
+      redirectTo: `${location.origin}/auth/callback?next=/auth/signup/social`,
     },
   });
 };
