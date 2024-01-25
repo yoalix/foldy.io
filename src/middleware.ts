@@ -38,8 +38,10 @@ export async function middleware(request: NextRequest) {
       user &&
       !user.user_metadata.username &&
       !profile &&
-      (!request.nextUrl.pathname.includes("/signup/social") ||
-        !request.nextUrl.pathname.includes("/auth/callback"))
+      !(
+        request.nextUrl.pathname.includes("/signup/social") ||
+        request.nextUrl.pathname.includes("/auth/callback")
+      )
     ) {
       console.log("redirecting to create username");
       return NextResponse.redirect(new URL("/auth/signup/social", request.url));
