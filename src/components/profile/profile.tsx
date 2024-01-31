@@ -16,6 +16,8 @@ import { followUserAction } from "@/actions/followUser";
 import { revalidatePath } from "next/cache";
 import { unfollowUserAction } from "@/actions/unfollowUserAction";
 import { UserAvatar } from "../ui/user-avatar";
+import { FoldersListNav } from "./folders-list-nav";
+import { BackButton } from "../ui/back-button";
 type Props = {
   username?: string;
 };
@@ -55,6 +57,7 @@ export const Profile = async ({ username }: Props) => {
   );
   return (
     <div className="flex flex-col gap-5">
+      {!isCurrentUser && <BackButton />}
       <div className="flex w-full items-center">
         <Link href="/profile/edit">
           <UserAvatar
@@ -120,8 +123,10 @@ export const Profile = async ({ username }: Props) => {
         )}
       </div>
       <div className="flex flex-col ">
-        {isCurrentUser && <CreateFolder userId={user.id} />}
-        <FolderList username={user?.username} userId={user?.id} />
+        {isCurrentUser && <FoldersListNav user={user} />}
+        {!isCurrentUser && (
+          <FolderList username={user?.username} userId={user?.id} />
+        )}
       </div>
     </div>
   );
