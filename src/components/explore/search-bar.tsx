@@ -17,9 +17,11 @@ import { SearchItem } from "./search-item";
 import { useGetCurrentUser } from "@/hooks/queries/useGetCurrentUser";
 import { isFollowing } from "@/lib/utils/isFollowing";
 import { useSearchParams } from "next/navigation";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export const SearchBar = () => {
   const searchParams = useSearchParams();
+  const isMobile = useIsMobile();
 
   const [search, setSearch] = useState(searchParams.get("search") || "");
   const debouncedSearch = useDebounce(search);
@@ -55,52 +57,52 @@ export const SearchBar = () => {
   }, [debouncedSearch]);
 
   return (
-    <Command className="max-w-96" shouldFilter={false}>
-      <Popover open={debouncedSearch.length > 0}>
-        <PopoverTrigger>
-          <CommandInput
-            ref={inputRef}
-            className="max-w-80"
-            placeholder="search people, folders, etc..."
-            //   icon={<Search size={18} />}
-            value={search}
-            onValueChange={setSearch}
-            cmd={<CommandShortcut>⌘K</CommandShortcut>}
-          />
-        </PopoverTrigger>
-        <PopoverContent className=" max-w-96 md:w-96">
-          <CommandList className="max-w-96">
-            {!isPending && <CommandEmpty>No results</CommandEmpty>}
-            {isPending && (
-              <CommandLoading>
-                <div className="animate-pulse w-full flex justify-center">
-                  <img src="/icons/logo.png" height={16} width={16} />
-                </div>
-              </CommandLoading>
-            )}
-            {data?.map((user) => {
-              return (
-                <SearchItem
-                  key={user.id}
-                  value={user.id}
-                  currentUserId={currentUser?.id}
-                  fullName={user.full_name}
-                  username={user.username}
-                  userId={user.id}
-                  avatarUrl={user.avatar_url}
-                  folders={user.folders}
-                  accent="primary"
-                  buttonText={
-                    isFollowing(user.id || "", currentUser?.following || [])
-                      ? "following"
-                      : "follow"
-                  }
-                />
-              );
-            })}
-          </CommandList>
-        </PopoverContent>
-      </Popover>
+    <Command className="h-full" shouldFilter={false}>
+      {/* <Popover open={debouncedSearch.length > 0}> */}
+      {/* <PopoverTrigger> */}
+      <CommandInput
+        ref={inputRef}
+        // className="max-w-80"
+        placeholder="search people, folders, etc..."
+        //   icon={<Search size={18} />}
+        value={search}
+        onValueChange={setSearch}
+        cmd={!isMobile && <CommandShortcut>⌘K</CommandShortcut>}
+      />
+      {/* </PopoverTrigger> */}
+      {/* <PopoverContent className=" max-w-96 md:w-96"> */}
+      <CommandList className="h-full max-h-full">
+        {!isPending && <CommandEmpty>No results</CommandEmpty>}
+        {isPending && (
+          <CommandLoading>
+            <div className="animate-pulse w-full flex justify-center py-5">
+              <img src="/icons/logo.png" height={16} width={16} />
+            </div>
+          </CommandLoading>
+        )}
+        {data?.map((user) => {
+          return (
+            <SearchItem
+              key={user.id}
+              value={user.id}
+              currentUserId={currentUser?.id}
+              fullName={user.full_name}
+              username={user.username}
+              userId={user.id}
+              avatarUrl={user.avatar_url}
+              folders={user.folders}
+              accent="primary"
+              buttonText={
+                isFollowing(user.id || "", currentUser?.following || [])
+                  ? "following"
+                  : "follow"
+              }
+            />
+          );
+        })}
+      </CommandList>
+      {/* </PopoverContent>
+      </Popover> */}
     </Command>
   );
 };

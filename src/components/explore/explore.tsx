@@ -9,11 +9,11 @@ import { cookies } from "next/headers";
 export const Explore = async () => {
   const currentUser = await getCurrentUser();
   const supabase = createClient(cookies());
-  const users: ExploreUsers = await getExploreUsers(supabase);
+  // const users: ExploreUsers = await getExploreUsers(supabase);
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-5 h-full">
       <SearchBar />
-      {users.map((user) => (
+      {/* {users.map((user) => (
         <ExploreItem
           key={user.id}
           {...user}
@@ -21,7 +21,7 @@ export const Explore = async () => {
           followersCount={user.followers.length}
           followingCount={user.following.length}
         />
-      ))}
+      ))} */}
     </div>
   );
 };

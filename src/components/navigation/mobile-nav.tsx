@@ -1,10 +1,11 @@
 "use client";
 
-import { Menu } from "@/components/icons/menu";
+// import { Menu } from "@/components/icons/menu";
 import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { Menu, Search } from "lucide-react";
 
 export const MobileNav = ({ username }: { username?: string }) => {
   const [lastScrollTop, setLastScrollTop] = useState(0);
@@ -43,13 +44,22 @@ export const MobileNav = ({ username }: { username?: string }) => {
           />
           <h1 className="text-primary italic">FOLDY</h1>
         </Link>
+        <Link href="/explore">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="flex justify-center items-center text-black-secondary"
+          >
+            <Search />
+          </Button>
+        </Link>
         <Link href="/settings">
-          <Button variant="ghost" size="icon">
+          <Button variant="ghost" size="icon" className="text-black-secondary">
             <Menu />
           </Button>
         </Link>
       </div>
-      <nav
+      {/* <nav
         className={`fixed bottom-3 left-0 right-0 flex justify-center transition-all duration-500 ${
           isVisible ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
         }`}
@@ -72,7 +82,7 @@ export const MobileNav = ({ username }: { username?: string }) => {
             Profile
           </Button>
         </Link>
-      </nav>
+      </nav> */}
     </div>
   );
 };

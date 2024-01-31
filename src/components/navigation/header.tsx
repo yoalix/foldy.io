@@ -16,7 +16,7 @@ export async function Header() {
   const user = await getUserProfile(supabase, userSession.data.user?.id || "");
   if (!user) return null;
   const NavMenuItems = [
-    { name: "Explore", href: "/explore", icon: <Compass /> },
+    { name: "Search", href: "/explore", icon: <Compass /> },
     {
       name: "Profile",
       href: `/${user?.username}`,

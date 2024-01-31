@@ -57,7 +57,7 @@ const UserSearchItem = ({
   return (
     <CommandItem
       value={value}
-      className="max-w-96 flex items-center justify-between py-3 border-b border-b-white hover:border-b hover:border-b-black-50"
+      className="flex items-center justify-between py-3 border-b border-b-white hover:border-b hover:border-b-black-50"
     >
       <Link href={`/${username}`} className="w-full">
         <div className="flex items-center gap-3 w-full">
