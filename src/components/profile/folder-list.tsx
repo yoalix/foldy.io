@@ -4,6 +4,7 @@ import { timeSince } from "@/lib/utils/strings";
 import { getFolders } from "@/lib/supabase/db";
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
+import { Folder } from "lucide-react";
 
 export const FolderList = async ({
   username,
@@ -15,7 +16,7 @@ export const FolderList = async ({
   const supabase = createClient(cookies());
   const folders = await getFolders(supabase, userId);
   return (
-    <div className="flex flex-col ">
+    <>
       {folders?.map((folder, i) => {
         const numberOfLinks = folder?.links?.length || 0;
         const updated = Math.max(
@@ -28,12 +29,12 @@ export const FolderList = async ({
             id={folder.id}
             title={folder.name}
             subtitle={`${numberOfLinks} links`}
-            icon="/icons/folder.png"
+            icon={<Folder className="w-5 h-5 flex-shrink-0" />}
             href={`/${username}/folder/${folder.id}`}
             rightText={timeSince(updated) || "1 day ago"}
           />
         );
       })}
-    </div>
+    </>
   );
 };

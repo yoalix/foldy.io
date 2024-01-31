@@ -38,7 +38,7 @@ export async function Header() {
           <h1 className="text-primary font-bold italic">FOLDY</h1>
         </Link>
 
-        <div className="flex flex-1 flex-col items-center justify-center">
+        <div className="flex flex-1 flex-col items-center justify-start">
           {NavMenuItems.map((item) => (
             <Button
               key={`nav-${item.name}`}

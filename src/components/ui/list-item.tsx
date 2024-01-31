@@ -9,7 +9,7 @@ type ListItemProps = {
   subtitle: string;
   rightText: string | React.ReactNode;
   href: string;
-  icon: string;
+  icon: React.ReactNode;
 };
 
 export const ListItem = ({
@@ -26,7 +26,7 @@ export const ListItem = ({
         href={href}
         target={href.includes("http") ? "_blank" : ""}
       >
-        <Image src={icon} alt={title} width={24} height={24} />
+        {icon}
         <div className="flex flex-col w-full justify-start items-start">
           <h1 className="font-normal">{title}</h1>
           <p className="text-black-secondary ">{subtitle}</p>

@@ -26,16 +26,16 @@ export const Signup = () => {
       onClick: () => handleSignup("google"),
       icon: "/icons/google.png",
     },
-    {
-      name: "Apple",
-      onClick: () => handleSignup("apple"),
-      icon: "/icons/apple.png",
-    },
-    {
-      name: "Facebook",
-      onClick: () => handleSignup("facebook"),
-      icon: "/icons/facebook.png",
-    },
+    // {
+    //   name: "Apple",
+    //   onClick: () => handleSignup("apple"),
+    //   icon: "/icons/apple.png",
+    // },
+    // {
+    //   name: "Facebook",
+    //   onClick: () => handleSignup("facebook"),
+    //   icon: "/icons/facebook.png",
+    // },
   ];
 
   const Content = () => (

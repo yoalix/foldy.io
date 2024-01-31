@@ -13,6 +13,8 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { toast } from "sonner";
+import { Folder } from "lucide-react";
+import Link from "next/link";
 
 const CreateFolderSchema = z.object({
   name: z.string().min(1, "Name is required."),
@@ -32,12 +34,13 @@ export const CreateFolder = ({ userId }: { userId: string }) => {
   const [open, setOpen] = useState(false);
   const modalTrigger = (
     <Button
-      variant="secondary"
-      className="bg-black-50 flex gap-2 my-5"
+      variant="ghost"
+      accent="primary"
+      className="flex justify-start gap-2 py-6 text-sm font-bold"
       onClick={() => setOpen(true)}
     >
-      <Image src="/icons/folder.png" alt="folder icon" width={20} height={20} />
-      NEW FOLDER
+      <Folder className="w-5 h-5 flex-shrink-0" />
+      Tap to Add New Folder
     </Button>
   );
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {

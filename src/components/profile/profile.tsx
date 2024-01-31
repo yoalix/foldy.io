@@ -107,9 +107,7 @@ export const Profile = async ({ username }: Props) => {
             foldy.io/{user?.username}
           </Button>
         </div>
-        {isCurrentUser ? (
-          <CreateFolder userId={user.id} />
-        ) : (
+        {!isCurrentUser && (
           <form action={isFollowing ? handleUnfollow : handleFollow}>
             <Button
               className={`my-3 w-[180px]`}
@@ -121,7 +119,10 @@ export const Profile = async ({ username }: Props) => {
           </form>
         )}
       </div>
-      <FolderList username={user?.username} userId={user?.id} />
+      <div className="flex flex-col ">
+        {isCurrentUser && <CreateFolder userId={user.id} />}
+        <FolderList username={user?.username} userId={user?.id} />
+      </div>
     </div>
   );
 };

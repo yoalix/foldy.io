@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { ListItem } from "@/components/ui/list-item";
 import { timeSince } from "@/lib/utils/strings";
 import { Database } from "@/lib/supabase/database.types";
@@ -16,7 +17,14 @@ export const LinksList = ({ links }: { links?: Link[] }) => {
           subtitle={link.url}
           href={link.url}
           rightText={timeSince(new Date(link.updated_at).getTime())}
-          icon={"/icons/link.png"}
+          icon={
+            <Image
+              src={"/icons/link.png"}
+              alt={link.name || ""}
+              width={24}
+              height={24}
+            />
+          }
         />
       ))}
     </div>
