@@ -1,18 +1,17 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Form, FormInputField } from "@/components/ui/form";
-import { UpdateFolder, updateFolder } from "@/lib/supabase/db";
+import { Folder, UpdateFolder, User, updateFolder } from "@/lib/supabase/db";
 import { createClient } from "@/lib/supabase/client";
-import { useToast } from "../ui/use-toast";
+import { toast } from "sonner";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { useGetUserByUsername } from "@/hooks/queries/useGetUserByUsername";
-import { useGetFolder } from "@/hooks/queries/useGetFolder";
 import { z } from "zod";
 import Image from "next/image";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const EditFolderSchema = z.object({
   name: z.string().min(1, "Name is required."),
@@ -20,56 +19,49 @@ const EditFolderSchema = z.object({
 });
 
 type Props = {
-  username: string;
-  folderId: string;
+  user: User;
+  folder: Folder;
 };
 
 type FormValues = z.infer<typeof EditFolderSchema>;
 
-export const EditFolder = ({ username, folderId }: Props) => {
+export const EditFolder = ({ user, folder }: Props) => {
   const queryClient = useQueryClient();
   const router = useRouter();
-  const { data: user } = useGetUserByUsername(username);
-  const { data: folder } = useGetFolder(folderId);
 
   const form = useForm<FormValues>({
+    resolver: zodResolver(EditFolderSchema),
     defaultValues: {
       name: folder?.name,
       description: folder?.description || "",
     },
   });
-  const [open, setOpen] = useState(false);
-  const { toast } = useToast();
-
-  useEffect(() => {
-    setOpen(true);
-  }, []);
+  const [open, setOpen] = useState(true);
 
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       const supabase = createClient();
       const updateData: UpdateFolder = {
-        id: folderId,
+        id: folder.id,
         user_id: user!.id,
       };
-      if (data.name !== folder?.name) {
+      if (data.name && data.name !== folder?.name) {
         updateData.name = data.name;
       }
-      if (data.description !== folder?.description) {
+      if (data.description && data.description !== folder?.description) {
         updateData.description = data.description;
       }
       await updateFolder(supabase, updateData);
-      toast({
-        title: "Folder updated",
-        description: `Folder ${data.name} updated successfully`,
+      toast("Folder updated", {
+        description: `Folder ${folder?.name} updated successfully`,
       });
 
-      queryClient.invalidateQueries({ queryKey: ["getFolder", folderId] });
+      queryClient.invalidateQueries({ queryKey: ["getFolder", folder.id] });
     } catch (error) {
       console.log(error);
       if (error instanceof Error && error.message) {
         form.setError("description", { message: error.message });
-        toast({ title: error.message, variant: "destructive" });
+        toast.error(error.message);
       }
     }
     setOpen(false);

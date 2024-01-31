@@ -65,7 +65,7 @@ export const Signup = () => {
     </div>
   );
   return isMobile ? (
-    <div className="p-10">
+    <div>
       <BackButton />
       <h1 className="py-10">SIGN UP</h1>
       <Content />

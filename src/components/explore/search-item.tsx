@@ -6,7 +6,7 @@ import { UserAvatar } from "../ui/user-avatar";
 import { CommandItem } from "../ui/command";
 import Image from "next/image";
 import { useQueryClient } from "@tanstack/react-query";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 type UserSearchItemProps = {
   currentUserId?: string;
@@ -59,7 +59,7 @@ const UserSearchItem = ({
       value={value}
       className="max-w-96 flex items-center justify-between py-3 border-b border-b-white hover:border-b hover:border-b-black-50"
     >
-      <Link href={`/profile/${username}`} className="w-full">
+      <Link href={`/${username}`} className="w-full">
         <div className="flex items-center gap-3 w-full">
           <UserAvatar
             className="w-9 h-9"

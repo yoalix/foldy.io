@@ -8,6 +8,6 @@ type Props = {
 };
 
 export default function EditPage({ params }: Props) {
-  redirect(`/${params.username}/folder/${params.folderId}`);
+  redirect(`/profile/${params.username}/folder/${params.folderId}`);
   return null;
 }

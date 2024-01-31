@@ -33,11 +33,11 @@ export const Settings = async () => {
 
     {
       text: "Following",
-      href: `/profile/${user?.username}/following`,
+      href: `/${user?.username}/following`,
     },
     {
       text: "Followers",
-      href: `/profile/${user?.username}/followers`,
+      href: `/${user?.username}/followers`,
     },
     {
       text: "Terms and Agreements",

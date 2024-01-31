@@ -5,11 +5,10 @@ import { Button } from "@/components/ui/button";
 import { Form, FormInputField } from "@/components/ui/form";
 import { BackButton } from "@/components/ui/back-button";
 import { createClient } from "@/lib/supabase/client";
-import { useToast } from "../ui/use-toast";
+import { toast } from "sonner";
 
 export const PasswordRecovery = () => {
   const form = useForm();
-  const { toast } = useToast();
   const handlePasswordRecovery = async (email: string) => {
     try {
       const supabase = createClient();
@@ -17,8 +16,7 @@ export const PasswordRecovery = () => {
         redirectTo: `${location.origin}/auth/callback?next=/auth/update-password`,
       });
       if (res.error) throw new Error(res.error.message);
-      toast({
-        title: "Password recovery email sent",
+      toast("Password recovery email sent", {
         description: "Check your email for the password recovery link",
       });
     } catch (error) {

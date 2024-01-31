@@ -6,7 +6,7 @@ import { redirect, useRouter } from "next/navigation";
 import { useGetCurrentUser } from "@/hooks/queries/useGetCurrentUser";
 import { useGetFolder } from "@/hooks/queries/useGetFolder";
 import { deleteFolderAction } from "@/actions/deleteFolder";
-import { useToast } from "../ui/use-toast";
+import { toast } from "sonner";
 import Image from "next/image";
 
 type Props = {
@@ -17,7 +17,6 @@ type Props = {
 export const DeleteFolder = ({ username, folderId }: Props) => {
   const { data: folder, isPending: isFolderPending } = useGetFolder(folderId);
   const { data: currentUser, isPending: isUserPending } = useGetCurrentUser();
-  const { toast } = useToast();
   const router = useRouter();
   console.log({ folder, currentUser });
   if (!currentUser && !isFolderPending && !isUserPending)
@@ -25,14 +24,14 @@ export const DeleteFolder = ({ username, folderId }: Props) => {
   const handleDelete = async () => {
     try {
       await deleteFolderAction(folderId, currentUser!.id);
-      toast({ title: "Folder deleted" });
+      toast("Folder deleted");
     } catch (error) {
       console.log(error);
       if (error instanceof Error && error.message) {
-        toast({ title: error.message, variant: "destructive" });
+        toast.error(error.message);
       }
     }
-    router.push(`/profile/${username}`);
+    router.push(`/${username}`);
     router.refresh();
   };
 

@@ -80,7 +80,7 @@ export const SignupSocial = () => {
         username: values.username,
       });
       console.log("created user", userRes);
-      router.push(`/profile/${userRes.username}`);
+      router.push(`/${userRes.username}`);
     } catch (error) {
       console.error(error);
       if (error instanceof Error && error.message) {

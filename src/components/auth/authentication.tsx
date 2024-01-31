@@ -5,7 +5,7 @@ import Image from "next/image";
 
 export const Authentication = () => {
   return (
-    <div className="flex flex-col items-center justify-center h-full w-full p-10 gap-10">
+    <div className="flex flex-col items-center justify-center h-full w-full p-0 md:p-10 gap-10 ">
       <div className="flex justify-start items-center self-start">
         <Image
           className="text-2xl font-bold h-4 w-4"
@@ -16,7 +16,7 @@ export const Authentication = () => {
         />
         <h1 className="text-primary italic">FOLDY</h1>
       </div>
-      <h1 className="text-6xl font-normal">
+      <h1 className="text-6xl font-normal max-w-[680px]">
         Organized Links for You and Your Followers.
       </h1>
       <div className="flex justify-center gap-2">
@@ -42,7 +42,7 @@ export const Authentication = () => {
           <p className="text-center mr-4">existing account</p>
         </div>
       </div>
-      <div className="mt-24">
+      <div className="mt-24 flex flex-col justify-center items-center">
         <h1>Foldy, LLC</h1>
         <div className="text-black-secondary italic">Idea by Zander Huff</div>
       </div>

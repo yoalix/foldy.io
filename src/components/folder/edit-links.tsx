@@ -23,9 +23,9 @@ import {
 } from "@dnd-kit/core";
 import { deleteLinksAction } from "@/actions/deleteLinks";
 import { updateLinksAction } from "@/actions/updateLinks";
-import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { toast } from "sonner";
 
 type ItemProps = {
   title?: string | null;
@@ -103,7 +103,6 @@ export const EditLinks = ({
   username: string;
   folderId: string;
 }) => {
-  const { toast } = useToast();
   const router = useRouter();
   const [links, setLinks] = useState(initialLinks || []);
   const [linksToDelete, setLinksToDelete] = useState<string[]>([]);
@@ -150,35 +149,34 @@ export const EditLinks = ({
         await deleteLinksAction(linksToDelete);
       }
       const hasLinksChanged = links.some(
-        (link, index) => link.order !== initialLinks?.[index].order
+        (link, index) => link.id !== initialLinks?.[index].id
       );
       if (hasDelete || hasLinksChanged) {
         await updateLinksAction(links);
+        toast("Success", {
+          description: "Links updated",
+        });
+        router.push(`/${username}/folder/${folderId}`);
+        router.refresh();
       }
-      toast({
-        title: "Success",
-        description: "Links updated",
-      });
-      router.push(`/profile/${username}/folder/${folderId}`);
     } catch (error) {
       console.error(error);
-      toast({
-        title: "Error",
+      toast.error("Error", {
         description: "Something went wrong",
-        variant: "destructive",
       });
     }
   };
 
   return (
     <div className="relative">
-      <Button
-        className="absolute top-[-68px] right-0 text-urgent hover:text-urgent"
-        variant="ghost"
-        onClick={handleSave}
-      >
-        Done
-      </Button>
+      <form action={handleSave}>
+        <Button
+          className="absolute top-[-68px] right-0 text-urgent hover:text-urgent"
+          variant="ghost"
+        >
+          Done
+        </Button>
+      </form>
       <DndContext
         sensors={sensors}
         collisionDetection={closestCenter}

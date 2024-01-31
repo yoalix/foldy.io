@@ -24,7 +24,7 @@ export const FolderMenu = ({
     {
       name: "Edit Description of Folder",
       icon: <User />,
-      link: `/profile/${username}/folder/${folderId}/edit`,
+      link: `/${username}/folder/${folderId}/edit`,
     },
     {
       name: "Subscriptions (coming soon)",
@@ -36,7 +36,7 @@ export const FolderMenu = ({
       name: "Edit Links",
       icon: <Create />,
       disabled: linksLength === 0,
-      link: `/profile/${username}/folder/${folderId}/edit/links`,
+      link: `/${username}/folder/${folderId}/edit/links`,
     },
     {
       name: "Share Profile (coming soon)",
@@ -49,7 +49,7 @@ export const FolderMenu = ({
       icon: (
         <Image src="/icons/trashred.png" alt="delete" width={24} height={24} />
       ),
-      link: `/profile/${username}/folder/${folderId}/delete`,
+      link: `/${username}/folder/${folderId}/delete`,
     },
   ];
   const modalTrigger = (

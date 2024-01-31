@@ -7,8 +7,8 @@ import { Form, FormInputField } from "@/components/ui/form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createClient } from "@/lib/supabase/client";
-import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const UpdatePasswordSchema = z.object({
   password: z
@@ -36,7 +36,6 @@ export const UpdatePassword = () => {
   const form = useForm<FormValues>({
     resolver: zodResolver(UpdatePasswordSchema),
   });
-  const { toast } = useToast();
   const router = useRouter();
   const handleUpdatePassword: SubmitHandler<FormValues> = async (values) => {
     try {
@@ -46,8 +45,8 @@ export const UpdatePassword = () => {
       if (res.error) {
         throw new Error(res.error.message);
       }
-      toast({ title: "Password updated" });
-      router.push("/profile");
+      toast("Password updated");
+      router.push("/");
     } catch (error) {
       if (error instanceof Error && error.message) {
         form.setError("confirmPassword", { message: error.message });

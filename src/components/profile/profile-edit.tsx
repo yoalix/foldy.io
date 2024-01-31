@@ -27,9 +27,9 @@ import {
 } from "@/lib/supabase/db";
 import { Textarea } from "../ui/textarea";
 import { useGetCurrentUser } from "@/hooks/queries/useGetCurrentUser";
-import { useToast } from "../ui/use-toast";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 const ProfileSchema = z.object({
   firstName: z.string().max(256).optional(),
@@ -58,7 +58,6 @@ type FormValues = z.infer<typeof ProfileSchema>;
 
 export const ProfileEdit = () => {
   const { data } = useGetCurrentUser();
-  const { toast } = useToast();
   const router = useRouter();
   const form = useForm<FormValues>({
     resolver: zodResolver(ProfileSchema),
@@ -84,9 +83,7 @@ export const ProfileEdit = () => {
     } catch (error) {
       console.error(error);
       if (error instanceof Error && error.message) {
-        toast({
-          title: "Error",
-          variant: "destructive",
+        toast.error("Error", {
           description: error.message || "Could not upload avatar",
         });
       }
@@ -151,11 +148,10 @@ export const ProfileEdit = () => {
         });
       }
       await updateUser(supabase, updatedUser);
-      toast({
-        title: "Success",
+      toast("Success", {
         description: "Successfully updated profile",
       });
-      router.push(`/profile/${data?.username}`);
+      router.push(`/${data?.username}`);
       router.refresh();
     } catch (error) {
       console.error(error);

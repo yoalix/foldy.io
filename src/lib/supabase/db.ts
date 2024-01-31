@@ -44,6 +44,21 @@ export async function checkUsername(
   }
 }
 
+export async function checkEmail(
+  supabase: SupabaseClient<Database>,
+  email: string
+) {
+  try {
+    const user = await supabase.from("profiles").select().eq("email", email);
+    if (user) {
+      return true;
+    }
+    return false;
+  } catch {
+    return true;
+  }
+}
+
 export const getUserByUsername = async (
   supabase: SupabaseClient<Database>,
   username: string

@@ -41,7 +41,7 @@ export const Login = () => {
       } else if (method === "facebook") {
         await signInWithFacebook();
       }*/
-      router.push("/profile");
+      router.push("/");
     } catch (error) {
       console.log(error);
     }
@@ -71,16 +71,16 @@ export const Login = () => {
       onClick: () => handleSignIn("google"),
       icon: "/icons/google.png",
     },
-    {
-      name: "Apple",
-      onClick: () => handleSignIn("apple"),
-      icon: "/icons/apple.png",
-    },
-    {
-      name: "Facebook",
-      onClick: () => handleSignIn("facebook"),
-      icon: "/icons/facebook.png",
-    },
+    // {
+    //   name: "Apple",
+    //   onClick: () => handleSignIn("apple"),
+    //   icon: "/icons/apple.png",
+    // },
+    // {
+    //   name: "Facebook",
+    //   onClick: () => handleSignIn("facebook"),
+    //   icon: "/icons/facebook.png",
+    // },
   ];
 
   const content = (
@@ -157,7 +157,7 @@ export const Login = () => {
     </>
   );
   return isMobile ? (
-    <div className="md:hidden p-10 flex flex-col gap-5">
+    <div className="md:hidden flex flex-col gap-5">
       <h1>LOG IN</h1>
       {content}
     </div>

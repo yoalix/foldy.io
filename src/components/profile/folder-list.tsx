@@ -1,6 +1,5 @@
 import React from "react";
 import { ListItem } from "@/components/ui/list-item";
-import { useGetFolders } from "@/hooks/queries/useGetFolders";
 import { timeSince } from "@/lib/utils/strings";
 import { getFolders } from "@/lib/supabase/db";
 import { createClient } from "@/lib/supabase/server";
@@ -30,7 +29,7 @@ export const FolderList = async ({
             title={folder.name}
             subtitle={`${numberOfLinks} links`}
             icon="/icons/folder.png"
-            href={`/profile/${username || "@me"}/folder/${folder.id}`}
+            href={`/${username}/folder/${folder.id}`}
             rightText={timeSince(updated) || "1 day ago"}
           />
         );

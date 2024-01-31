@@ -3,10 +3,7 @@ import { Header } from "@/components/navigation/header";
 import "./globals.css";
 import { QueryProvider } from "@/components/query-provider";
 import { Body } from "@/components/body";
-import { Toaster } from "@/components/ui/toaster";
-import { createClient } from "@/lib/supabase/server";
-import { cookies } from "next/headers";
-import { getUserProfile } from "@/lib/supabase/db";
+import { Toaster } from "@/components/ui/sonner";
 
 export const dynamic = "force-dynamic";
 
@@ -27,7 +24,7 @@ export default async function RootLayout({
         <Body>
           <Header />
           {children}
-          <Toaster />
+          <Toaster richColors />
         </Body>
       </QueryProvider>
     </html>

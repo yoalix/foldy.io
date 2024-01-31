@@ -42,7 +42,7 @@ export const Follow = async ({ username, active }: Props) => {
                 userId={user.profiles?.id || ""}
                 fullName={user.profiles?.full_name || ""}
                 username={user.profiles?.username || ""}
-                href={`/profile/${user.profiles?.username}`}
+                href={`/${user.profiles?.username}`}
                 avatarUrl={user.profiles?.avatar_url || ""}
                 buttonText={
                   isFollowing(user.profiles?.id || "", currentUserFollowing)
@@ -65,7 +65,7 @@ export const Follow = async ({ username, active }: Props) => {
                 userId={user.profiles?.id || ""}
                 fullName={user.profiles?.full_name || ""}
                 username={user.profiles?.username || ""}
-                href={`/profile/${user.profiles?.username}`}
+                href={`/${user.profiles?.username}`}
                 avatarUrl={user.profiles?.avatar_url}
                 buttonText={
                   isFollowing(user.profiles?.id || "", currentUserFollowing)

@@ -28,8 +28,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
-import { checkUsername } from "@/lib/supabase/db";
+import { checkEmail, checkUsername } from "@/lib/supabase/db";
 import { createClient } from "@/lib/supabase/client";
+import { toast } from "sonner";
 
 const today = new Date();
 const thirteenYearsAgo = new Date(
@@ -85,7 +86,17 @@ const SignupSchema = z
         },
         { message: "Username is already taken", params: {} }
       ),
-    email: z.string().email({ message: "Invalid email address" }),
+    email: z
+      .string()
+      .email({ message: "Invalid email address" })
+      .refine(
+        async (value) => {
+          const supabase = createClient();
+          const emailTaken = await checkEmail(supabase, value);
+          return !emailTaken;
+        },
+        { message: "Email is already taken", params: {} }
+      ),
     password: z
       .string()
       .min(8, { message: "Password must be at least 8 characters long" })
@@ -109,7 +120,6 @@ const SignupSchema = z
   })
   .refine(
     ({ password, confirmPassword }) => {
-      console.log("password match validation");
       return password === confirmPassword;
     },
     {
@@ -120,7 +130,6 @@ const SignupSchema = z
   .refine(
     ({ birthMonth, birthDay, birthYear }) => {
       const date = new Date(birthYear, birthMonth - 1, birthDay);
-      console.log("date", date);
       return date < thirteenYearsAgo;
     },
     {
@@ -143,28 +152,24 @@ export const SignupEmail = () => {
       confirmPassword: "",
     },
   });
-  console.log(form.formState.errors);
-  const router = useRouter();
-  const signupWithEmail = useMutation({
-    mutationFn: signUpWithEmailAndPassword,
-  });
   const handleSignup: SubmitHandler<FormValues> = async (data) => {
-    console.log("made it to signup", data);
     try {
-      await signupWithEmail.mutateAsync({
+      await signUpWithEmailAndPassword({
         email: data.email,
         password: data.password,
         fullName: data.firstName + " " + data.lastName,
         username: data.username,
       });
-      router.push("/auth/verify-email");
     } catch (error) {
       console.log(error);
+      if (error instanceof Error && error.message) {
+        toast.error(error.message);
+      }
     }
   };
 
   return (
-    <div className="p-10">
+    <div className="max-w-[680px]">
       <BackButton />
       <h1 className="py-8">SIGN UP</h1>
       <Form {...form}>

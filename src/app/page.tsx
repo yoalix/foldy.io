@@ -13,7 +13,7 @@ export default async function Home() {
 
   if (session?.user) {
     const user = await getUserProfile(supabase, session.user.id);
-    redirect(`/profile/${user!.username}`);
+    redirect(`/${user!.username}`);
   }
   return (
     <main className="w-full h-full">

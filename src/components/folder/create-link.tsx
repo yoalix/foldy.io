@@ -5,7 +5,7 @@ import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Form, FormInputField } from "@/components/ui/form";
 import { CreateLink as CreateLinkDb, createLink } from "@/lib/supabase/db";
-import { toast } from "../ui/use-toast";
+import { toast } from "sonner";
 import { Link } from "lucide-react";
 import { User } from "../icons/user";
 import { useRouter } from "next/navigation";
@@ -36,16 +36,16 @@ export const CreateLink = ({ folderId }: { folderId: string }) => {
   const handleSubmit: SubmitHandler<CreateLinkDb> = async (data) => {
     try {
       await createLinkAction(data);
-      toast({
-        title: "Link created",
+      toast("Link created", {
         description: `Link ${data.url} created successfully`,
       });
+      form.reset();
       router.refresh();
     } catch (error) {
       console.log(error);
       if (error instanceof Error && error.message) {
         form.setError("url", { message: error.message });
-        toast({ title: error.message, variant: "destructive" });
+        toast.error(error.message);
       }
     }
     setOpen(false);

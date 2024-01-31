@@ -38,7 +38,7 @@ export const Profile = async ({ username }: Props) => {
       follower_id: currentUser?.user?.id,
       following_id: user?.id,
     });
-    revalidatePath(`/profile/${user?.username}`);
+    revalidatePath(`/${user?.username}`);
   };
   const handleUnfollow = async () => {
     "use server";
@@ -47,7 +47,7 @@ export const Profile = async ({ username }: Props) => {
       follower_id: currentUser?.user?.id,
       following_id: user?.id,
     });
-    revalidatePath(`/profile/${user?.username}`);
+    revalidatePath(`/${user?.username}`);
   };
 
   const isFollowing = user.followers.some(
@@ -74,14 +74,14 @@ export const Profile = async ({ username }: Props) => {
       <div>
         <h1 className="flex font-normal items-center">
           <Link
-            href={`/profile/${user.username}/followers`}
+            href={`/${user.username}/followers`}
             className="hover:underline"
           >
             {user.followers.length} Followers
           </Link>{" "}
           <Dot />{" "}
           <Link
-            href={`/profile/${user.username}/following`}
+            href={`/${user.username}/following`}
             className="hover:underline"
           >
             {user.following.length} Following

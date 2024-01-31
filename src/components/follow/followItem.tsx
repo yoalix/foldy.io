@@ -44,7 +44,7 @@ export const FollowItem = ({
         following_id: userId,
       });
     }
-    revalidatePath(`/profile/${username}/${currentPage}`);
+    revalidatePath(`/${username}/${currentPage}`);
   };
   return (
     <div className="flex items-center justify-between py-3 border-b border-b-white hover:border-b hover:border-b-black-50">

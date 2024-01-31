@@ -9,10 +9,10 @@ import {
   createFolder,
 } from "@/lib/supabase/db";
 import { createClient } from "@/lib/supabase/client";
-import { useToast } from "../ui/use-toast";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { toast } from "sonner";
 
 const CreateFolderSchema = z.object({
   name: z.string().min(1, "Name is required."),
@@ -30,7 +30,6 @@ export const CreateFolder = ({ userId }: { userId: string }) => {
     },
   });
   const [open, setOpen] = useState(false);
-  const { toast } = useToast();
   const modalTrigger = (
     <Button
       variant="secondary"
@@ -45,8 +44,7 @@ export const CreateFolder = ({ userId }: { userId: string }) => {
     try {
       const supabase = createClient();
       await createFolder(supabase, { ...data, user_id: userId });
-      toast({
-        title: "Folder created",
+      toast("Folder created", {
         description: `Folder ${data.name} created successfully`,
       });
 
@@ -55,7 +53,7 @@ export const CreateFolder = ({ userId }: { userId: string }) => {
       console.log(error);
       if (error instanceof Error && error.message) {
         form.setError("description", { message: error.message });
-        toast({ title: error.message, variant: "destructive" });
+        toast.error(error.message);
       }
     }
     setOpen(false);

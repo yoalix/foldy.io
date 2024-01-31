@@ -15,15 +15,13 @@ export const Body = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <body>
-      {user || isAuthRoute ? (
-        <div
-          className={`${inter.className} p-10 h-full w-full mt-20 md:mt-0 md:ml-40 md:max-w-[680px]`}
-        >
-          {children}
-        </div>
-      ) : (
-        <Authentication />
-      )}
+      <div
+        className={`${inter.className} p-10 h-full w-full  ${
+          isAuthRoute ? "" : "md:max-w-[680px] md:ml-40 mt-20 md:mt-0"
+        }`}
+      >
+        {children}
+      </div>
     </body>
   );
 };

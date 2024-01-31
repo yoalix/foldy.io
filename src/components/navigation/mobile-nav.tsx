@@ -63,7 +63,7 @@ export const MobileNav = ({ username }: { username?: string }) => {
             Explore
           </Button>
         </Link>
-        <Link href={`/profile/${username}`}>
+        <Link href={`/${username}`}>
           <Button
             className="border-l-0 rounded-l-none rounded-r-3xl"
             variant="outline"

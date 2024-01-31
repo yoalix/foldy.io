@@ -19,7 +19,7 @@ export async function Header() {
     { name: "Explore", href: "/explore", icon: <Compass /> },
     {
       name: "Profile",
-      href: `/profile/${user?.username}`,
+      href: `/${user?.username}`,
       icon: <CircleUser />,
     },
     { name: "Settings", href: "/settings", icon: <Settings /> },

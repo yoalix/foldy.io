@@ -41,7 +41,7 @@ export const ExploreItem = ({
     <Card className="max-w-96">
       <CardContent className="pt-6 flex flex-col gap-5">
         <div className="flex justify-between w-full">
-          <Link href={`/profile/${username}`} className="w-full">
+          <Link href={`/${username}`} className="w-full">
             <div className="flex justify-between item-center w-full">
               <div className="flex items-center gap-3">
                 <UserAvatar

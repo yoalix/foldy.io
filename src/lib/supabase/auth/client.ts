@@ -27,22 +27,21 @@ export const signUpWithEmailAndPassword = async ({
   fullName: string;
   username: string;
 }) => {
-  const supabase = createClient();
   try {
     const user = await supabase
       .schema("public")
-      .from("profile")
+      .from("profiles")
       .select("*")
       .eq("email", email)
       .maybeSingle();
     // TODO: link emails or sign user in if email is already taken
     if (user.data) throw new Error("email already taken");
-    const res = await supabase.auth.signUp({
+    return await supabase.auth.signUp({
       email,
       password,
       options: {
         data: { username, fullName },
-        emailRedirectTo: `${location.origin}/auth/callback`,
+        emailRedirectTo: `${location.origin}/auth/callback?next=/auth/verify-email`,
       },
     });
   } catch (error) {
@@ -64,6 +63,5 @@ export const signInWithGoogle = async () => {
 };
 
 export const signOut = async () => {
-  console.log("signout");
   return supabase.auth.signOut();
 };
