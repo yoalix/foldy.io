@@ -9,6 +9,7 @@ import { MobileNav } from "./mobile-nav";
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import Image from "next/image";
+import { NavMenuItem } from "./nav-menu-item";
 
 export async function Header() {
   const supabase = createClient(cookies());
@@ -40,17 +41,12 @@ export async function Header() {
 
         <div className="flex flex-1 flex-col items-center justify-start">
           {NavMenuItems.map((item) => (
-            <Button
+            <NavMenuItem
               key={`nav-${item.name}`}
-              className="p-10 w-full justify-start flex gap-2"
-              variant="ghost"
-              asChild
-            >
-              <Link href={item.href}>
-                {item.icon}
-                {item.name}
-              </Link>
-            </Button>
+              name={item.name}
+              icon={item.icon}
+              href={item.href}
+            />
           ))}
         </div>
       </div>

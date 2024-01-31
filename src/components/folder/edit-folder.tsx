@@ -19,8 +19,8 @@ const EditFolderSchema = z.object({
 });
 
 type Props = {
-  user: User;
-  folder: Folder;
+  user: User | null;
+  folder: Folder | null;
 };
 
 type FormValues = z.infer<typeof EditFolderSchema>;
@@ -41,8 +41,9 @@ export const EditFolder = ({ user, folder }: Props) => {
   const handleSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       const supabase = createClient();
+      if (!user || !folder) return;
       const updateData: UpdateFolder = {
-        id: folder.id,
+        id: folder?.id,
         user_id: user!.id,
       };
       if (data.name && data.name !== folder?.name) {
