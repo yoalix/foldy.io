@@ -17,13 +17,12 @@ export interface InputProps
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, icon, onClear, ...props }, ref) => {
     const [showPassword, setShowPassword] = useState(false);
-
     return (
       <div className={cn("relative", className)}>
         <input
           type={type === "password" && showPassword ? "text" : type}
           className={cn(
-            "flex h-9 w-full border-b border-input bg-transparent px-3 py-1 transition-colors file:border-0 file:bg-transparent file:file:font-medium placeholder:text-black-secondary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+            "flex h-9 w-full border-b border-input bg-transparent px-3 py-1 transition-colors file:border-0 file:bg-transparent file:file:font-medium placeholder:text-black-secondary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 text-base",
             className,
             icon && "pl-9"
           )}
