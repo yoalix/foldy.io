@@ -7,7 +7,7 @@ type ListItemProps = {
   id: string;
   title: string;
   subtitle: string;
-  rightText: string | React.ReactNode;
+  rightText?: string | React.ReactNode;
   href: string;
   icon: React.ReactNode;
 };
@@ -20,20 +20,22 @@ export const ListItem = ({
   icon,
 }: ListItemProps) => {
   return (
-    <Button className="py-6" variant="ghost">
+    <Button className="py-6 w-full" variant="ghost">
       <Link
         className="flex w-full items-center gap-3"
         href={href}
         target={href.includes("http") ? "_blank" : ""}
       >
         {icon}
-        <div className="flex flex-col w-full justify-start items-start">
-          <h1 className="font-normal">{title}</h1>
-          <p className="text-black-secondary ">{subtitle}</p>
+        <div className="flex flex-col w-full text-left justify-start items-start  truncate">
+          <h1 className="font-normal w-full truncate">{title}</h1>
+          <p className="text-black-secondary  w-full truncate">{subtitle}</p>
         </div>
-        <p className="text-black-secondary w-fit justify-self-end">
-          {rightText}
-        </p>
+        {rightText && (
+          <p className="text-black-secondary w-fit justify-self-end">
+            {rightText}
+          </p>
+        )}
       </Link>
     </Button>
   );

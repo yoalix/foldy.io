@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { Button } from "../ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { Menu, Search } from "lucide-react";
+import { Bell, Menu, Search } from "lucide-react";
 
 export const MobileNav = ({ username }: { username?: string }) => {
   const [lastScrollTop, setLastScrollTop] = useState(0);
@@ -28,7 +28,7 @@ export const MobileNav = ({ username }: { username?: string }) => {
   return (
     <div className="md:hidden z-10">
       <div
-        className={`fixed top-0 left-0 right-0 flex justify-between p-9 bg-[#FFF] transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 flex justify-between gap-3 p-9 bg-[#FFF] transition-all duration-500 ${
           isVisible
             ? "translate-y-0 opacity-100"
             : "-translate-y-full opacity-0"
@@ -51,6 +51,15 @@ export const MobileNav = ({ username }: { username?: string }) => {
             className="flex justify-center items-center text-black-secondary"
           >
             <Search />
+          </Button>
+        </Link>
+        <Link href="/profile/notifications">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="flex justify-center items-center text-black-secondary"
+          >
+            <Bell />
           </Button>
         </Link>
         <Link href="/settings">

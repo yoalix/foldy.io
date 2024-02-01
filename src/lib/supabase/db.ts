@@ -1,5 +1,7 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { Database } from "./database.types";
+import { FIVE_MINUTES, hasPassed } from "../utils/date";
+
 //-----------USER------------------
 export type User = Database["public"]["Tables"]["profiles"]["Row"];
 
@@ -234,6 +236,14 @@ export const followUser = async (
     .from("user_followers")
     .insert({ follower_id, following_id });
   if (error) throw error;
+  const { error: activityError } = await createActivity(supabase, {
+    ownerId: follower_id,
+    ownerType: "user",
+    subjectId: following_id,
+    subjectType: "user",
+    eventType: "user.followed",
+  });
+  if (activityError) console.log(activityError);
   return data;
 };
 
@@ -247,6 +257,19 @@ export const unfollowUser = async (
     .eq("follower_id", follower_id)
     .eq("following_id", following_id);
   if (error) throw error;
+  const { data: activity, error: activityError } =
+    await getActivityByOwnerSubject(supabase, {
+      ownerId: follower_id,
+      ownerType: "user",
+      subjectId: following_id,
+      subjectType: "user",
+      eventType: "user.followed",
+    });
+  if (activityError) console.log(activityError);
+  if (activity && !hasPassed(activity.createdAt, FIVE_MINUTES)) {
+    await deleteActivity(supabase, activity.id);
+  }
+
   return data;
 };
 
@@ -270,7 +293,7 @@ export const getFolders = async (
 
 export const getFolder = async (
   supabase: SupabaseClient<Database>,
-  folderId?: string
+  folderId?: string | null
 ) => {
   if (!folderId) return null;
   return supabase
@@ -292,8 +315,23 @@ export const createFolder = async (
 ) => {
   const { data, error } = await supabase
     .from("folders")
-    .insert({ user_id, name, description });
+    .insert({ user_id, name, description })
+    .select()
+    .single();
   if (error) throw error;
+  const user = await supabase.auth.getUser();
+  const { data: activity, error: activityError } = await createActivity(
+    supabase,
+    {
+      ownerId: user?.data?.user?.id || "",
+      ownerType: "user",
+      subjectId: data?.id || "",
+      subjectType: "folder",
+      eventType: "folder.created",
+    }
+  );
+
+  if (activityError) console.log(activityError);
   return data;
 };
 
@@ -328,6 +366,18 @@ export const deleteFolder = async (
   user_id: string
 ) => {
   if (!id) throw new Error("No id provided");
+  const { data: activities, error: activitiesError } =
+    await getActivityByOwnerSubject(supabase, {
+      ownerId: user_id,
+      ownerType: "user",
+      subjectId: id,
+      subjectType: "folder",
+      eventType: "folder.created",
+    });
+  if (activitiesError) console.log(activitiesError);
+  if (activities && !hasPassed(activities.createdAt, FIVE_MINUTES)) {
+    await deleteActivity(supabase, activities.id);
+  }
   return supabase
     .from("folders")
     .delete()
@@ -357,6 +407,21 @@ export const getLinks = async (
       return data;
     });
 };
+export const getLink = async (
+  supabase: SupabaseClient<Database>,
+  linkId?: string | null
+) => {
+  if (!linkId) return null;
+  return supabase
+    .from("links")
+    .select("*, folder:folders(*)")
+    .eq("id", linkId)
+    .maybeSingle()
+    .then(({ data, error }) => {
+      if (error) throw error;
+      return data;
+    });
+};
 
 export type CreateLink = Database["public"]["Tables"]["links"]["Insert"];
 
@@ -366,11 +431,26 @@ export const createLink = async (
 ) => {
   const res = await getLinks(supabase, folder_id);
   const order = res?.length || 0;
-  const { data, error } = await supabase
+  const { data: link, error } = await supabase
     .from("links")
-    .insert({ folder_id, name, url, order });
+    .insert({ folder_id, name, url, order })
+    .select()
+    .single();
   if (error) throw error;
-  return data;
+  const user = await supabase.auth.getUser();
+  const { data: activity, error: activityError } = await createActivity(
+    supabase,
+    {
+      ownerId: user?.data?.user?.id || "",
+      ownerType: "user",
+      subjectId: link.id,
+      subjectType: "link",
+      eventType: "link.created",
+    }
+  );
+  console.log(activity, activityError);
+
+  return link;
 };
 
 export type UpdateLink = Database["public"]["Tables"]["links"]["Update"] & {
@@ -396,6 +476,21 @@ export const deleteLinks = async (
   supabase: SupabaseClient<Database>,
   ids: string[]
 ) => {
+  ids.forEach(async (id) => {
+    const { data: activities, error: activitiesError } =
+      await getActivityByOwnerSubject(supabase, {
+        ownerId: id,
+        ownerType: "user",
+        subjectId: id,
+        subjectType: "link",
+        eventType: "link.created",
+      });
+    if (activitiesError) console.log(activitiesError);
+    if (activities && !hasPassed(activities.createdAt, FIVE_MINUTES)) {
+      await deleteActivity(supabase, activities.id);
+    }
+  });
+
   return supabase
     .from("links")
     .delete()
@@ -404,4 +499,77 @@ export const deleteLinks = async (
       if (error) throw error;
       return data;
     });
+};
+
+// -----------Activity------------------
+
+type CreateActivity = Database["public"]["Tables"]["activities"]["Insert"];
+
+export const createActivity = (
+  supabase: SupabaseClient<Database>,
+  data: CreateActivity
+) => {
+  return supabase.from("activities").insert(data);
+};
+
+export type Activity = Database["public"]["Tables"]["activities"]["Row"];
+
+export const getActivities = async (
+  supabase: SupabaseClient<Database>,
+  uid?: string | null
+) => {
+  if (!uid) return null;
+  const { data: followingIds, error: followError } = await supabase
+    .from("user_followers")
+    .select("following_id")
+    .eq("follower_id", uid);
+
+  if (followError) {
+    throw followError;
+  }
+
+  const query = `and(eventType.neq."user.followed",ownerId.in.(${followingIds
+    .map(({ following_id }) => `"${following_id}"`)
+    .join(",")}),ownerType.eq.user)`;
+  console.log(query);
+  const { data, error } = await supabase
+    .from("activities")
+    .select("*")
+    // .or(query)
+    .or(`${query}, and(eventType.eq."user.followed",subjectId.eq.${uid})`)
+    .order("createdAt", { ascending: false });
+
+  if (error) throw error;
+  return data;
+};
+
+const getActivityByOwnerSubject = (
+  supabase: SupabaseClient<Database>,
+  {
+    ownerId,
+    ownerType,
+    subjectId,
+    subjectType,
+    eventType,
+  }: {
+    ownerId: string;
+    ownerType: string;
+    subjectId: string;
+    subjectType: string;
+    eventType: string;
+  }
+) => {
+  return supabase
+    .from("activities")
+    .select("*")
+    .eq("ownerId", ownerId)
+    .eq("ownerType", ownerType)
+    .eq("subjectId", subjectId)
+    .eq("subjectType", subjectType)
+    .eq("eventType", eventType)
+    .maybeSingle();
+};
+
+const deleteActivity = (supabase: SupabaseClient<Database>, id: number) => {
+  return supabase.from("activities").delete().eq("id", id);
 };

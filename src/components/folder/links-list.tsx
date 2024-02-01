@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import { ListItem } from "@/components/ui/list-item";
-import { timeSince } from "@/lib/utils/strings";
+import { timeSince } from "@/lib/utils/date";
 import { Database } from "@/lib/supabase/database.types";
 
 type Link = Database["public"]["Tables"]["links"]["Row"];

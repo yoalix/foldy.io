@@ -1,6 +1,6 @@
 import React from "react";
 import { ListItem } from "@/components/ui/list-item";
-import { timeSince } from "@/lib/utils/strings";
+import { timeSince } from "@/lib/utils/date";
 import { getFolders } from "@/lib/supabase/db";
 import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";

@@ -10,6 +10,7 @@ import { createClient } from "@/lib/supabase/server";
 import { cookies } from "next/headers";
 import Image from "next/image";
 import { NavMenuItem } from "./nav-menu-item";
+import { Bell } from "lucide-react";
 
 export async function Header() {
   const supabase = createClient(cookies());
@@ -22,6 +23,11 @@ export async function Header() {
       name: "Profile",
       href: `/${user?.username}`,
       icon: <CircleUser />,
+    },
+    {
+      name: "Notifications",
+      href: "/profile/notifications",
+      icon: <Bell strokeWidth={1} />,
     },
     { name: "Settings", href: "/settings", icon: <Settings /> },
   ];
