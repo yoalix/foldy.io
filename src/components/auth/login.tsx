@@ -41,7 +41,7 @@ export const Login = () => {
       } else if (method === "facebook") {
         await signInWithFacebook();
       }*/
-      router.push("/");
+      // router.push("/");
     } catch (error) {
       console.log(error);
     }
