@@ -62,7 +62,7 @@ export const SearchBar = () => {
       {/* <PopoverTrigger> */}
       <CommandInput
         ref={inputRef}
-        // className="max-w-80"
+        className="text-base"
         placeholder="search people, folders, etc..."
         //   icon={<Search size={18} />}
         value={search}
