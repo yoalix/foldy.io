@@ -26,6 +26,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { fetchFile } from "@/lib/utils/utils";
 import { Checkbox } from "@/components/ui/checkbox";
 import Link from "next/link";
+import { revalidatePath } from "next/cache";
 
 const SignupSchema = z.object({
   username: z
@@ -81,6 +82,7 @@ export const SignupSocial = () => {
       });
       console.log("created user", userRes);
       router.push(`/${userRes.username}`);
+      router.refresh();
     } catch (error) {
       console.error(error);
       if (error instanceof Error && error.message) {
