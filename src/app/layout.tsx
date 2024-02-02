@@ -4,11 +4,13 @@ import "./globals.css";
 import { QueryProvider } from "@/components/query-provider";
 import { Body } from "@/components/body";
 import { Toaster } from "@/components/ui/sonner";
+import { Suspense } from "react";
+import { SplashScreen } from "@/components/splash-screen";
 
 export const dynamic = "force-dynamic";
 
 const APP_TITLE = "Foldy.io";
-const APP_DESCRIPTION = "Currating the best of the web";
+const APP_DESCRIPTION = "Curating the best of the web";
 
 export const metadata: Metadata = {
   title: APP_TITLE,
@@ -18,7 +20,7 @@ export const metadata: Metadata = {
     capable: true,
     statusBarStyle: "default",
     title: APP_TITLE,
-    // startUpImage: [],
+    startupImage: "/splash-screen.png",
   },
   formatDetection: {
     telephone: false,
@@ -50,9 +52,11 @@ export default async function RootLayout({
     <html lang="en">
       <QueryProvider>
         <Body>
-          <Header />
-          {children}
-          <Toaster richColors />
+          <Suspense fallback={<SplashScreen />}>
+            <Header />
+            {children}
+            <Toaster richColors />
+          </Suspense>
         </Body>
       </QueryProvider>
     </html>

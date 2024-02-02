@@ -9,7 +9,6 @@ import { AUTH_ROUTES } from "@/lib/utils/consts";
 const inter = Inter({ subsets: ["latin"] });
 
 export const Body = ({ children }: { children: React.ReactNode }) => {
-  const user = useUserSession();
   const pathName = usePathname();
   const isAuthRoute = AUTH_ROUTES.find((route) => pathName.includes(route));
 

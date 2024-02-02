@@ -1,12 +1,13 @@
 {
-  "id": "3",
   "name": "Foldy.io",
   "short_name": "Foldy",
-  "theme_color": "#0849B5",
-  "background_color": "#0849B5",
-  "start_url": "/",
+  "description": "Curating the best of the web",
+  "theme_color": "#0749b5",
+  "background_color": "#0749b5",
   "display": "standalone",
   "orientation": "portrait",
+  "scope": "/",
+  "start_url": "/",
   "icons": [
     { "src": "icons/16x16.png", "sizes": "16x16", "type": "image/png" },
     { "src": "icons/32x32.png", "sizes": "32x32", "type": "image/png" },
