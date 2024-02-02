@@ -1,6 +1,5 @@
 import { SupabaseClient } from "@supabase/supabase-js";
 import { createClient } from "../client";
-export const supabase = createClient();
 export const getAuthSession = (client: SupabaseClient) => {
   return client.auth.getUser();
 };
@@ -27,6 +26,7 @@ export const signUpWithEmailAndPassword = async ({
   fullName: string;
   username: string;
 }) => {
+  const supabase = createClient();
   try {
     const user = await supabase
       .schema("public")
@@ -49,7 +49,8 @@ export const signUpWithEmailAndPassword = async ({
   }
 };
 
-export const signInWithGoogle = async () => {
+export const signInWithGoogle = () => {
+  const supabase = createClient();
   return supabase.auth.signInWithOAuth({
     provider: "google",
     options: {
@@ -62,6 +63,7 @@ export const signInWithGoogle = async () => {
   });
 };
 
-export const signOut = async () => {
+export const signOut = () => {
+  const supabase = createClient();
   return supabase.auth.signOut();
 };
