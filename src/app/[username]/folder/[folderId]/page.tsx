@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import { Folder } from "@/components/folder";
+import { LogoLoading } from "@/components/ui/logo-loading";
 type Params = {
   params: {
     folderId: string;
@@ -7,13 +8,7 @@ type Params = {
 };
 export default function FolderPage({ params }: Params) {
   return (
-    <Suspense
-      fallback={
-        <div className="animate-pulse w-full flex justify-center py-5">
-          <img src="/icons/logo.png" height={16} width={16} />
-        </div>
-      }
-    >
+    <Suspense fallback={<LogoLoading />}>
       <Folder folderId={params.folderId} />
     </Suspense>
   );
