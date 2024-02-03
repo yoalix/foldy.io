@@ -76,6 +76,7 @@ export async function middleware(request: NextRequest) {
     console.log("returning response");
     return response;
   } catch (e) {
+    console.error(e);
     // If you are here, a Supabase client could not be created!
     return NextResponse.next({
       request: {
@@ -94,6 +95,6 @@ export const config = {
      * - favicon.ico (favicon file)
      * Feel free to modify this pattern to include more paths.
      */
-    "/((?!_next/static|_next/image|favicon.ico|icons|manifest.json|splash-screen.png|sw.js).*)",
+    "/((?!_next/static|_next/image|favicon.ico|icons|manifest.json|splash-screen.png|sw.js|swe-worker-development.js).*)",
   ],
 };
