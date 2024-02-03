@@ -15,7 +15,11 @@ export const LinksList = ({ links }: { links?: Link[] }) => {
           id={link.id}
           title={link.name || ""}
           subtitle={link.url}
-          href={link.url}
+          href={
+            !link.url.includes("https") || !link.url.includes("http")
+              ? `https://${link.url}`
+              : link.url
+          }
           rightText={timeSince(new Date(link.updated_at).getTime())}
           icon={
             <Image
