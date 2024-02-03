@@ -35,7 +35,7 @@ export const FolderCreated = async ({ activityItem }: Props) => {
       itemTitle={folder?.name}
       itemSubtitle={""}
       itemHref={`/${user?.username}/folder/${folder?.id}`}
-      itemIcon={<Folder size={24} width={24} height={24} />}
+      itemIcon={<Folder size={24} width={24} height={24} strokeWidth={1.3} />}
       type="folder"
     />
   );

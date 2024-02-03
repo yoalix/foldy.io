@@ -36,10 +36,10 @@ export const CreateFolder = ({ userId }: { userId: string }) => {
     <Button
       variant="ghost"
       accent="primary"
-      className="flex justify-start gap-2 py-6 text-sm font-bold"
+      className="flex justify-start gap-2 py-6 text-sm font-bold w-full"
       onClick={() => setOpen(true)}
     >
-      <Folder className="w-5 h-5 flex-shrink-0" />
+      <Folder className="w-5 h-5 flex-shrink-0" strokeWidth={1.3} />
       Tap to Add New Folder
     </Button>
   );

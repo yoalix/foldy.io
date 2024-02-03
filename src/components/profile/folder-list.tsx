@@ -29,7 +29,9 @@ export const FolderList = async ({
             id={folder.id}
             title={folder.name}
             subtitle={`${numberOfLinks} links`}
-            icon={<Folder className="w-5 h-5 flex-shrink-0" />}
+            icon={
+              <Folder className="w-5 h-5 flex-shrink-0" strokeWidth={1.3} />
+            }
             href={`/${username}/folder/${folder.id}`}
             rightText={timeSince(updated) || "1 day ago"}
           />

@@ -105,7 +105,7 @@ const FolderSearchItem = ({
 }: FolderSearchItemProps) => {
   return (
     <div className="flex gap-3 pl-5 pt-3 items-center">
-      <Folder width={24} height={24} />
+      <Folder strokeWidth={1.3} width={24} height={24} />
       <div className="flex flex-col justify-start items-start">
         <h1 className="font-normal">{name}</h1>
         <p className="text-black-secondary ">{links} links</p>

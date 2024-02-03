@@ -36,7 +36,12 @@ export const FolderHeader = async ({ username, folderId }: Props) => {
         <p className="text-black-secondary">@{user?.username}</p>
       </div>
       <div className="flex items-center gap-3 w-full">
-        <Folder className="stroke-primary" width={40} height={40} />
+        <Folder
+          className="stroke-primary"
+          width={40}
+          height={40}
+          strokeWidth={1.3}
+        />
         <div className="w-full">
           <h1 className="font-normal">{folder?.name}</h1>
           <p className="text-black-secondary">
