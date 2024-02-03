@@ -8,7 +8,6 @@ const withSerwist = require("@serwist/next").default({
   // aggressiveFrontendCaching: true,
   reloadOnOnline: true,
   disable: false,
-  // swcMinify: true,
 });
 
 const nextConfig = {

@@ -14,5 +14,15 @@ installSerwist({
   skipWaiting: true,
   clientsClaim: true,
   navigationPreload: true,
-  runtimeCaching: defaultCache,
+  runtimeCaching: defaultCache.concat({
+    urlPattern: /\/_next\/image?url=.*$/i,
+    handler: "StaleWhileRevalidate",
+    options: {
+      cacheName: "next-image",
+      expiration: {
+        maxEntries: 32,
+        maxAgeSeconds: 24 * 60 * 60, // 24 hours
+      },
+    },
+  }),
 });
