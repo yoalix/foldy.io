@@ -4,17 +4,13 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Form, FormInputField } from "@/components/ui/form";
-import {
-  CreateFolder as CreateFolderDb,
-  createFolder,
-} from "@/lib/supabase/db";
+import { createFolder } from "@/lib/supabase/db";
 import { createClient } from "@/lib/supabase/client";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { toast } from "sonner";
 import { Folder } from "lucide-react";
-import Link from "next/link";
 
 const CreateFolderSchema = z.object({
   name: z.string().min(1, "Name is required."),
