@@ -37,4 +37,5 @@ const nextConfig = {
   },
 };
 
-module.exports = withSerwist(nextConfig);
+// module.exports = withSerwist(nextConfig);
+module.exports = nextConfig;
