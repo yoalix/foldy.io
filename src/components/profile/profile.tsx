@@ -59,7 +59,7 @@ export const Profile = async ({ username }: Props) => {
     <div className="flex flex-col gap-5">
       {!isCurrentUser && <BackButton />}
       <div className="flex w-full items-center">
-        <Link href="/profile/edit">
+        <Link href={(isCurrentUser && "/profile/edit") || ""}>
           <UserAvatar
             className="w-16 h-16"
             avatarUrl={user.avatar_url}
@@ -72,7 +72,7 @@ export const Profile = async ({ username }: Props) => {
           <h1 className="font-normal">{user?.full_name}</h1>
           <p className="text-black-secondary">@{user?.username}</p>
         </div>
-        <ProfileMenu />
+        {isCurrentUser && <ProfileMenu />}
       </div>
       <div>
         <h1 className="flex font-normal items-center">

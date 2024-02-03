@@ -7,6 +7,7 @@ import { CommandItem } from "../ui/command";
 import Image from "next/image";
 import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { Folder } from "lucide-react";
 
 type UserSearchItemProps = {
   currentUserId?: string;
@@ -103,14 +104,8 @@ const FolderSearchItem = ({
   _count: { links },
 }: FolderSearchItemProps) => {
   return (
-    <div className="flex gap-3 ml-5 items-center">
-      <Image
-        src="/icons/folder.png"
-        alt="folder"
-        className="h-6 w-6"
-        width={24}
-        height={24}
-      />
+    <div className="flex gap-3 pl-5 pt-3 items-center">
+      <Folder width={24} height={24} />
       <div className="flex flex-col justify-start items-start">
         <h1 className="font-normal">{name}</h1>
         <p className="text-black-secondary ">{links} links</p>

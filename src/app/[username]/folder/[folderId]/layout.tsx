@@ -29,7 +29,6 @@ export default async function FolderLayout(props: {
         />
       </Suspense>
 
-      <CreateLink folderId={props.params.folderId} />
       <Suspense fallback={<div>Loading...</div>}>{props.children}</Suspense>
       {/* {props.children} */}
       {props.modal}

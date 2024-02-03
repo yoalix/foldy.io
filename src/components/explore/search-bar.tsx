@@ -18,6 +18,7 @@ import { useGetCurrentUser } from "@/hooks/queries/useGetCurrentUser";
 import { isFollowing } from "@/lib/utils/isFollowing";
 import { useSearchParams } from "next/navigation";
 import { useIsMobile } from "@/hooks/useIsMobile";
+import { LogoLoading } from "../ui/logo-loading";
 
 export const SearchBar = () => {
   const searchParams = useSearchParams();
@@ -75,9 +76,7 @@ export const SearchBar = () => {
         {!isPending && <CommandEmpty>No results</CommandEmpty>}
         {isPending && (
           <CommandLoading>
-            <div className="animate-pulse w-full flex justify-center py-5">
-              <img src="/icons/logo.png" height={16} width={16} />
-            </div>
+            <LogoLoading />
           </CommandLoading>
         )}
         {data?.map((user) => {
