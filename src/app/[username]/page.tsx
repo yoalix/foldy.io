@@ -1,5 +1,6 @@
 import { Profile } from "@/components/profile/profile";
-import React from "react";
+import { ProfileHeaderSkeleton } from "@/components/profile/profile-skeleton";
+import React, { Suspense } from "react";
 
 type Params = {
   params: {
@@ -7,5 +8,9 @@ type Params = {
   };
 };
 export default function ProfilePage({ params }: Params) {
-  return <Profile username={params.username} />;
+  return (
+    <Suspense fallback={<ProfileHeaderSkeleton />}>
+      <Profile username={params.username} />
+    </Suspense>
+  );
 }

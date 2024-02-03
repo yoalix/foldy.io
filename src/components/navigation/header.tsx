@@ -3,7 +3,6 @@ import Link from "next/link";
 import { Compass } from "@/components/icons/compass";
 import { CircleUser } from "@/components/icons/circle-user";
 import { Settings } from "@/components/icons/settings";
-import { Button } from "@/components/ui/button";
 import { getUserProfile } from "@/lib/supabase/db";
 import { MobileNav } from "./mobile-nav";
 import { createClient } from "@/lib/supabase/server";
@@ -11,6 +10,7 @@ import { cookies } from "next/headers";
 import Image from "next/image";
 import { NavMenuItem } from "./nav-menu-item";
 import { Bell } from "lucide-react";
+// import { PWABanner } from "../pwa-banner";
 
 export async function Header() {
   const supabase = createClient(cookies());
@@ -33,6 +33,7 @@ export async function Header() {
   ];
   return (
     <header>
+      {/* <PWABanner /> */}
       <div className="hidden fixed top-0 left-0 bottom-0 md:flex flex-col justify-around items-center border-r border-black-50 ">
         <Link href="/" className="flex w-full items-center p-10 border-b">
           <Image

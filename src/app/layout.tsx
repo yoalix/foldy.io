@@ -4,8 +4,6 @@ import "./globals.css";
 import { QueryProvider } from "@/components/query-provider";
 import { Body } from "@/components/body";
 import { Toaster } from "@/components/ui/sonner";
-import { Suspense } from "react";
-import { SplashScreen } from "@/components/splash-screen";
 
 export const dynamic = "force-dynamic";
 
@@ -52,11 +50,9 @@ export default async function RootLayout({
     <html lang="en">
       <QueryProvider>
         <Body>
-          <Suspense fallback={<SplashScreen />}>
-            <Header />
-            {children}
-            <Toaster richColors />
-          </Suspense>
+          <Header />
+          {children}
+          <Toaster richColors />
         </Body>
       </QueryProvider>
     </html>

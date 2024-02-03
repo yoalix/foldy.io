@@ -41,7 +41,7 @@ export const signUpWithEmailAndPassword = async ({
       password,
       options: {
         data: { username, fullName },
-        emailRedirectTo: `${location.origin}/auth/callback?next=/auth/verify-email`,
+        emailRedirectTo: `${location.origin}/auth/callback`,
       },
     });
   } catch (error) {

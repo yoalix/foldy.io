@@ -141,6 +141,7 @@ const SignupSchema = z
 type FormValues = z.infer<typeof SignupSchema>;
 
 export const SignupEmail = () => {
+  const router = useRouter();
   const form = useForm<FormValues>({
     resolver: zodResolver(SignupSchema),
     defaultValues: {
@@ -160,6 +161,8 @@ export const SignupEmail = () => {
         fullName: data.firstName + " " + data.lastName,
         username: data.username,
       });
+      router.push("/auth/verify-email");
+      router.refresh();
     } catch (error) {
       console.log(error);
       if (error instanceof Error && error.message) {

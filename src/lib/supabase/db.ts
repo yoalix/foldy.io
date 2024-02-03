@@ -51,7 +51,11 @@ export async function checkEmail(
   email: string
 ) {
   try {
-    const user = await supabase.from("profiles").select().eq("email", email);
+    const { data: user, error } = await supabase
+      .from("profiles")
+      .select()
+      .eq("email", email)
+      .maybeSingle();
     if (user) {
       return true;
     }

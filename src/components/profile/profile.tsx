@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { FolderList } from "./folder-list";
 import { TwitterX } from "@/components/icons/twitter-x";
@@ -6,7 +6,6 @@ import { Instagram } from "@/components/icons/instagram";
 import { TikTok } from "@/components/icons/tiktok";
 import { Dot } from "lucide-react";
 import { ProfileMenu } from "./profile-menu";
-import { CreateFolder } from "./create-folder";
 import Link from "next/link";
 import { getUserByUsername } from "@/lib/supabase/db";
 import { createClient } from "@/lib/supabase/server";
@@ -18,6 +17,7 @@ import { unfollowUserAction } from "@/actions/unfollowUserAction";
 import { UserAvatar } from "../ui/user-avatar";
 import { FoldersListNav } from "./folders-list-nav";
 import { BackButton } from "../ui/back-button";
+import { LogoLoading } from "../ui/logo-loading";
 type Props = {
   username?: string;
 };
@@ -122,11 +122,14 @@ export const Profile = async ({ username }: Props) => {
           </form>
         )}
       </div>
+
       <div className="flex flex-col ">
-        {isCurrentUser && <FoldersListNav user={user} />}
-        {!isCurrentUser && (
-          <FolderList username={user?.username} userId={user?.id} />
-        )}
+        <Suspense fallback={<LogoLoading />}>
+          {isCurrentUser && <FoldersListNav user={user} />}
+          {!isCurrentUser && (
+            <FolderList username={user?.username} userId={user?.id} />
+          )}
+        </Suspense>
       </div>
     </div>
   );

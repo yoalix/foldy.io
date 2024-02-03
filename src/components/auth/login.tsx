@@ -61,6 +61,7 @@ export const Login = () => {
         return;
       }
       router.push("/");
+      router.refresh();
     } catch (error) {
       console.log(error);
     }

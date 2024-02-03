@@ -46,22 +46,8 @@ export async function middleware(request: NextRequest) {
       console.log("redirecting to create username");
       return NextResponse.redirect(new URL("/auth/signup/social", request.url));
     }
-    // TODO: uncomment this when email verification is implemented
-    // else if (
-    //   user &&
-    //   user.identities?.[0]?.identity_data?.email_verified === false &&
-    //   !isAuthRoute
-    // ) {
-    //   console.log("redirecting to verify email");
-    //   return NextResponse.redirect(new URL("/auth/verify-email", request.url));
-    // }
 
-    if (
-      user &&
-      user.user_metadata.username &&
-      //user.identities?.[0]?.identity_data?.email_verified === true &&
-      !profile
-    ) {
+    if (user && user.user_metadata.username && !profile) {
       console.log("creating profile");
 
       let avatarUrl: string | undefined = user.user_metadata.avatar_url;
@@ -70,23 +56,22 @@ export async function middleware(request: NextRequest) {
         const res = await uploadAvatar(supabase, blob, user.id);
         avatarUrl = res.path;
       }
-      await createUser(supabase, {
+      const userProfile = await createUser(supabase, {
         id: user.id,
         email: user.email!,
         full_name: user.user_metadata.fullName,
         username: user.user_metadata.username,
         avatar_url: avatarUrl,
       });
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(
+        new URL(`/${userProfile.username}`, request.url)
+      );
     }
-    if (
-      user &&
-      profile &&
-      //user.identities?.[0]?.identity_data?.email_verified === true &&
-      isAuthRoute
-    ) {
+    if (user && profile && (isAuthRoute || request.nextUrl.pathname === "/")) {
       console.log("redirecting to home");
-      return NextResponse.redirect(new URL("/", request.url));
+      return NextResponse.redirect(
+        new URL(`/${profile.username}`, request.url)
+      );
     }
     console.log("returning response");
     return response;

@@ -1,23 +1,13 @@
 import { Authentication } from "@/components/auth/authentication";
-import { cookies } from "next/headers";
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
-import { getUserProfile } from "@/lib/supabase/db";
+import { SplashScreen } from "@/components/splash-screen";
+import { Suspense } from "react";
 
-export default async function Home() {
-  const cookieStore = cookies();
-  const supabase = createClient(cookieStore);
-  const {
-    data: { session },
-  } = await supabase.auth.getSession();
-
-  if (session?.user) {
-    const user = await getUserProfile(supabase, session.user.id);
-    redirect(`/${user!.username}`);
-  }
+export default function Home() {
   return (
-    <main className="w-full h-full">
-      <Authentication />
-    </main>
+    <Suspense fallback={<SplashScreen />}>
+      <main className="w-full h-full">
+        <Authentication />
+      </main>
+    </Suspense>
   );
 }

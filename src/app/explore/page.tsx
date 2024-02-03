@@ -1,6 +1,11 @@
 import { Explore } from "@/components/explore/explore";
-import React from "react";
+import { LogoLoading } from "@/components/ui/logo-loading";
+import React, { Suspense } from "react";
 
 export default function ExplorePage() {
-  return <Explore />;
+  return (
+    <Suspense fallback={<LogoLoading />}>
+      <Explore />
+    </Suspense>
+  );
 }

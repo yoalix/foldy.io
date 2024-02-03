@@ -7,11 +7,11 @@ import { Form, FormInputField } from "@/components/ui/form";
 import { Folder, UpdateFolder, User, updateFolder } from "@/lib/supabase/db";
 import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
-import { useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { z } from "zod";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { updateFolderAction } from "@/actions/updateFolder";
 
 const EditFolderSchema = z.object({
   name: z.string().min(1, "Name is required."),
@@ -26,7 +26,6 @@ type Props = {
 type FormValues = z.infer<typeof EditFolderSchema>;
 
 export const EditFolder = ({ user, folder }: Props) => {
-  const queryClient = useQueryClient();
   const router = useRouter();
 
   const form = useForm<FormValues>({
@@ -52,12 +51,13 @@ export const EditFolder = ({ user, folder }: Props) => {
       if (data.description && data.description !== folder?.description) {
         updateData.description = data.description;
       }
-      await updateFolder(supabase, updateData);
+      await updateFolderAction(user.username, updateData);
       toast("Folder updated", {
         description: `Folder ${folder?.name} updated successfully`,
       });
 
-      queryClient.invalidateQueries({ queryKey: ["getFolder", folder.id] });
+      setOpen(false);
+      router.back();
     } catch (error) {
       console.log(error);
       if (error instanceof Error && error.message) {
@@ -65,8 +65,6 @@ export const EditFolder = ({ user, folder }: Props) => {
         toast.error(error.message);
       }
     }
-    setOpen(false);
-    router.back();
   };
 
   const handleOpenChange = (isOpen: boolean) => {

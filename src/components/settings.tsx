@@ -1,21 +1,17 @@
+"use client";
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { getCurrentUser, signOut } from "@/lib/supabase/auth/server";
-import { redirect, useRouter } from "next/navigation";
+import { signOut } from "@/lib/supabase/auth/server";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import { RightArrow } from "@/components/icons/right-arrow";
 import { BackButton } from "./ui/back-button";
 import { revalidatePath } from "next/cache";
-import { getUserProfile } from "@/lib/supabase/db";
-import { cookies } from "next/headers";
-import { createClient } from "@/lib/supabase/server";
+import { useGetCurrentUser } from "@/hooks/queries/useGetCurrentUser";
 
-export const Settings = async () => {
-  const supabase = createClient(cookies());
-  const { user: curentUser } = await getCurrentUser();
-  const user = await getUserProfile(supabase, curentUser?.id);
+export const Settings = () => {
+  const { data: user } = useGetCurrentUser();
   const handleSignOut = async () => {
-    "use server";
     try {
       await signOut();
       console.log("signed out");
